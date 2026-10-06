@@ -217,6 +217,21 @@ details.calc summary{cursor:pointer;color:var(--mut);font-size:13px;padding:4px 
 .pbars{display:grid;gap:6px;max-width:420px;width:100%;margin:0 auto}
 .persona .cards{text-align:left;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 .ev3{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:8px;align-items:center;font-size:14px}
+.grow{display:grid;gap:12px;background:linear-gradient(180deg,#FFF3DC,var(--s1) 50%)}
+.gtop{display:flex;justify-content:center;align-items:center;gap:22px;text-align:center}
+.gnum{font-family:var(--f-num);font-weight:900;font-size:clamp(40px,10vw,56px);line-height:1.1}.gnum small{font-size:.4em;color:var(--mut)}.gnum.gold{color:var(--gold)}
+.garrow{font-size:28px;color:var(--gold);font-weight:900}
+.gline{text-align:center;font-size:15px;margin:0}
+.cogs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
+.cog{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:grid;gap:4px;font-size:13.5px;text-align:left}
+.cog .ch{display:flex;justify-content:space-between;align-items:center}
+.cog .st{font-size:12px;font-weight:800;border-radius:999px;padding:1px 9px;color:#fff;background:var(--gain)}
+.cog.new .st{background:var(--gold)}.cog.lock{opacity:.55}
+.lvrow{display:flex;gap:10px;align-items:center;justify-content:center;font-size:14px;flex-wrap:wrap}
+.lv{font-family:var(--f-num);font-weight:900;background:var(--fg);color:#FFF6E6;border-radius:8px;padding:3px 10px}
+.hid .blur{filter:blur(4px);user-select:none}.hid.on{border-color:var(--gold)}
+.next{display:grid;gap:6px;border:1.5px dashed var(--gold);background:var(--paper);font-size:14px}
+.next b{font-size:16px}
 .tier{display:inline-block;font-weight:900;font-size:17px;color:#fff;background:var(--gold);border-radius:999px;padding:4px 16px}
 .truth .t1{font-size:clamp(30px,6.4vw,48px);font-weight:900;animation:rise .8s both}
 .truth .t2{font-size:clamp(22px,5vw,34px);font-weight:900;line-height:1.35;animation:rise .8s .9s both}
@@ -292,7 +307,7 @@ details.hint>div{font-size:13px;color:var(--inkm);margin-top:4px}
       </div>
     </div>
   </div>
-  <div class="disc">免责声明：本游戏为财商教育演示。剧情为虚构设定，指数涨跌取自历史数据，风格与超额收益为简化模型，不代表任何真实产品或策略的表现，不构成任何投资建议。投资有风险，入市需谨慎。</div>
+  <div class="disc">免责声明：本游戏为财商教育演示。剧情为虚构设定，行情设定参考了真实市场规律，风格与超额收益为简化模型，不代表任何真实产品或策略的表现，不构成任何投资建议。投资有风险，入市需谨慎。</div>
   <div class="ov" id="ov" hidden></div>
 </div>
 <div id="tip" role="tooltip" hidden></div>
@@ -636,7 +651,7 @@ function settle(Y,now){
   return {r,excess,lines};
 }
 function runYear(){
-  if(!G||G.busy||G.choice==null||G.over)return;G.busy=true;
+  if(!G||G.busy||G.choice==null||G.over)return;G.busy=true;TR.yt.push(Math.round((Date.now()-TR.ds)/1000));
   const Y=YEARS[G.i],opt=Y.opts[G.choice],e=opt.eff;
   const cf=counterfactual();
   applyEffect(e);
@@ -645,6 +660,7 @@ function runYear(){
   const {R,dRep,flow,decay,cg}=evolve(r,excess);
   G.log.push({i:G.i,y:Y.y,r,excess,choice:opt.nm,dRep,flow,adv:ADV[G.i][G.choice][0],cf,c:G.choice});
   if(G.rep<=0)G.over=true;
+  track(G.over?"dead":"year",{y:G.log.length});
   G.navH.push(G.nav);G.idxH.push(G.idx);
   animate(n0,G.nav,i0,G.idx,()=>{G.busy=false;report(Y,opt,r,excess,lines,R,dRep,flow,decay,cg,cf)});
 }
@@ -706,7 +722,7 @@ function scene(){
     <div class="btns">${k<S.length-1?`<button class="go" type="button" id="nx">下一条（空格）</button><button class="ghost" type="button" id="skip">跳过</button>`:`<button class="go" type="button" id="nx">进入投资决策会</button>`}</div>
     <p class="foot">都是年初就能知道的信息</p></div>`);
     const f=$("ov").querySelector(".feed");f.lastElementChild&&f.lastElementChild.scrollIntoView({block:"nearest",behavior:"smooth"});
-    $("nx").onclick=()=>{if(k<S.length-1){k++;draw()}else{closeOv();render();window.scrollTo(0,0)}};
+    $("nx").onclick=()=>{if(k<S.length-1){k++;draw()}else{closeOv();render();window.scrollTo(0,0);TR.ds=Date.now()}};
     const sk=$("skip");if(sk)sk.onclick=()=>{k=S.length-1;draw()}};
   draw();
 }
@@ -795,22 +811,93 @@ function report(Y,opt,r,excess,lines,R,dRep,flow,decay,cg,cf){
   $("nextBtn").onclick=()=>{G.i++;G.choice=null;if(last)return ending();render();scene()};
 }
 const REALS=["互联网泡沫破裂", "经济衰退 · 9·11", "安然、世通造假", "熊市见底大反弹", "市场温和复苏", "加息 · 横盘", "房价见顶", "8 月「量化地震」", "雷曼倒闭 · 金融危机", "零利率 · 动量崩溃"];
+/* ===================== 匿名统计（只在正式站点启用，游戏里不显示） ===================== */
+const API=(()=>{try{const h=location.hostname;return location.protocol.startsWith("http")&&(/(^|\.)xiaolipearl\.com$/.test(h)||/edgeone/.test(h)||h==="localhost"||h==="127.0.0.1")?"/api":null}catch(e){return null}})();
+const VER="3.1";
+const TR={id:"",t0:0,ds:0,yt:[],runs:0};
+function rid(){const a="abcdefghijkmnpqrstuvwxyz23456789";let s="";for(let i=0;i<12;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
+function trStart(){TR.id=rid();TR.t0=Date.now();TR.yt=[];TR.ds=Date.now();try{TR.runs=(+localStorage.getItem("xl_runs")||0)+1;localStorage.setItem("xl_runs",TR.runs)}catch(e){TR.runs=0}}
+function track(ev,extra){
+  if(!API||!TR.id)return Promise.resolve(null);
+  let src="";try{src=(new URLSearchParams(location.search).get("from")||"").slice(0,20)}catch(e){}
+  let ref="";try{ref=document.referrer?new URL(document.referrer).hostname:""}catch(e){}
+  const body=Object.assign({id:TR.id,ev,v:VER,t0:TR.t0,run:TR.runs,src,ref,dev:innerWidth<700?"m":"d",
+    ch:G?G.log.map(l=>"ABC"[l.c]).join(""):"",yt:TR.yt,pro:PRO?1:0,dur:Math.round((Date.now()-TR.t0)/1000)},extra||{});
+  const ctl=typeof AbortController!=="undefined"?new AbortController():null;if(ctl)setTimeout(()=>ctl.abort(),2500);
+  return fetch(API+"/log",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body),keepalive:true,signal:ctl?ctl.signal:undefined}).then(r=>r.ok?r.json():null).catch(()=>null)}
+let PLAYERS=null;
+function fetchStats(){if(!API)return;fetch(API+"/stats").then(r=>r.ok?r.json():null).then(d=>{if(d&&d.starts)PLAYERS=d.starts}).catch(()=>{})}
+addEventListener("pagehide",()=>{if(API&&TR.id&&G&&!G.E&&G.log.length)try{navigator.sendBeacon(API+"/log",new Blob([JSON.stringify({id:TR.id,ev:"quit",v:VER,t0:TR.t0,run:TR.runs,ch:G.log.map(l=>"ABC"[l.c]).join(""),yt:TR.yt,dur:Math.round((Date.now()-TR.t0)/1000)})],{type:"application/json"}))}catch(e){}});
+
+/* ===================== 财商认知成长 ===================== */
+/* 每条认知对应的年份；按你在这些年份的选择，在三个选项里排第几来打分 */
+const COG=[
+ ["估值感","价格不等于价值","涨得越猛，越要问一句：它真的值这么多吗？",[0]],
+ ["周期感","最悲观的时候，往往是转折点","当「XX 已死」登上杂志封面，离底部通常不远了。",[3,9]],
+ ["排雷力","利润会说谎，现金流不会","看一家公司，先看它有没有真金白银进账。",[2]],
+ ["风险感","平静的时候，最容易加错杠杆","风险最低的时候，往往是风险正在积累的时候。",[5,7]],
+ ["克制力","规模不是越大越好","能管好的钱是有上限的。超过上限，所有人一起变差。",[4,6]],
+ ["危机感","便宜不等于安全","坏消息没出完之前，便宜的东西会更便宜。",[1,8]]];
+const HIDDEN={TA:["风口冲浪者","怎么在风口上，给自己找一个下车信号"],TD:["稳健跟随者","为什么「跟着大家走」最后总是慢半拍"],CA:["抄底狙击手","抄底和接飞刀，只差一个条件"],CD:["冷静的反向派","太早清醒，和不清醒一样贵"]};
+function cogScore(){
+  return COG.map(([dim,title,body,ys])=>{
+    const got=ys.map(i=>G.log.find(l=>l.i===i)).filter(Boolean);
+    if(!got.length)return {dim,title,body,ys,lock:true,score:0};
+    const pts=got.map(l=>{const s=[...l.cf].sort((a,b)=>b-a),v=l.cf[l.c];return v>=s[0]-1e-9?1:v<=s[2]+1e-9?0:.5});
+    const score=Math.round(pts.reduce((a,b)=>a+b,0)/pts.length*100);
+    const miss=got.filter((l,k)=>pts[k]<1).map(l=>({y:GY0+l.i,gap:Math.max(...l.cf)-l.cf[l.c]}));
+    return {dim,title,body,ys,lock:false,score,had:score>=75,miss}});
+}
+function growthHTML(code,beat){
+  const C=cogScore(),open=C.filter(c=>!c.lock),had=open.filter(c=>c.had).length,learned=open.length-had;
+  const lv=beat>=.95?["Lv.5","财商高手"]:beat>=.75?["Lv.4","进阶玩家"]:beat>=.5?["Lv.3","入门玩家"]:beat>=.25?["Lv.2","新手上路"]:["Lv.1","交学费中"];
+  const mine=code.slice(0,2);
+  return `<h2>你的财商认知成长</h2>
+   <div class="panel grow">
+    <div class="gtop"><div><div class="k">进场时</div><div class="gnum">${had}<small> / 6</small></div><div class="k">凭直觉就做对</div></div>
+     <div class="garrow">→</div>
+     <div><div class="k">离场时</div><div class="gnum gold">${open.length}<small> / 6</small></div><div class="k">全部带走</div></div></div>
+    <p class="gline">这一局，你新学会了 <b>${learned}</b> 条财商认知${had?`，原本就具备 <b>${had}</b> 条`:""}。</p>
+    <div class="chartbox" style="height:250px;max-width:340px;margin:0 auto;width:100%"><canvas id="radar" role="img" aria-label="财商认知雷达图"></canvas></div>
+    <div class="cogs">${C.map(c=>c.lock?`<div class="cog lock"><div class="ch"><span class="tagc">${c.dim}</span><b>未解锁</b></div><span class="y">玩满十年才能解锁</span></div>`
+      :`<div class="cog${c.had?" had":" new"}"><div class="ch"><span class="tagc">${c.dim} ${c.score}</span><span class="st">${c.had?"已具备":"新解锁"}</span></div><b>${c.title}</b><span>${c.body}</span>
+       <span class="y">${c.had?`你在 ${c.ys.map(i=>GY0+i).join("、")} 年做对了`:`你在 ${c.miss.map(m=>m.y).join("、")} 年为它交过学费`}</span></div>`).join("")}</div>
+    <div class="lvrow"><span class="lv">${lv[0]}</span><span>当前财商段位：<b>${lv[1]}</b>${beat<.95?`　·　再玩一局，冲击 ${beat>=.75?"Lv.5":beat>=.5?"Lv.4":beat>=.25?"Lv.3":"Lv.2"}`:""}</span></div>
+   </div>
+   <h2>隐藏认知 · 已解锁 1 / 4</h2>
+   <div class="cards" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">${Object.entries(HIDDEN).sort((a,b)=>(b[0]===mine)-(a[0]===mine)).map(([k,h])=>k===mine?`<div class="card2 hid on"><div class="top"><span>${h[0]}专属</span><span style="color:var(--gain)">已解锁</span></div><b>${h[1]}</b><span class="y">${PERSONA[k].work}</span></div>`
+     :`<div class="card2 hid"><div class="top"><span>${h[0]}专属</span><span class="y">🔒</span></div><b class="blur">${h[1]}</b><span class="y">换成「${h[0]}」的打法，才能解锁</span></div>`).join("")}</div>
+   <div class="panel next">
+    <div class="eyebrow">下期预告</div>
+    <b>所有玩家的选择，我们会做成一期数据揭秘</b>
+    <span>最多人是哪种投资人格？多少人在泡沫顶点追了进去？你的选择，在所有人里算清醒还是随大流？</span>
+    <span class="y">截图你的人格代码 <b style="color:var(--fg)">${code}</b> 和认知成长卡，下期对答案。</span>
+   </div>`;
+}
+function drawRadar(){const cv=$("radar");if(!cv)return;const {x,w,h}=fit(cv),C=cogScore(),n=C.length,cx=w/2,cy=h/2+4,R=Math.min(w,h)/2-38;
+  const P=(i,r)=>[cx+r*Math.sin(i/n*2*Math.PI),cy-r*Math.cos(i/n*2*Math.PI)];
+  for(let k=1;k<=4;k++){x.strokeStyle="#EADFCD";x.lineWidth=1;x.beginPath();for(let i=0;i<=n;i++){const p=P(i%n,R*k/4);i?x.lineTo(...p):x.moveTo(...p)}x.stroke()}
+  for(let i=0;i<n;i++){x.beginPath();x.moveTo(cx,cy);x.lineTo(...P(i,R));x.stroke()}
+  x.fillStyle="rgba(227,163,59,.28)";x.strokeStyle="#E3A33B";x.lineWidth=2.5;x.beginPath();C.forEach((c,i)=>{const p=P(i,R*Math.max(.08,c.score/100));i?x.lineTo(...p):x.moveTo(...p)});x.closePath();x.fill();x.stroke();
+  C.forEach((c,i)=>{const p=P(i,R*Math.max(.08,c.score/100));x.fillStyle="#E3A33B";x.beginPath();x.arc(p[0],p[1],3.5,0,7);x.fill();
+    const q=P(i,R+20);x.fillStyle="#3E3833";x.font='bold 12.5px "PingFang SC","Microsoft YaHei",sans-serif';x.textAlign="center";x.textBaseline="middle";x.fillText(c.dim,q[0],q[1]-7);
+    x.fillStyle=c.lock?"#A39684":"#B07A1E";x.font="11px ui-monospace,Menlo,monospace";x.fillText(c.lock?"–":c.score,q[0],q[1]+8)})}
 function intro(){
-  render();let k=0,agreed=false;
+  render();fetchStats();let k=0,agreed=false;
   const dots=()=>`<div class="dots">${pages.map((_,i)=>i).map(i=>`<i class="${i===k?"on":""}"></i>`).join("")}</div>`;
   const pages=[
-   ()=>`<img class="px" src="${sprite("pear")}" alt="小梨" style="width:72px;height:72px"><div class="eyebrow">@小梨🍐 有价值的财商分享</div><h1>量化基金生存录</h1><p class="sub">一个 5 分钟的财商小游戏</p>
-     <div class="disc" style="text-align:left">本游戏仅为财商教育演示。剧情为虚构设定；指数涨跌取自历史数据，超额收益为简化模型，不代表任何真实基金或策略的表现，不构成任何投资建议。投资有风险，入市需谨慎。</div>
+   ()=>`<img class="px" src="${sprite("pear")}" alt="小梨" style="width:72px;height:72px"><div class="eyebrow">@小梨🍐 有价值的财商分享</div><h1>量化基金生存录</h1><p class="sub">测测你的财商，在所有玩家里能排第几？</p>
+     <div class="disc" style="text-align:left">本游戏仅为财商教育演示。剧情为虚构设定，行情设定参考了真实市场规律，超额收益为简化模型，不代表任何真实基金或策略的表现，不构成任何投资建议。投资有风险，入市需谨慎。游戏会匿名记录你的选择和成绩，仅用于整体统计，不收集任何个人信息。</div>
      <label class="agree${agreed?" on":""}"><input type="checkbox" id="agree" ${agreed?"checked":""}> 我已阅读并理解以上声明</label>
      <button class="go" type="button" id="ib" ${agreed?"":"disabled"}>开始游戏</button>`,
    ()=>`<div class="bigline">${GY0} 年</div><div class="bigline gold">AI 改变了一切</div><p class="sub">「未来科技指数」去年暴涨 86%</p><button class="go" type="button" id="ib">继续</button>`,
    ()=>`<p class="sub">你刚接手一只量化基金</p><div class="bigline">规模 <span style="color:var(--gold)">5 亿</span></div><div class="oneline">${av("aunt",36)}<span>其中有张阿姨的 <b>10 万</b>退休金</span></div><button class="go" type="button" id="ib">继续</button>`,
    ()=>`<p class="sub">你的任务只有一个</p><div class="bigline gold">跑赢指数</div><p class="sub">跑赢的部分，叫「超额收益」<span class="q" data-tip="excess"></span></p><button class="go" type="button" id="ib">继续</button>`,
    ()=>`<div class="bigline">10 年 · 10 个决定</div><div class="bios">${["jie","zhou","lin","lily","wang"].map(c=>`<div class="bio">${av(c,40)}<div><b>${CH[c][0]}</b> · ${CH[c][1]}<br>${BIO[c]}<br><em>「${MOTTO[c]}」</em></div></div>`).join("")}</div><p class="vs">阿杰和老周，已经三个月没在一张桌上吃饭了。</p><p class="sub">每年他们都会吵，你来拍板</p><button class="go" type="button" id="ib">继续</button>`,
-   ()=>`<img class="px" src="${sprite("pear")}" alt="" style="width:56px;height:56px"><div class="suspense">这个游戏，<br>可能会唤起你的一些记忆……</div><p class="sub">如果玩到一半觉得似曾相识，先别急。<br>结局会告诉你为什么。</p><button class="go" type="button" id="ib">开始第一年</button>`];
+   ()=>`<img class="px" src="${sprite("pear")}" alt="" style="width:56px;height:56px"><div class="suspense">测测你的财商</div><div class="bigline gold" style="font-size:clamp(22px,5.4vw,30px)">${PLAYERS&&PLAYERS>=100?`已有 ${PLAYERS.toLocaleString()} 人挑战`:"59,049 种玩法"}</div><p class="sub">10 个决定之后，看看你在${PLAYERS&&PLAYERS>=100?"所有玩家":"所有玩法"}里排第几。<br>看到最后，还有你的投资人格。</p><button class="go" type="button" id="ib">开始第一年</button>`];
   const show=()=>{overlay(`<div class="box center" style="max-width:560px;padding-top:6vh;gap:18px">${pages[k]()}${dots()}</div>`);
     const a=$("agree");if(a)a.onchange=()=>{agreed=a.checked;show()};
-    $("ib").onclick=()=>{if(k===0&&!agreed)return;if(k<pages.length-1){k++;show()}else{render();scene()}}};
+    $("ib").onclick=()=>{if(k===0&&!agreed)return;if(k<pages.length-1){k++;show()}else{trStart();track("start");render();scene()}}};
   show();
 }
 function ending(){
@@ -832,12 +919,15 @@ function endEval(){
   overlay(`<div class="box center" style="gap:16px"><div class="eyebrow">${G.over?"游戏结束":"十年期满"} · 你的成绩</div><h1>${title}</h1><span class="tier">${tier}</span>
    <div class="bigrow">
     <div><div class="k">年化超额</div><div class="big" style="color:${C(E.ann)}">${pct(E.ann)}</div></div>
-    <div class="hero"><div class="k">59,049 种玩法里</div><div class="big" style="white-space:nowrap"><span style="font-size:.5em">第 </span>${E.rank.toLocaleString()}<span style="font-size:.5em"> 名</span></div><div class="k">超过 ${(E.beat*100).toFixed(1)}% 的玩法</div></div>
+    <div class="hero"><div class="k">59,049 种玩法里</div><div class="big" style="white-space:nowrap"><span style="font-size:.5em">第 </span>${E.rank.toLocaleString()}<span style="font-size:.5em"> 名</span></div><div class="k">超过 ${(E.beat*100).toFixed(1)}% 的玩法</div><div class="k" id="realRank"></div></div>
     <div><div class="k">张阿姨的 10 万</div><div class="big" style="color:${G.nav>=1?"var(--gain)":"var(--loss)"}">${wan(G.nav*STAKE)}</div></div>
    </div>
    <p class="sub">但这十年，真的是「未来」吗？</p>
    <button class="go" type="button" id="tb">揭晓真相</button></div>`);
   $("tb").onclick=truth;
+  {const ch=G.log.map(l=>l.c),code=typeOf(ch,ch.length),top=traitCount(ch,ch.length).top[0];
+   track("end",{y:G.log.length,dead:G.over?1:0,ann:+E.ann.toFixed(5),aunt:+(G.nav*STAKE/1e4).toFixed(2),rank:E.rank,beat:+E.beat.toFixed(4),code,adv:top})
+    .then(d=>{const el=$("realRank");if(el&&d&&d.n>=30&&d.beat!=null)el.innerHTML=`在 <b>${d.n.toLocaleString()}</b> 位真实玩家中，超过 <b>${Math.max(1,Math.min(99,Math.floor(d.beat*100)))}%</b>`})}
 }
 function truth(){
   const E=G.E, n=G.log.length, C=v=>v>=0?"var(--gain)":"var(--loss)";
@@ -947,11 +1037,10 @@ function detail(){
    </div>
    <p class="foot">算法：只改这一年的选择、其他年份不变，看十年年化超额的变化。</p>
 
-   <h2>带走 6 条判断逻辑</h2>
-   <div class="cards">${RULES.map(r=>`<div class="card2"><b>${r[0]}</b><span>${r[1]}</span><span class="y">游戏里的 ${r[2]} 年</span></div>`).join("")}</div>
+   ${growthHTML(code,G.over?0:E.beat)}
    <p class="foot">纳指、标普 500 数据来自公开历史资料（年末与关键高低点收盘价）。风格表现、拥挤冲击按公开研究的方向和量级整理，基金收益为游戏化模型，不代表任何真实基金或策略。游戏演示，不构成投资建议。</p>
    <div class="btns"><button class="go" type="button" id="again">再玩一次</button></div></div>`);
-  $("again").onclick=newRun;drawEnd(P,A,E.me);
+  $("again").onclick=newRun;drawEnd(P,A,E.me);drawRadar();
 }
 
 /* 真实点位：t = 距 1999 年底的年数；纳指、标普 500 收盘价 */
