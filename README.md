@@ -14,6 +14,7 @@ functions/api/             匿名统计接口（EdgeOne Pages 边缘函数）
   log/                     游戏上报每一局的选择和成绩
   stats/                   返回挑战人数（开场展示）
   export/                  管理员导出原始数据（需要口令）
+admin/index.html           玩家数据看板（需要口令）
 tools/analyze.py           下载数据并生成 Excel 分析报告
 ```
 
@@ -40,7 +41,9 @@ GitHub 仓库连接腾讯云 EdgeOne Pages，每次推送自动部署。详见�
 
 分渠道统计：发链接时在后面加 `?from=dy`（抖音）、`?from=bl`（B站）、`?from=xhs`（小红书）、`?from=wx`（微信），报告里会分开统计。
 
-导出和分析（在自己电脑上运行）：
+**数据看板（监控链接）**：`https://xiaolipearl.com/admin/`，第一次打开输入 ADMIN_TOKEN，之后这台设备会记住。也可以把 `https://xiaolipearl.com/admin/#t=你的口令` 存成书签，一点就进（`#` 后面的口令不会发给服务器，但别把这个链接发给别人）。看板每 5 分钟自动刷新，可按时间和渠道筛选，可下载 CSV。
+
+如果要做更深的分析（在自己电脑上运行）：
 
 ```
 pip install openpyxl
