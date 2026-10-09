@@ -10,6 +10,7 @@
 index.html                 游戏大厅首页
 games/
   quant-fund/index.html    量化基金生存录
+  jinrongnan/index.html    金融男图鉴（人格测试，含分享海报和合盘）
 functions/api/             匿名统计接口（EdgeOne Pages 边缘函数）
   log/                     游戏上报每一局的选择和成绩
   stats/                   返回挑战人数（开场展示）
@@ -17,6 +18,13 @@ functions/api/             匿名统计接口（EdgeOne Pages 边缘函数）
 admin/index.html           玩家数据看板（需要口令）
 tools/analyze.py           下载数据并生成 Excel 分析报告
 ```
+
+## 金融男图鉴
+
+- 地址：`https://xiaolipearl.com/games/jinrongnan/`；海报上的二维码固定指向这个地址，改路径要同时重新生成二维码（代码里的 `QR` 常量）。
+- 薪资在代码里的 `SALARY` 表（单位“份沙拉”，1 份 = 月薪 ¥1k，三地折成人民币）。换成爬虫数据时，同时改 `SALARY_META` 里的 `src`、`date` 和样本数 `n`。
+- 合盘：同一台设备上“测自己”和“鉴定他”都做过，结果页自动出合盘（结果存在浏览器本地，不上传）。
+- 这个游戏暂未接入匿名统计。
 
 ## 新增一个游戏
 
