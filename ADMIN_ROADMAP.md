@@ -214,6 +214,7 @@ assets/
 
 - 写接口：`functions/api/<name>/index.js`，风格对齐现有 `evt` / `lead` / `export`  
 - 管理写操作：校验 `ADMIN_TOKEN`（query 或 Header，与 export 一致即可）  
+- 视觉与交互：按 [`ADMIN_DESIGN.md`](./ADMIN_DESIGN.md)「向阳花园」规范，原型在 `admin/preview/`  
 - 前端：优先扩展 `admin/index.html`；单页过重再拆 `admin/<section>/index.html` 并用工作台导航链过去  
 - 密钥：AI Provider Key、Webhook Secret 等只进 EdgeOne 环境变量  
 - 每步结束更新本文件顶部「已完成步骤」列表（见下）并用 `/api/health` + 对应页面做验收  
