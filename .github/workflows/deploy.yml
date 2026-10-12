@@ -1,9 +1,11 @@
 name: Deploy to EdgeOne Pages
 
+# xiaoli-games 在 EdgeOne 里是 GitHub 关联型项目：推送到 main 后由 EdgeOne 自己拉取部署。
+# 本工作流只做健康检查。若改成 Upload 型项目，把变量 EDGEONE_DEPLOY_MODE 设为 upload 才会走 CLI 上传。
+
 on:
   push:
     branches: [main]
-  pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -11,12 +13,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  verify:
     runs-on: ubuntu-latest
     env:
       EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
       EDGEONE_PROJECT: ${{ vars.EDGEONE_PROJECT }}
       EDGEONE_AREA: ${{ vars.EDGEONE_AREA || 'global' }}
+      EDGEONE_DEPLOY_MODE: ${{ vars.EDGEONE_DEPLOY_MODE || 'github' }}
       SITE_URL: ${{ vars.SITE_URL || 'https://xiaolipearl.com' }}
     steps:
       - uses: actions/checkout@v4
@@ -25,41 +28,47 @@ jobs:
         with:
           node-version: 22
 
-      - name: Check configuration
-        id: cfg
-        run: |
-          if [ -z "$EDGEONE_API_TOKEN" ] || [ -z "$EDGEONE_PROJECT" ]; then
-            echo "::warning::Deploy skipped: set secret EDGEONE_API_TOKEN and variable EDGEONE_PROJECT in repo settings"
-            echo "ready=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Only what the site serves; tools/, README and workflow files stay out of the deployment
-      - name: Assemble site
-        if: steps.cfg.outputs.ready == 'true'
+      - name: Assemble site (upload mode only)
+        if: env.EDGEONE_DEPLOY_MODE == 'upload'
         run: |
           mkdir -p _site
           cp index.html _site/
           cp -r games admin functions _site/
 
-      - name: Deploy
-        id: deploy
-        if: steps.cfg.outputs.ready == 'true'
+      - name: Deploy via CLI (upload mode only)
+        if: env.EDGEONE_DEPLOY_MODE == 'upload'
         run: |
-          ENV=preview
-          if [ "${{ github.event_name }}" != "pull_request" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then ENV=production; fi
-          echo "env=$ENV" >> "$GITHUB_OUTPUT"
-          npx -y edgeone@1.6.41 makers deploy _site -n "$EDGEONE_PROJECT" -t "$EDGEONE_API_TOKEN" -e "$ENV" -a "$EDGEONE_AREA" --skip-ai-gateway-sync --json | tee deploy.json
+          if [ -z "$EDGEONE_API_TOKEN" ] || [ -z "$EDGEONE_PROJECT" ]; then
+            echo "::error::upload mode needs EDGEONE_API_TOKEN and EDGEONE_PROJECT"
+            exit 1
+          fi
+          npx -y edgeone@1.6.41 makers deploy _site -n "$EDGEONE_PROJECT" -t "$EDGEONE_API_TOKEN" -e production -a "$EDGEONE_AREA" --skip-ai-gateway-sync --json | tee deploy.json
+          if ! grep -q '"status":"success"' deploy.json; then
+            echo "::error::EdgeOne CLI deploy failed. GitHub-linked projects cannot use folder upload; set EDGEONE_DEPLOY_MODE=github or use an Upload-type project."
+            cat deploy.json
+            exit 1
+          fi
+
+      - name: Wait for EdgeOne GitHub deploy
+        if: env.EDGEONE_DEPLOY_MODE != 'upload'
+        run: |
+          echo "Project is GitHub-linked. EdgeOne should pull from main automatically."
+          echo "If /api/health stays 404, open EdgeOne → $EDGEONE_PROJECT → 构建部署 → 重新部署,"
+          echo "and confirm 域名管理 has xiaolipearl.com on this project."
+          sleep 40
 
       - name: Health check
-        if: steps.deploy.outputs.env == 'production'
         run: |
-          for i in 1 2 3 4 5 6; do
-            body=$(curl -fsS "$SITE_URL/api/health" || true)
-            echo "$body"
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            code=$(curl -s -o /tmp/health.json -w "%{http_code}" --max-time 20 "$SITE_URL/api/health" || true)
+            body=$(cat /tmp/health.json 2>/dev/null || true)
+            echo "try $i: HTTP $code  $body"
             if echo "$body" | grep -q '"ok":true'; then exit 0; fi
+            if echo "$body" | grep -q '"ok":false'; then
+              echo "::error::Backend is up but KV/ADMIN_TOKEN not ready. Bind KV as xl_kv and set ADMIN_TOKEN."
+              exit 1
+            fi
             sleep 20
           done
-          echo "::error::/api/health is not ok. Check KV binding (variable name xl_kv) and ADMIN_TOKEN in EdgeOne Pages settings."
+          echo "::error::/api/health still not ok. Confirm domain xiaolipearl.com is on project $EDGEONE_PROJECT and trigger 重新部署 in EdgeOne."
           exit 1
