@@ -1,0 +1,60 @@
+name: Deploy to EdgeOne Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+      EDGEONE_PROJECT: ${{ vars.EDGEONE_PROJECT }}
+      EDGEONE_AREA: ${{ vars.EDGEONE_AREA || 'global' }}
+      SITE_URL: ${{ vars.SITE_URL || 'https://xiaolipearl.com' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check configuration
+        run: |
+          if [ -z "$EDGEONE_API_TOKEN" ] || [ -z "$EDGEONE_PROJECT" ]; then
+            echo "::error::Set secret EDGEONE_API_TOKEN and variable EDGEONE_PROJECT in repo settings"
+            exit 1
+          fi
+
+      # Only what the site serves; tools/, README and workflow files stay out of the deployment
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r games admin functions _site/
+
+      - name: Deploy
+        id: deploy
+        run: |
+          ENV=preview
+          if [ "${{ github.event_name }}" != "pull_request" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then ENV=production; fi
+          echo "env=$ENV" >> "$GITHUB_OUTPUT"
+          npx -y edgeone@1.6.41 makers deploy _site -n "$EDGEONE_PROJECT" -t "$EDGEONE_API_TOKEN" -e "$ENV" -a "$EDGEONE_AREA" --skip-ai-gateway-sync --json | tee deploy.json
+
+      - name: Health check
+        if: steps.deploy.outputs.env == 'production'
+        run: |
+          for i in 1 2 3 4 5 6; do
+            body=$(curl -fsS "$SITE_URL/api/health" || true)
+            echo "$body"
+            if echo "$body" | grep -q '"ok":true'; then exit 0; fi
+            sleep 20
+          done
+          echo "::error::/api/health is not ok. Check KV binding (variable name xl_kv) and ADMIN_TOKEN in EdgeOne Pages settings."
+          exit 1

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>玩家数据看板 · 量化基金生存录</title>
+<style>
+:root{--bg:#F6EFE4;--s1:#FFFBF4;--line:#E8DCC8;--fg:#3E3833;--mut:#8A7F72;--gold:#E3A33B;--c1:#2a78d6;--c2:#eb6834;--c3:#1baf7a;--good:#0ca30c;--bad:#d03b3b;
+ --f:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;--num:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.55 var(--f)}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 16px 60px}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{font-size:22px;margin:0}h2{font-size:15px;margin:0 0 8px}.sub{color:var(--mut);font-size:12.5px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+select,button,input{font:inherit;border:1px solid var(--line);background:var(--s1);border-radius:10px;padding:6px 10px;color:var(--fg)}
+button{cursor:pointer;font-weight:700}button.pri{background:var(--fg);color:#FFF6E6;border-color:var(--fg)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.kpi{background:var(--s1);border:1px solid var(--line);border-radius:14px;padding:10px 14px}
+.kpi .k{font-size:12px;color:var(--mut)}.kpi .v{font:800 26px/1.2 var(--num)}.kpi .d{font-size:11.5px;color:var(--mut)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:14px 16px;min-width:0}
+.card.wide{grid-column:1/-1}
+.row{display:grid;grid-template-columns:var(--lw,110px) minmax(0,1fr) auto;gap:8px;align-items:center;margin:5px 0;font-size:13px}
+.row .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .n{text-align:right;white-space:nowrap;min-width:56px;font-family:var(--num);font-size:12.5px}
+.track{height:16px;background:#F1E8DA;border-radius:4px;position:relative;overflow:hidden}
+.fill{position:absolute;left:0;top:0;bottom:0;background:var(--c1);border-radius:0 4px 4px 0}
+.stack{display:flex;height:26px;border-radius:6px;overflow:hidden;gap:2px;background:var(--s1)}
+.seg{display:flex;align-items:center;justify-content:center;color:#fff;font-size:11.5px;font-weight:700;white-space:nowrap;overflow:hidden;min-width:0}
+.yrow{display:grid;grid-template-columns:150px minmax(0,1fr);gap:10px;align-items:center;margin:7px 0}
+.yrow .t{font-size:12.5px;line-height:1.3}.yrow .t small{color:var(--mut);display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--mut);margin:4px 0 6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.ins{margin:0;padding-left:20px}.ins li{margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:5px 6px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--mut);font-weight:600}
+.tw{overflow-x:auto}
+#tip{position:fixed;pointer-events:none;background:var(--fg);color:#FFF6E6;font-size:12px;padding:6px 9px;border-radius:8px;z-index:9;display:none;max-width:260px}
+.login{max-width:420px;margin:12vh auto;background:var(--s1);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:10px}
+.empty{color:var(--mut);padding:20px 0;text-align:center}
+svg text{font-family:var(--num);font-size:11px;fill:var(--mut)}
+@media(max-width:560px){.yrow{grid-template-columns:1fr}.grid{grid-template-columns:1fr}.kpi .v{font-size:22px}}
+</style></head><body>
+<div id="tip"></div>
+<div id="app"></div>
+<script>
+const META={"opts": [["防御", "顺势而为", "中性"], ["追价值", "开辟新阿尔法", "押小盘"], ["研究财务质量因子", "跟随趋势", "抄底"], ["保持防御", "中性", "押拐点"], ["扩张", "降成本", "差异化"], ["建拥挤度监控系统", "放大仓位", "建机器学习平台"], ["适度扩张", "发新产品", "封盘"], ["维持现状", "主动去拥挤", "整体降仓位"], ["风控优先", "顺势", "抄底"], ["押拐点", "保持动量", "中性"]], "reals": ["互联网泡沫破裂", "经济衰退 · 9·11", "安然、世通造假", "熊市见底大反弹", "市场温和复苏", "加息 · 横盘", "房价见顶", "8 月「量化地震」", "雷曼倒闭 · 金融危机", "零利率 · 动量崩溃"], "adv": [["小林", "阿杰", "老周"], ["阿杰", "老周", "小林"], ["小林", "阿杰", "Lily"], ["阿杰", "老周", "小林"], ["Lily", "老周", "小林"], ["老周", "阿杰", "小林"], ["小林", "Lily", "老周"], ["阿杰", "老周", "小林"], ["老周", "阿杰", "王总"], ["小林", "阿杰", "老周"]], "persona": {"TA": "风口冲浪者", "TD": "稳健跟随者", "CA": "抄底狙击手", "CD": "冷静的反向派"}, "ch": {"jie": "阿杰", "zhou": "老周", "lin": "小林", "lily": "Lily", "wang": "王总", "aunt": "张阿姨"}, "best": [0, 2, 0, 2, 2, 0, 2, 1, 0, 0], "worst": [1, 1, 0, 0, 0, 0, 0, 0, 0, 0]};
+const GY0=2027, SRC={dy:"抖音",bl:"B站",xhs:"小红书",wx:"微信","":"直接打开"};
+const DIM={T:"顺势",C:"逆向",A:"进攻",D:"防守",L:"长期",Q:"灵活",O:"专一",M:"兼听"};
+const COL=["var(--c1)","var(--c2)","var(--c3)"];
+const $=id=>document.getElementById(id);
+const pc=(a,b)=>b?a/b:0, P=v=>(v*100).toFixed(v<.1&&v>0?1:0)+"%", esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const med=a=>{if(!a.length)return null;const s=[...a].sort((x,y)=>x-y),m=s.length>>1;return s.length%2?s[m]:(s[m-1]+s[m])/2};
+let RAW=[],F={range:"all",src:"all"},TOKEN="";
+try{const h=new URLSearchParams(location.hash.slice(1));TOKEN=h.get("t")||localStorage.getItem("xl_admin")||""}catch(e){}
+
+/* tooltip */
+document.addEventListener("mousemove",e=>{const t=e.target.closest("[data-tip]"),tip=$("tip");if(!t){tip.style.display="none";return}
+ tip.innerHTML=t.dataset.tip;tip.style.display="block";const w=tip.offsetWidth;tip.style.left=Math.min(e.clientX+12,innerWidth-w-8)+"px";tip.style.top=(e.clientY+14)+"px"});
+document.addEventListener("touchstart",e=>{const t=e.target.closest("[data-tip]"),tip=$("tip");if(!t){tip.style.display="none";return}const r=t.getBoundingClientRect();tip.innerHTML=t.dataset.tip;tip.style.display="block";tip.style.left=Math.max(8,Math.min(r.left,innerWidth-tip.offsetWidth-8))+"px";tip.style.top=(r.bottom+6)+"px"},{passive:true});
+
+function login(msg){$("app").innerHTML=`<div class="login"><h1>玩家数据看板</h1><span class="sub">输入你在 EdgeOne Pages 环境变量里设置的 ADMIN_TOKEN。口令只保存在这台设备上。</span>
+ <input id="tk" type="password" placeholder="ADMIN_TOKEN" autocomplete="current-password"><button class="pri" id="go">进入看板</button>${msg?`<span style="color:var(--bad)">${msg}</span>`:""}</div>`;
+ $("go").onclick=()=>{TOKEN=$("tk").value.trim();load()};$("tk").onkeydown=e=>{if(e.key==="Enter")$("go").click()}}
+
+async function load(){
+ if(!TOKEN)return login();
+ $("app").innerHTML=`<div class="login"><b>正在读取数据…</b><span class="sub" id="prog"></span></div>`;
+ const items=[];let cursor="";
+ try{for(let k=0;k<400;k++){const u="/api/export?token="+encodeURIComponent(TOKEN)+(cursor?"&cursor="+encodeURIComponent(cursor):"");
+   const r=await fetch(u,{cache:"no-store"});if(r.status===403){try{localStorage.removeItem("xl_admin")}catch(e){}return login("口令不对")}
+   const d=await r.json();if(!d.ok)return login(d.err==="kv_not_bound"?"KV 还没有绑定到项目（变量名需为 xl_kv）":"读取失败");
+   items.push(...d.items);$("prog").textContent=`已读取 ${items.length} 条`;if(d.complete||!d.cursor)break;cursor=d.cursor}}
+ catch(e){return login("网络错误："+e.message)}
+ try{localStorage.setItem("xl_admin",TOKEN)}catch(e){}
+ if(location.hash)history.replaceState(null,"",location.pathname);
+ RAW=items.filter(r=>r&&r.id);RAW.loaded=new Date();render()}
+
+function filt(){const now=Date.now(),day=d=>new Date(d+8*3600e3).toISOString().slice(0,10).replace(/-/g,"");
+ const today=day(now),d7=day(now-6*864e5),d30=day(now-29*864e5);
+ return RAW.filter(r=>(F.src==="all"||(r.src||"")===F.src)&&(F.range==="all"||(F.range==="today"?r.day===today:F.range==="7"?r.day>=d7:r.day>=d30)))}
+
+function hbars(list,opt={}){const max=Math.max(1,...list.map(x=>x[1])),tot=opt.total||list.reduce((a,x)=>a+x[1],0);
+ if(!list.length)return `<div class="empty">暂无数据</div>`;
+ return `<div style="--lw:${opt.lw||110}px">${list.map(([l,v,tip])=>`<div class="row" data-tip="${esc(tip||`${l}：${v} 局（${P(pc(v,tot))}）`)}"><span class="l">${esc(l)}</span><span class="track"><span class="fill" style="width:${v/max*100}%;background:${opt.color||"var(--c1)"}"></span></span><span class="n">${opt.fmt?opt.fmt(v):`${v} · ${P(pc(v,tot))}`}</span></div>`).join("")}</div>`}
+
+function trend(rows){const by={};rows.forEach(r=>{const d=r.day||"";by[d]=by[d]||[0,0];by[d][0]++;if(r.ev==="end")by[d][1]++});
+ const days=Object.keys(by).sort();if(!days.length)return `<div class="empty">暂无数据</div>`;
+ const W=innerWidth<600?480:1000,H=220,pl=40,pr=12,pt=14,pb=26,max=Math.max(1,...days.map(d=>by[d][0]));
+ const X=i=>days.length===1?(pl+W-pr)/2:pl+(W-pl-pr)*i/(days.length-1),Y=v=>pt+(H-pt-pb)*(1-v/max);
+ const line=(k,c)=>`<polyline fill="none" stroke="${c}" stroke-width="2" stroke-linejoin="round" points="${days.map((d,i)=>X(i)+","+Y(by[d][k])).join(" ")}"/>`+days.map((d,i)=>`<circle cx="${X(i)}" cy="${Y(by[d][k])}" r="4" fill="${c}" stroke="var(--s1)" stroke-width="2"/>`).join("");
+ const ticks=[0,.5,1].map(f=>Math.round(max*f));
+ const step=Math.ceil(days.length/8);
+ return `<div class="legend"><span><i style="background:var(--c1)"></i>开始的局数</span><span><i style="background:var(--c2)"></i>玩到结局的局数</span></div>
+ <svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${ticks.map(t=>`<line x1="${pl}" x2="${W-pr}" y1="${Y(t)}" y2="${Y(t)}" stroke="#EADFCD"/><text x="${pl-6}" y="${Y(t)+4}" text-anchor="end">${t}</text>`).join("")}
+ ${line(0,"var(--c1)")}${line(1,"var(--c2)")}
+ ${days.map((d,i)=>i%step===0||i===days.length-1?`<text x="${X(i)}" y="${H-6}" text-anchor="middle">${d.slice(4,6)}/${d.slice(6)}</text>`:"").join("")}
+ ${days.map((d,i)=>{const w=(W-pl-pr)/Math.max(1,days.length);return `<rect x="${X(i)-w/2}" y="${pt}" width="${w}" height="${H-pt-pb}" fill="transparent" data-tip="${d.slice(0,4)}-${d.slice(4,6)}-${d.slice(6)}<br>开始 ${by[d][0]} 局 · 完成 ${by[d][1]} 局（${P(pc(by[d][1],by[d][0]))}）"/>`}).join("")}</svg>`}
+
+function render(){
+ const rows=filt(),ends=rows.filter(r=>r.ev==="end"),full=ends.filter(r=>!r.dead),dead=ends.filter(r=>r.dead),n=rows.length;
+ const today=new Date(Date.now()+8*3600e3).toISOString().slice(0,10).replace(/-/g,"");
+ const durs=ends.map(r=>r.dur).filter(Boolean),keep=ends.filter(r=>(r.aunt||0)>=10).length,beatIdx=ends.filter(r=>(r.aunt||0)>5.58).length;
+ const srcs={};RAW.forEach(r=>srcs[r.src||""]=1);
+ const reach=y=>rows.filter(r=>(r.ch||"").length>=y).length;
+ // 每年选择
+ const years=[...Array(10)].map((_,y)=>{const c={A:0,B:0,C:0};rows.forEach(r=>{const x=(r.ch||"")[y];if(x)c[x]++});return {y,c,t:c.A+c.B+c.C}});
+ const codes={},base={},advs={};ends.forEach(r=>{if(r.code){codes[r.code]=(codes[r.code]||0)+1;base[r.code.slice(0,2)]=(base[r.code.slice(0,2)]||0)+1}if(r.adv)advs[r.adv]=(advs[r.adv]||0)+1});
+ const srcC={},devC={m:0,d:0};rows.forEach(r=>{srcC[r.src||""]=(srcC[r.src||""]||0)+1;if(r.dev)devC[r.dev]=(devC[r.dev]||0)+1});
+ const bins=[[-1,-.05,"< −5%"],[-.05,-.03,"−5% ~ −3%"],[-.03,-.01,"−3% ~ −1%"],[-.01,0,"−1% ~ 0"],[0,.01,"0 ~ 1%"],[.01,.03,"1% ~ 3%"],[.03,.05,"3% ~ 5%"],[.05,1,"≥ 5%"]];
+ const sorted=o=>Object.entries(o).sort((a,b)=>b[1]-a[1]);
+ // 下期素材
+ const ins=[];
+ years.forEach(({y,c,t})=>{if(t<10)return;const top=Object.entries(c).sort((a,b)=>b[1]-a[1])[0],b="ABC"[META.best[y]];
+  if(top[0]!==b&&top[1]/t>=.4)ins.push(`<b>${GY0+y} 年</b>（真实是 ${META.reals[y]}）：${P(top[1]/t)} 的人选了「${META.opts[y]["ABC".indexOf(top[0])]}」，事后看最优的是「${META.opts[y][META.best[y]]}」，只有 ${P(pc(c[b],t))} 选对。`)});
+ if(ends.length){const bt=sorted(base)[0];if(bt)ins.push(`最常见的投资人格是「${META.persona[bt[0]]}」，占 ${P(bt[1]/ends.length)}。`);
+  const ad=sorted(advs)[0];if(ad)ins.push(`最多人把 ${META.ch[ad[0]]} 当军师（${P(ad[1]/ends.length)}）。`);
+  ins.push(`${P(pc(dead.length,ends.length))} 的玩家没撑满十年；只有 ${P(pc(keep,ends.length))} 守住了张阿姨的 10 万本金。`)}
+ if(n>=10)ins.push(`${P(pc(n-reach(3),n))} 的人在前三年就离开了游戏。`);
+
+ $("app").innerHTML=`<div class="wrap">
+ <header><div><h1>玩家数据看板 · 量化基金生存录</h1><div class="sub">一局 = 一条记录（同一人重玩会算多局）· 更新于 ${RAW.loaded.toLocaleString("zh-CN",{hour12:false})} · 共 ${RAW.length} 条</div></div>
+  <div class="bar" style="margin:0"><button id="rf">刷新</button><button id="csv">下载 CSV</button><button id="out">退出</button></div></header>
+ <div class="bar"><select id="fr"><option value="all">全部时间</option><option value="today">今天</option><option value="7">近 7 天</option><option value="30">近 30 天</option></select>
+  <select id="fs"><option value="all">全部渠道</option>${Object.keys(srcs).map(s=>`<option value="${esc(s)}">${esc(SRC[s]||s)}</option>`).join("")}</select></div>
+ <div class="kpis">
+  <div class="kpi"><div class="k">开始的局数</div><div class="v">${n.toLocaleString()}</div><div class="d">今天 ${RAW.filter(r=>r.day===today).length}</div></div>
+  <div class="kpi"><div class="k">玩到结局</div><div class="v">${ends.length.toLocaleString()}</div><div class="d">完成率 ${P(pc(ends.length,n))}</div></div>
+  <div class="kpi"><div class="k">中途清盘</div><div class="v">${P(pc(dead.length,ends.length))}</div><div class="d">占玩到结局的局</div></div>
+  <div class="kpi"><div class="k">游戏时长（中位）</div><div class="v">${durs.length?(med(durs)/60).toFixed(1):"–"}<span style="font-size:14px"> 分钟</span></div><div class="d">玩到结局的局</div></div>
+  <div class="kpi"><div class="k">守住 10 万本金</div><div class="v">${P(pc(keep,ends.length))}</div><div class="d">跑赢买指数 ${P(pc(beatIdx,ends.length))}</div></div>
+  <div class="kpi"><div class="k">重玩的局</div><div class="v">${P(pc(rows.filter(r=>(r.run||1)>1).length,n))}</div><div class="d">手机端 ${P(pc(devC.m,n))}</div></div>
+ </div>
+ <div class="grid">
+  <div class="card wide"><h2>每天有多少人在玩</h2>${trend(rows)}</div>
+  <div class="card wide"><h2>每一年，大家选了什么</h2><div class="sub">★ = 59,049 种玩法里第一名那条路在这一年的选择。悬停查看人数</div>
+   <div class="legend"><span><i style="background:var(--c1)"></i>选项 A</span><span><i style="background:var(--c2)"></i>选项 B</span><span><i style="background:var(--c3)"></i>选项 C</span></div>
+   ${years.map(({y,c,t})=>`<div class="yrow"><div class="t">${GY0+y} · ${META.reals[y]}<small>${t} 局做出选择</small></div><div class="stack">${t?"ABC".split("").map((L,j)=>c[L]?`<div class="seg" style="flex:${c[L]};background:${COL[j]}" data-tip="${L}. ${esc(META.opts[y][j])}（${esc(META.adv[y][j])}主张）<br>${c[L]} 局 · ${P(c[L]/t)}${META.best[y]===j?"<br>★ 最优路径的选择":""}">${META.best[y]===j?"★ ":""}${c[L]/t>=.12?esc(META.opts[y][j])+" "+P(c[L]/t):c[L]/t>=.06?P(c[L]/t):""}</div>`:"").join(""):`<div class="empty" style="padding:0">–</div>`}</div></div>`).join("")}
+  </div>
+  <div class="card"><h2>流失漏斗：做完第 N 年的局数</h2>${hbars([...Array(10)].map((_,y)=>[`${GY0+y} ${META.reals[y]}`,reach(y+1)]),{total:n,lw:150,fmt:v=>`${v} · ${P(pc(v,n))}`})}</div>
+  <div class="card"><h2>每年的决定想了多久（中位数）</h2>${hbars([...Array(10)].map((_,y)=>{const v=rows.map(r=>(r.yt||[])[y]).filter(x=>x!=null&&x<600);return [`${GY0+y} ${META.reals[y]}`,med(v)||0,`${GY0+y}：中位 ${med(v)??"–"} 秒，样本 ${v.length}`]}),{lw:150,color:"var(--gold)",fmt:v=>v?v+" 秒":"–"})}</div>
+  <div class="card"><h2>投资人格</h2>${hbars(sorted(base).map(([k,v])=>[META.persona[k]||k,v]),{total:ends.length,lw:100})}
+   <div class="tw" style="margin-top:8px"><table><tr><th>代码</th><th>含义</th><th>局数</th></tr>${sorted(codes).slice(0,8).map(([k,v])=>`<tr><td><b>${k}</b></td><td>${k.split("").map(c=>DIM[c]).join(" · ")}</td><td>${v}</td></tr>`).join("")}</table></div></div>
+  <div class="card"><h2>最常听谁的</h2>${hbars(sorted(advs).map(([k,v])=>{const a=ends.filter(r=>r.adv===k&&!r.dead).map(r=>r.ann);const m=a.length?a.reduce((x,y)=>x+y,0)/a.length:null;return [META.ch[k]||k,v,`${META.ch[k]||k}：${v} 局当军师${m!=null?`<br>这些局平均年化超额 ${(m*100).toFixed(2)}%`:""}`]}),{total:ends.length,lw:70})}</div>
+  <div class="card"><h2>十年成绩分布（年化超额）</h2>${hbars([["中途清盘",dead.length],...bins.map(([lo,hi,l])=>[l,full.filter(r=>r.ann>=lo&&r.ann<hi).length])],{total:ends.length,lw:100,color:"var(--c3)"})}</div>
+  <div class="card"><h2>来源渠道</h2><div class="sub">发链接时加 ?from=dy / bl / xhs / wx</div>${hbars(sorted(srcC).map(([k,v])=>[SRC[k]||k,v]),{total:n,lw:80})}</div>
+  <div class="card wide"><h2>下期素材</h2><div class="sub">自动生成，发布前请核对口径；只讲历史和规律，不给买卖建议</div>${ins.length?`<ol class="ins">${ins.map(s=>`<li>${s}</li>`).join("")}</ol>`:`<div class="empty">数据还不够，至少要 10 局</div>`}</div>
+  <div class="card wide"><h2>最近 30 局</h2><div class="tw"><table><tr><th>时间</th><th>渠道</th><th>设备</th><th>状态</th><th>选择</th><th>人格</th><th>年化超额</th><th>张阿姨</th><th>排名</th><th>时长</th></tr>
+   ${[...rows].sort((a,b)=>(b.ts||0)-(a.ts||0)).slice(0,30).map(r=>`<tr><td>${r.ts?new Date(r.ts).toLocaleString("zh-CN",{hour12:false,month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}):""}</td><td>${esc(SRC[r.src||""]||r.src)}</td><td>${r.dev==="m"?"手机":r.dev==="d"?"电脑":""}</td><td>${r.ev==="end"?(r.dead?"清盘":"完成"):r.ev==="quit"?"中途离开":"进行中/离开"}</td><td style="font-family:var(--num)">${esc(r.ch)}</td><td>${esc(r.code||"")}</td><td>${r.ann!=null&&!r.dead?(r.ann*100).toFixed(2)+"%":""}</td><td>${r.aunt!=null?r.aunt+" 万":""}</td><td>${r.rank||""}</td><td>${r.dur?Math.round(r.dur/60)+" 分":""}</td></tr>`).join("")}</table></div></div>
+ </div></div>`;
+ $("fr").value=F.range;$("fs").value=F.src;
+ $("fr").onchange=e=>{F.range=e.target.value;render()};$("fs").onchange=e=>{F.src=e.target.value;render()};
+ $("rf").onclick=load;$("out").onclick=()=>{try{localStorage.removeItem("xl_admin")}catch(e){}TOKEN="";login()};
+ $("csv").onclick=()=>{const cols=["day","ts","id","ev","src","dev","run","ch","y","dead","ann","aunt","rank","beat","code","adv","dur","pro","yt","v"];
+  const q=v=>{v=Array.isArray(v)?v.join("|"):v==null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+  const csv="﻿"+cols.join(",")+"\n"+filt().map(r=>cols.map(c=>q(r[c])).join(",")).join("\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download=`玩家数据_${today}.csv`;a.click()};
+}
+load();
+setInterval(()=>{if(RAW.loaded&&document.visibilityState==="visible"&&Date.now()-RAW.loaded>300000)load()},60000);
+</script></body></html>

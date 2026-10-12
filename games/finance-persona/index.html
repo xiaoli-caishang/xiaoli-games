@@ -301,6 +301,18 @@ details.rv summary::-webkit-details-marker{display:none}
 
 
 <script>
+/* ===================== 匿名统计（/api/evt，不记录个人信息） ===================== */
+const XL={id:'',t0:0,v:'fp1'};
+function xlT(ev,extra){try{
+  if(location.protocol==='file:')return;
+  if(ev==='start'){const a='abcdefghijkmnpqrstuvwxyz23456789';XL.id='';for(let i=0;i<12;i++)XL.id+=a[Math.floor(Math.random()*a.length)];XL.t0=Date.now()}
+  if(!XL.id)return;
+  let src='',ref='';try{src=(new URLSearchParams(location.search).get('from')||'').slice(0,20)}catch(e){}
+  try{ref=document.referrer?new URL(document.referrer).hostname:''}catch(e){}
+  const body=JSON.stringify(Object.assign({g:'fp',id:XL.id,ev,v:XL.v,t0:XL.t0,src,ref,dev:innerWidth<700?'m':'d'},extra||{}));
+  if(ev!=='start'&&navigator.sendBeacon)navigator.sendBeacon('/api/evt',new Blob([body],{type:'application/json'}));
+  else fetch('/api/evt',{method:'POST',headers:{'content-type':'application/json'},body,keepalive:true}).catch(()=>{});
+}catch(e){}}
 /* ===================== 题目与人格数据 ===================== */
 const DIMS=[
  {key:'risk',name:'风险偏好',a:{code:'R',label:'冒险',en:'Risk-seeking',mean:'愿意用更大的波动，换更高的上限'},b:{code:'S',label:'稳健',en:'Safety-first',mean:'先看会亏多少，再看能赚多少'},
@@ -608,6 +620,7 @@ CARDS.forEach((c,i)=>c.img=SCENE_IDS[i]);
 function buildKeys(){$('keys').innerHTML=DIMS.map(d=>`<div class="key" id="key-${d.key}"><img class="px" id="keyi-${d.key}" src="${icon('key')}" alt="未解锁"><span id="keyv-${d.key}"></span></div>`).join('')}
 function start(m){
   mode=m||mode;$('modeTip').hidden=mode!=='him';
+  xlT('start',{mode});
   deck=CARDS.map(c=>({...c,flip:Math.random()<.5}));
   idx=0;busy=false;answers=[];score=Object.fromEntries(DIMS.map(d=>[d.key,0]));
   buildKeys();$('toast').classList.remove('show');$('hint').hidden=false;
@@ -771,6 +784,7 @@ async function posterPair(){
   return c.toDataURL('image/png');
 }
 async function openPoster(kind,code,him){
+  xlT(kind==='pair'?'pair':'poster');
   const url=kind==='pair'?await posterPair():await posterOne(code,him);
   $('posterImg').src=url;$('dl').href=url;$('dl').download=kind==='pair'?'金融人格合盘.png':`金融人格图鉴-${code}.png`;$('modal').hidden=false;
 }
@@ -778,6 +792,7 @@ function showResult(){
   const parts=DIMS.map(part),code=parts.map(p=>p.win.code).join(''),t=TYPES[code],him=mode==='him';
   const who=him?'对方':'你',lv=levelOf(code);
   STORE[mode]=code;saveStore();const hasPair=STORE.me&&STORE.him;
+  xlT('end',{mode,code,dur:Math.round((Date.now()-XL.t0)/1000)});
   const bars=parts.map(p=>{const w=Math.abs(p.pa-50),st=p.aWin?`right:50%;width:${w}%`:`left:50%;width:${w}%`;
     return `<div class="brow"><img class="px" src="${icon(p.d.key)}" alt="${p.d.name}"><span>${p.aWin?`<b>${p.d.a.label}</b>`:p.d.a.label}</span><div class="bbar"><i style="${st}"></i></div><span class="r">${!p.aWin?`<b>${p.d.b.label}</b>`:p.d.b.label}</span></div>`}).join('');
   const salad=icon('salad');
