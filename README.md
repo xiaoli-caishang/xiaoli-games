@@ -35,14 +35,15 @@ tools/analyze.py               下载数据并生成 Excel 分析报告
 
 KV 里的数据按前缀区分：`r_` 量化基金每局，`e_fp_` 金融人格每局，`lead_` 咨询申请，`c_` 计数器。
 
+**工作台演进与发群监控说明（给 Codex / 协作者）：见根目录 [`ADMIN_ROADMAP.md`](./ADMIN_ROADMAP.md)。**
+
+发群统计示例：`https://xiaolipearl.com/games/finance-persona/?from=wx`（后台按 `from` 区分渠道）。
+
 ## 上线方式（唯一来源是本仓库的 main 分支）
 
-- 改动先开 PR，GitHub Actions 会部署一个预览版本；合并到 `main` 后自动部署正式环境，并检查 `/api/health`。
-- 不要再在 EdgeOne 控制台手动上传文件，否则线上会和仓库不一致。
-- 一次性配置：仓库 Settings → Secrets and variables → Actions：
-  - Secret `EDGEONE_API_TOKEN`：EdgeOne Pages 控制台 → API Token 生成
-  - Variable `EDGEONE_PROJECT`：线上项目名称
-  - 可选 Variable `EDGEONE_AREA`：`global`（默认）或 `overseas`，与项目加速区域一致
+- 正式域名绑在 EdgeOne 项目 **`xiaoli-kingdom-web`**，该项目关联本仓库 `main`，推送后自动部署。
+- 不要再在 EdgeOne 控制台手动上传整站覆盖，否则会和仓库不一致。
+- GitHub Actions 以健康检查为主（`EDGEONE_DEPLOY_MODE=github`）；Variable `EDGEONE_PROJECT` 应为 `xiaoli-kingdom-web`。
 
 ## 金融里，你是什么登？
 
