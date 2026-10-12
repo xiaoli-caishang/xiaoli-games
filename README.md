@@ -7,31 +7,57 @@
 ## 目录结构
 
 ```
-index.html                 游戏大厅首页
+index.html                     官网首页「小梨 · 知识实验室」
 games/
-  quant-fund/index.html    量化基金生存录
-  jinrongnan/index.html    金融男图鉴（人格测试，含分享海报和合盘）
-functions/api/             匿名统计接口（EdgeOne Pages 边缘函数）
-  log/                     游戏上报每一局的选择和成绩
-  stats/                   返回挑战人数（开场展示）
-  export/                  管理员导出原始数据（需要口令）
-admin/index.html           玩家数据看板（需要口令）
-tools/analyze.py           下载数据并生成 Excel 分析报告
+  finance-persona/index.html   金融里，你是什么登？（人格测试，含分享海报和合盘）
+  jinrongnan/index.html        旧地址，跳转到 finance-persona
+  quant-fund/index.html        量化基金生存录
+functions/api/                 后端接口（EdgeOne Pages 边缘函数，数据都在 KV：xl_kv）
+  health/                      部署自检：KV 和口令是否配好
+  lead/                        官网「你想解决什么问题？」表单提交
+  evt/                         通用游戏事件（金融里，你是什么登？）
+  log/                         量化基金生存录每一局的选择和成绩
+  stats/                       返回挑战人数（开场展示）
+  export/                      管理员导出原始数据（需要口令）
+admin/index.html               小梨工作台（统一后台，需要口令）
+admin/quant/index.html         量化基金生存录详细看板
+tools/analyze.py               下载数据并生成 Excel 分析报告
+.github/workflows/deploy.yml   自动部署
 ```
 
-## 金融男图鉴
+## 统一入口
 
-- 地址：`https://xiaolipearl.com/games/jinrongnan/`；海报上的二维码固定指向这个地址，改路径要同时重新生成二维码（代码里的 `QR` 常量）。
+| 用途 | 地址 |
+|---|---|
+| 官网 | https://xiaolipearl.com/ |
+| 工作台（所有数据） | https://xiaolipearl.com/admin/ |
+| 部署自检 | https://xiaolipearl.com/api/health ，`"ok":true` 表示 KV 和口令都配好了 |
+
+KV 里的数据按前缀区分：`r_` 量化基金每局，`e_fp_` 金融人格每局，`lead_` 咨询申请，`c_` 计数器。
+
+## 上线方式（唯一来源是本仓库的 main 分支）
+
+- 改动先开 PR，GitHub Actions 会部署一个预览版本；合并到 `main` 后自动部署正式环境，并检查 `/api/health`。
+- 不要再在 EdgeOne 控制台手动上传文件，否则线上会和仓库不一致。
+- 一次性配置：仓库 Settings → Secrets and variables → Actions：
+  - Secret `EDGEONE_API_TOKEN`：EdgeOne Pages 控制台 → API Token 生成
+  - Variable `EDGEONE_PROJECT`：线上项目名称
+  - 可选 Variable `EDGEONE_AREA`：`global`（默认）或 `overseas`，与项目加速区域一致
+
+## 金融里，你是什么登？
+
+- 地址：`https://xiaolipearl.com/games/finance-persona/`；旧地址 `/games/jinrongnan/` 保留为跳转页，旧海报二维码仍然有效。改路径要同时重新生成二维码（代码里的 `QR` 常量）。
 - 薪资在代码里的 `SALARY` 表（单位“份沙拉”，1 份 = 月薪 ¥1k，三地折成人民币）。换成爬虫数据时，同时改 `SALARY_META` 里的 `src`、`date` 和样本数 `n`。
 - 合盘：同一台设备上“测自己”和“鉴定他”都做过，结果页自动出合盘（结果存在浏览器本地，不上传）。
-- 这个游戏暂未接入匿名统计。
+- 已接入匿名统计（`/api/evt`）：开始、完成、人格代码、用时、生成海报、合盘、来源渠道。
 
 ## 新增一个游戏
 
 1. 在 `games/` 下新建一个英文文件夹，例如 `games/dca-replay/`
 2. 把游戏文件放进去，命名为 `index.html`
 3. 在根目录 `index.html` 里复制一张游戏卡片，把链接改成 `games/dca-replay/`
-4. 提交并推送到 GitHub，EdgeOne Pages 会自动重新部署，几分钟后生效
+4. 需要统计时，在 `functions/api/evt/index.js` 的 `GAMES` 里登记游戏代号和事件
+5. 开 PR 合并到 `main`，GitHub Actions 自动部署，几分钟后生效
 
 ## 上线方式
 
@@ -49,7 +75,7 @@ GitHub 仓库连接腾讯云 EdgeOne Pages，每次推送自动部署。详见�
 
 分渠道统计：发链接时在后面加 `?from=dy`（抖音）、`?from=bl`（B站）、`?from=xhs`（小红书）、`?from=wx`（微信），报告里会分开统计。
 
-**数据看板（监控链接）**：`https://xiaolipearl.com/admin/`，第一次打开输入 ADMIN_TOKEN，之后这台设备会记住。也可以把 `https://xiaolipearl.com/admin/#t=你的口令` 存成书签，一点就进（`#` 后面的口令不会发给服务器，但别把这个链接发给别人）。看板每 5 分钟自动刷新，可按时间和渠道筛选，可下载 CSV。
+**工作台（监控链接）**：`https://xiaolipearl.com/admin/`，第一次打开输入 ADMIN_TOKEN，之后这台设备会记住。也可以把 `https://xiaolipearl.com/admin/#t=你的口令` 存成书签，一点就进（`#` 后面的口令不会发给服务器，但别把这个链接发给别人）。看板每 5 分钟自动刷新，可按时间和渠道筛选，可下载 CSV。
 
 如果要做更深的分析（在自己电脑上运行）：
 
