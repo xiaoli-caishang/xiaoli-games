@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>小梨工作台 · 向阳花园（设计母版 v2）</title>
+<title>小梨工作台</title>
 <style>
 :root{
   --cream:#FBF3DF;--paper:#FFFBF1;--paper-2:#FFF5DC;--line:#EADFC4;--line-2:#DCCBA4;
@@ -132,6 +132,29 @@ main{padding:26px 34px 70px;min-width:0}
 
 .spot.below{transform:translate(-50%,0);flex-direction:column-reverse}
 .spot.below .sign{background:var(--sun-3)}
+.spot.hot .sign{transform:translateY(-6px) scale(1.08);background:var(--sun-2);box-shadow:4px 4px 0 var(--seed)}
+.spot.hot .pin{transform:scale(1.35);background:var(--leaf)}
+.mapwrap.receiving{cursor:copy}
+.mapwrap.receiving::after{content:"丢到建筑上 · 松开即入仓";position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:6;background:var(--seed);color:#FFE7A8;padding:8px 16px;border-radius:99px;font:700 13px var(--body);pointer-events:none;box-shadow:0 10px 30px -12px rgba(46,31,18,.7)}
+.seedpin{position:absolute;width:34px;height:34px;transform:translate(-50%,-50%);z-index:4;cursor:grab;touch-action:none;filter:drop-shadow(0 3px 0 rgba(46,31,18,.25));transition:transform .15s}
+.seedpin:hover,.seedpin.drag{transform:translate(-50%,-50%) scale(1.2);z-index:8;cursor:grabbing}
+.seedpin svg{width:34px;height:34px;display:block;pointer-events:none}
+.tray{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding:10px 16px 14px;background:linear-gradient(#FFF8E6,#F6EBD2);border-top:1px dashed var(--line-2);min-height:86px}
+.tray .hint{flex:none;width:168px;border:1.5px dashed var(--husk);border-radius:14px;background:repeating-linear-gradient(135deg,transparent 0 8px,rgba(249,201,90,.12) 8px 16px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:var(--seed-2);font:700 12px var(--display);text-align:center;padding:8px;cursor:pointer}
+.tray .hint small{font:400 11px var(--body);color:var(--sub);font-weight:400}
+.tray .hint.hot{background:var(--sun-3);border-color:var(--sun)}
+.pkt{flex:none;width:168px;background:var(--paper);border:1px solid var(--line-2);border-radius:14px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;cursor:grab;box-shadow:var(--shadow);user-select:none}
+.pkt:active{cursor:grabbing}
+.pkt b{font:700 12px/1.3 var(--display);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pkt .ft{display:flex;justify-content:space-between;font-size:10px;color:var(--sub)}
+.gate{position:fixed;inset:0;z-index:200;display:none;place-items:center;background:radial-gradient(circle at 50% 20%,#FFE29A 0,var(--cream) 55%)}
+.gate.show{display:grid}
+.gatebox{width:min(420px,92vw);background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:32px 28px;box-shadow:var(--shadow);text-align:center}
+.gatebox svg{width:72px;height:72px;margin:0 auto 8px}
+.gatebox h1{margin:0;font:700 26px var(--display)}
+.gatebox p{color:var(--sub);font-size:13px;margin:8px 0 18px}
+.gatebox input{width:100%;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;margin-bottom:10px}
+.gatebox .err{color:var(--bad);font-size:12px;min-height:18px}
 
 /* 产品库：货架 + 孵化线 */
 .shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -488,7 +511,7 @@ code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding
   <div class="top">
     <div><h1 id="hello"></h1><div class="meta" id="meta"></div></div>
     <div class="tools">
-      <span class="demo">设计母版 v2 · 演示数据</span>
+      <span class="demo" id="liveTag">演示数据</span>
       <button class="btn" id="rf"><svg class="ic"><use href="#i-refresh"/></svg>刷新</button>
       <button class="btn" id="out"><svg class="ic"><use href="#i-out"/></svg>退出</button>
     </div>
@@ -505,6 +528,17 @@ code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding
 <aside class="drawer" id="drawer" aria-hidden="true"></aside>
 <div class="palette" id="palette"><input id="palIn" placeholder="喊一声：找任务、资产、线索，或直接下命令……"><ul id="palList"></ul></div>
 <div class="toast" id="toast"></div>
+<div class="gate" id="gate">
+  <div class="gatebox">
+    <svg id="gateLogo" viewBox="-60 -60 120 120"></svg>
+    <h1>小梨工作台</h1>
+    <p>输入 EdgeOne 环境变量里的 ADMIN_TOKEN。口令只留在这台设备，不会写进地址栏以外的任何地方。</p>
+    <input id="tk" type="password" placeholder="ADMIN_TOKEN" autocomplete="current-password">
+    <button class="btn sun" id="go" style="width:100%;justify-content:center">进园</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+</div>
+<input type="file" id="filePick" multiple hidden accept="image/*,video/*,.md,.txt,.pdf,.json,.zip">
 
 <script>
 'use strict';
@@ -641,6 +675,43 @@ function insights(){
   ];
 }
 const SAVED=new Set();
+let TOKEN='', LIVE=false;
+const NEED_AUTH=/\/admin\/?$/.test(location.pathname)||/\/admin\/index\.html$/.test(location.pathname);
+try{const h=new URLSearchParams(location.hash.slice(1));TOKEN=h.get('t')||localStorage.getItem('xl_admin')||''}catch(e){}
+if(/[?&#]t=/.test(location.hash))history.replaceState(null,'',location.pathname+location.search.replace(/[?&]t=[^&]*/g,'')+(location.hash.replace(/t=[^&]*&?/,'').replace(/^#&/,'#').replace(/^#$/,'')));
+const hdr=()=>({'content-type':'application/json','x-admin-token':TOKEN,'cache':'no-store'});
+async function exportAll(prefix){
+  const out=[];let cursor='';
+  for(let k=0;k<40;k++){
+    const r=await fetch('/api/export?token='+encodeURIComponent(TOKEN)+'&prefix='+prefix+(cursor?'&cursor='+encodeURIComponent(cursor):''),{cache:'no-store'});
+    if(r.status===403)throw new Error('auth');
+    const d=await r.json();if(!d.ok)throw new Error(d.err||'fail');
+    out.push(...d.items);if(d.complete||!d.cursor||!d.items.length)break;cursor=d.cursor;
+  }
+  return out;
+}
+async function adminList(prefix){
+  const r=await fetch('/api/admin?prefix='+encodeURIComponent(prefix),{headers:hdr(),cache:'no-store'});
+  if(r.status===403)throw new Error('auth');
+  const d=await r.json();if(!d.ok)throw new Error(d.err||'fail');
+  return d.items||[];
+}
+async function adminPut(key,val){
+  const r=await fetch('/api/admin',{method:'POST',headers:hdr(),body:JSON.stringify({op:'put',key,val})});
+  const d=await r.json();if(!d.ok)throw new Error(d.err||'fail');
+  return d.val;
+}
+async function adminPatch(key,val){
+  const r=await fetch('/api/admin',{method:'POST',headers:hdr(),body:JSON.stringify({op:'patch',key,val})});
+  const d=await r.json();if(!d.ok)throw new Error(d.err||'fail');
+  return d.val;
+}
+const assetKey=id=>'asset_'+id;
+async function saveAsset(a){
+  if(!LIVE)return;
+  const rec={id:a.id,t:a.t,type:a.type,ok:!!a.ok,v:a.v||'v1',by:a.by||'Brian',d:a.d||Date.now(),ep:a.ep||null,from:a.from||'',used:a.used||[],place:a.place||null,file:a.file||'',url:a.url||'',note:a.note||''};
+  await adminPut(assetKey(a.id),rec);
+}
 
 /* ================= 导航与路线图 ================= */
 const NAV=[
@@ -700,6 +771,7 @@ function header(){
   $('nav').innerHTML=NAV.map(n=>`<button data-k="${n.k}" class="${n.k===S.tab?'on':''}">${ic(n.i)}<span><span class="t">${n.n}</span><span class="f">${n.f}</span></span>${n.k==='lead'&&nl?`<span class="dot">${nl}</span>`:n.step?`<span class="tag">${n.step}</span>`:''}</button>`).join('');
   document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.k));
   $('alert').classList.toggle('show',S.alert);
+  const tag=$('liveTag');if(tag){tag.textContent=LIVE?'xiaolipearl.com · 实况':(location.pathname.indexOf('/preview')>=0?'设计母版 · 演示数据':'未登录');tag.style.borderStyle=LIVE?'solid':'dashed'}
 }
 function go(k,extra){S.tab=k;if(extra&&extra.ep)S.ep=extra.ep;history.replaceState(null,'','#tab='+k+(k==='ep'?'&ep='+S.ep:''));render();window.scrollTo({top:0,behavior:'smooth'})}
 function sceneHead(k){
@@ -816,6 +888,102 @@ function todo3(){
   return out.sort((a,b)=>(S.doneTodo.has(a.id)?1:0)-(S.doneTodo.has(b.id)?1:0)).slice(0,3);
 }
 
+const PLACE_TYPE={home:'insights',channel:'covers',ep:'scripts',prod:'insights',lead:'scripts',flow:'scripts',asset:'brand',agent:'skills',sys:'decisions'};
+function guessType(name){
+  const n=(name||'').toLowerCase();
+  if(/\.(png|jpe?g|webp|gif|svg)$/.test(n)||/封面|cover/.test(n))return'covers';
+  if(/\.(mp4|mov|webm|mkv)$/.test(n)||/成片|剪辑|video/.test(n))return'videos';
+  if(/\.(md|txt|docx?|pdf)$/.test(n)||/脚本|script|话术/.test(n))return'scripts';
+  if(/规范|品牌|brand/.test(n))return'brand';
+  if(/技能|skill/.test(n))return'skills';
+  if(/决策|决定/.test(n))return'decisions';
+  return'insights';
+}
+function placedSeeds(){
+  const placed=ASSETS.filter(a=>a.place&&a.place!=='tray');
+  const by={};placed.forEach(a=>{by[a.place]=(by[a.place]||0)+1;a._i=(by[a.place]-1)});
+  return placed.map(a=>{
+    const s=sceneOf(a.place)||sceneOf('asset');
+    const ang=a._i*2.39996,r=5+a._i*1.2;
+    const x=s.x+Math.cos(ang)*r,y=s.y+Math.sin(ang)*r;
+    const [, ,c]=ASSET_TYPES.find(t=>t[0]===a.type)||['','','#F2A91F'];
+    return `<div class="seedpin" draggable="true" data-asset="${a.id}" data-seed="${a.id}" style="left:${x}%;top:${y}%" title="${esc(a.t)}"><svg viewBox="-20 -20 40 40"><circle r="16" fill="${c}"/><circle r="9" fill="#3E2716"/><circle r="3" fill="#FFD45C"/></svg></div>`;
+  }).join('');
+}
+function trayHTML(){
+  const loose=ASSETS.filter(a=>!a.place||a.place==='tray');
+  const hint=`<label class="hint" id="trayHint">${ic('seed')}<span>材料往这里丢</span><small>封面 · 脚本 · 成片 · 笔记</small></label>`;
+  if(!loose.length)return hint+`<div class="sub" style="align-self:center;padding:0 8px">${LIVE?'仓是空的。把这期要用的东西拖进来，松开就入资产库。':'演示仓。登录后丢进去的会写进 KV。'}</div>`;
+  return hint+loose.map(a=>{const [,n,c]=ASSET_TYPES.find(t=>t[0]===a.type)||['','素材','#2D6470'];return `<article class="pkt" draggable="true" data-seed="${a.id}" data-asset="${a.id}"><span class="type" style="background:${c}22;color:${c};align-self:flex-start">${n}</span><b>${esc(a.t)}</b><div class="ft"><span>${esc(a.by||'')}</span><span>${a.ok?'已批准':'候选'}</span></div></article>`}).join('');
+}
+function newId(){return 'a'+Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+async function ingest(fileOrTitle,place,extra){
+  const title=typeof fileOrTitle==='string'?fileOrTitle:(fileOrTitle&&fileOrTitle.name)||'未命名材料';
+  const a={id:newId(),t:title.replace(/\.[^.]+$/,'').slice(0,80),type:guessType(title),ok:false,v:'v1',by:'Brian',d:Date.now(),ep:place==='ep'?S.ep:null,from:'拖入王国',used:[],place:place||'tray',file:typeof fileOrTitle==='object'&&fileOrTitle?fileOrTitle.name:'',url:'',...(extra||{})};
+  ASSETS.unshift(a);
+  try{await saveAsset(a)}catch(e){toast('入仓失败：'+e.message);return}
+  render();toast(place&&place!=='tray'?`已丢进${(sceneOf(place)||{}).name||'王国'}（候选）`:'已放进托盘，再拖到建筑上归档');
+  return a;
+}
+async function moveSeed(id,place){
+  const a=assetOf(id);if(!a)return;
+  a.place=place||'tray';
+  if(place==='ep')a.ep=a.ep||S.ep;
+  if(place&&place!=='tray'&&!(a.used||[]).includes(place)&&place!=='asset'&&place!=='home'){/* building is location, not used-in */}
+  try{await saveAsset(a)}catch(e){toast('移动失败：'+e.message);return}
+  render();if(place&&place!=='tray')toast(`「${a.t}」进了${sceneOf(place).name}`);
+}
+let DROP_OK=false;
+function bindDrop(){
+  const pick=$('filePick');
+  const openPick=()=>{if(pick)pick.click()};
+  const dh=$('dropHint');if(dh)dh.onclick=openPick;
+  const th=$('trayHint');if(th)th.onclick=openPick;
+  if(DROP_OK)return;
+  DROP_OK=true;
+  const wrapEl=()=>$('mapwrap');
+  const clear=()=>{const wrap=wrapEl();if(wrap)wrap.classList.remove('receiving');document.querySelectorAll('.spot.hot,.hint.hot').forEach(el=>el.classList.remove('hot'))};
+  const zoneAt=(x,y)=>{
+    const wrap=wrapEl();if(!wrap)return'tray';
+    const hot=[...wrap.querySelectorAll('.spot')].find(el=>{const r=el.getBoundingClientRect();return x>r.left-28&&x<r.right+28&&y>r.top-28&&y<r.bottom+28});
+    if(hot)return hot.dataset.place;
+    const tray=$('tray');if(tray){const r=tray.getBoundingClientRect();if(y>=r.top-4&&y<=r.bottom+4)return'tray'}
+    return'tray';
+  };
+  const takeFiles=async(files,place)=>{
+    const list=[...files].slice(0,12);if(!list.length)return;
+    for(const f of list)await ingest(f,place);
+  };
+  document.addEventListener('dragover',e=>{
+    const types=[...e.dataTransfer.types];
+    const wrap=wrapEl();
+    const over=wrap&&(wrap.contains(e.target)||(e.target.closest&&e.target.closest('#tray')));
+    if(over||types.includes('Files')||types.includes('text/seed'))e.preventDefault();
+    if(over){
+      wrap.classList.add('receiving');
+      const z=zoneAt(e.clientX,e.clientY);
+      document.querySelectorAll('.spot').forEach(el=>el.classList.toggle('hot',el.dataset.place===z));
+      const h=$('trayHint');if(h)h.classList.toggle('hot',z==='tray');
+    }
+  });
+  document.addEventListener('drop',async e=>{
+    const wrap=wrapEl();
+    const over=wrap&&(wrap.contains(e.target)||(e.target.closest&&e.target.closest('#tray')));
+    e.preventDefault();clear();
+    if(!over)return;
+    const place=e.target.closest&&e.target.closest('#tray')?'tray':zoneAt(e.clientX,e.clientY);
+    const id=e.dataTransfer.getData('text/seed');
+    if(id)return moveSeed(id,place);
+    if(e.dataTransfer.files&&e.dataTransfer.files.length)return takeFiles(e.dataTransfer.files,place);
+  });
+  document.addEventListener('dragstart',e=>{
+    const el=e.target.closest&&e.target.closest('[data-seed]');if(!el)return;
+    e.dataTransfer.setData('text/seed',el.dataset.seed);e.dataTransfer.effectAllowed='move';el.classList.add('drag');
+  });
+  document.addEventListener('dragend',()=>{document.querySelectorAll('.drag').forEach(el=>el.classList.remove('drag'));clear()});
+  if(pick)pick.onchange=async()=>{await takeFiles(pick.files,'tray');pick.value=''};
+}
+
 /* ================= 视图 ================= */
 const VIEWS={
 home(){
@@ -828,11 +996,13 @@ home(){
   const badge={home:null,channel:{n:`+${ACCOUNTS.reduce((s,a)=>s+a.dfans,0)} 粉 · 本周`,bad:false},ep:{n:`第 ${EPISODES.find(e=>e.stage==='producing').n} 期开花中`,bad:false},prod:{n:`${PRODUCTS.filter(p=>p.st==='live').length} 在架 · ${PRODUCTS.filter(p=>p.st==='building').length} 憋着`,bad:false},lead:{n:`${nl.length} 只蜜蜂`,bad:nl.length>0},flow:{n:late?`${late} 个超期`:`${TASKS.filter(t=>t.st==='doing').length} 个发芽`,bad:late>0},asset:{n:`${ASSETS.length} 颗种子`,bad:false},agent:{n:fail?`${fail} 位水管堵了`:'园丁都在',bad:fail>0},sys:{n:S.alert?'乌云':'晴',bad:S.alert}};
   return `<div class="grid">
   <section class="card mapcard c8">
-    <div class="hd"><span class="pill">王国全景 · 点建筑走进去</span><button class="btn sm sun" id="tour">${ic('play')}巡园</button></div>
+    <div class="hd"><span class="pill">王国工作台 · 材料往建筑上一丢就入仓</span><button class="btn sm sun" id="dropHint">${ic('plus')}从电脑选文件</button></div>
     <div class="mapwrap" id="mapwrap"><div class="mapinner" id="mapinner"><img src="${MAP}" alt="小梨知识王国像素地图">
-      ${SCENES.map(s=>{const b=badge[s.k];return `<div class="spot ${s.k==='home'?'king':''} ${s.below?'below':''}" style="left:${s.x}%;top:${s.y}%" data-zoom="${s.k}" title="${esc(s.desc)}"><div class="sign">${s.k==='home'?ic('pear','width:14px;height:14px'):''}<span>${esc(s.name)}<small>${esc(s.place.split(' · ')[0])}</small></span>${b?`<span class="n ${b.bad?'bad':''}">${esc(b.n)}</span>`:''}</div><div class="pin ${b&&b.bad?'bad':''}"></div></div>`}).join('')}
+      ${SCENES.map(s=>{const b=badge[s.k];return `<div class="spot ${s.k==='home'?'king':''} ${s.below?'below':''}" style="left:${s.x}%;top:${s.y}%" data-zoom="${s.k}" data-place="${s.k}" title="${esc(s.desc)}"><div class="sign">${s.k==='home'?ic('pear','width:14px;height:14px'):''}<span>${esc(s.name)}<small>${esc(s.place.split(' · ')[0])}</small></span>${b?`<span class="n ${b.bad?'bad':''}">${esc(b.n)}</span>`:''}</div><div class="pin ${b&&b.bad?'bad':''}"></div></div>`}).join('')}
+      ${placedSeeds()}
     </div></div>
-    <div class="mapfoot"><span>每栋建筑是一个工作区，牌子上的数字是实时的。</span><span>翻页 <span class="kbd">←</span> <span class="kbd">→</span> · 搜索 <span class="kbd">/</span> · 返回 <span class="kbd">Esc</span></span></div>
+    <div class="tray" id="tray">${trayHTML()}</div>
+    <div class="mapfoot"><span>拖托盘里的种子，或把电脑里的封面 / 脚本 / 成片直接丢到地图上。点种子看谱系，点建筑进工作区。</span><span>搜索 <span class="kbd">/</span> · 返回 <span class="kbd">Esc</span></span></div>
   </section>
   <section class="card brief v c4">
     <div><div class="eyebrow">园长日报 · ${md(NOW)}</div><p>${brief()}</p>
@@ -1067,7 +1237,7 @@ agent(){
       ${RUNS.map(r=>`<tr><td>${md(r.ts)} ${hm(r.ts)}</td><td>${r.a}</td><td>${r.who}</td><td>${esc(r.in)}</td><td>${r.out?`<span data-asset="${r.out}" style="cursor:pointer;text-decoration:underline dotted">${esc(assetOf(r.out).t)}</span>`:'—'}</td><td>${r.ok?'<span class="pill ok">成功</span>':`<span class="pill fail">失败</span> <span class="sub">${esc(r.err)}</span>`}</td></tr>`).join('')}</table></section>`;
 },
 sys(){
-  const P=[['r_','量化每局',1],['e_fp_','金融人格每局',1],['lead_','咨询线索',1],['c_','计数器',1],['ep_','花期（一期内容）',0],['task_','工作流',0],['asset_','资产索引',0],['agent_','Agent 注册',0],['metric_','账号日指标 · 渠道指标 · 播种记录',0],['products.json','产品库（仓库文件，官网与工作台共用）',0]];
+  const P=[['r_','量化每局',1],['e_fp_','金融人格每局',1],['lead_','咨询线索',1],['c_','计数器',1],['ep_','花期（一期内容）',0],['task_','工作流',0],['asset_','资产索引（拖入地图即写入）',1],['agent_','Agent 注册',0],['metric_','账号日指标 · 渠道指标 · 播种记录',0],['products.json','产品库（仓库文件，官网与工作台共用）',0]];
   return `<div class="grid">
     <section class="card c5"><div class="hd"><h3>${ic('root')}根系体检 <small>/api/health</small></h3><button class="btn sm" id="sim">${S.alert?'恢复晴天':'模拟乌云'}</button></div>
       <div class="roots" style="grid-template-columns:1fr">
@@ -1130,7 +1300,7 @@ function bloomGate(taskId){
   document.querySelectorAll('.drawer .opt').forEach(o=>o.onclick=()=>{choice=o.dataset.c;document.querySelectorAll('.drawer .opt').forEach(x=>{x.classList.toggle('on',x===o);x.querySelector('input').checked=x===o})});
   $('bloomNo').onclick=closeDrawer;
   $('bloomOk').onclick=()=>{
-    if(choice==='new'){const id='a'+(20+ASSETS.length);const map={设计:'covers',剪辑:'videos',文案:'scripts',拍摄:'videos',运营:'decisions'};ASSETS.unshift({id,t:$('newAsset').value||t.t,type:map[t.type]||'scripts',ok:false,v:'v1',by:t.who,d:Date.now(),ep:t.ep,from:`任务 #${t.id}`,used:[]});t.out=id}
+    if(choice==='new'){const id=newId();const map={设计:'covers',剪辑:'videos',文案:'scripts',拍摄:'videos',运营:'decisions'};const na={id,t:$('newAsset').value||t.t,type:map[t.type]||'scripts',ok:false,v:'v1',by:t.who,d:Date.now(),ep:t.ep,from:`任务 #${t.id}`,used:[],place:'tray'};ASSETS.unshift(na);t.out=id;saveAsset(na).catch(err=>toast(err.message))}
     else if(choice==='none'){if(!$('noneWhy').value.trim()){toast('写一句为什么没有产出');return}t.note=$('noneWhy').value}
     else t.out=choice;
     t.st='done';closeDrawer();render();toast(choice==='none'?'已盛开（无产出）':'又开了一朵，种子已入仓');
@@ -1181,8 +1351,8 @@ function packets(){
 }
 const BIND={
   home(){
-    document.querySelectorAll('[data-zoom]').forEach(el=>el.onclick=e=>{e.stopPropagation();zoomTo(el.dataset.zoom)});
-    $('tour').onclick=()=>tourStart(true);
+    document.querySelectorAll('[data-zoom]').forEach(el=>el.onclick=e=>{if(e.defaultPrevented)return;e.stopPropagation();zoomTo(el.dataset.zoom)});
+    bindDrop();
     $('wx').onclick=()=>{S.alert=!S.alert;render();toast(S.alert?'已模拟：KV 异常':'天晴了')};
     $('game').onchange=e=>{S.game=e.target.value;$('lk').textContent=link()};
     document.querySelectorAll('#froms .chip').forEach(b=>b.onclick=()=>{S.from=b.dataset.f;$('fromIn').value='';document.querySelectorAll('#froms .chip').forEach(x=>x.classList.toggle('on',x===b));$('lk').textContent=link()});
@@ -1193,9 +1363,9 @@ const BIND={
   },
   ep(){document.querySelectorAll('.ep[data-ep]').forEach(el=>el.onclick=()=>{S.ep=el.dataset.ep;go('ep')})},
   channel(){},
-  prod(){document.querySelectorAll('#pk .chip').forEach(b=>b.onclick=()=>{S.prodKind=b.dataset.pk;render()});document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;render()});document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>{const i=insights().find(x=>x.id===b.dataset.save);SAVED.add(i.id);ASSETS.unshift({id:'a'+(20+ASSETS.length),t:i.t,type:'insights',ok:false,v:'快照 '+md(NOW),by:'游戏数据',d:Date.now(),ep:'ep3',from:'今日游戏数据快照',used:[]});render();toast('结籽成功，已存进资产库（候选）')})},
+  prod(){document.querySelectorAll('#pk .chip').forEach(b=>b.onclick=()=>{S.prodKind=b.dataset.pk;render()});document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;render()});document.querySelectorAll('[data-save]').forEach(b=>b.onclick=async()=>{const i=insights().find(x=>x.id===b.dataset.save);SAVED.add(i.id);const a={id:newId(),t:i.t,type:'insights',ok:false,v:'快照 '+md(NOW),by:'游戏数据',d:Date.now(),ep:'ep3',from:'今日游戏数据快照',used:[],place:'tray'};ASSETS.unshift(a);try{await saveAsset(a)}catch(err){toast(err.message);return}render();toast('结籽成功，已存进资产库（候选）')})},
   lead(){
-    document.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const l=LEADS.find(x=>x.id==b.dataset.mv);l.status=b.dataset.to;if(l.status==='closed'&&!l.amount){l.note=l.note||'结案'}render();toast(({contacted:'蜜蜂开始授粉了',closed:'结出一颗籽',spam:'已拔掉杂草'})[l.status])});
+    document.querySelectorAll('[data-mv]').forEach(b=>b.onclick=async()=>{const l=LEADS.find(x=>x.id==b.dataset.mv);l.status=b.dataset.to;if(l.status==='closed'&&!l.amount){l.note=l.note||'结案'}if(LIVE&&l._k){try{await adminPatch(l._k,{status:l.status,note:l.note,amount:l.amount})}catch(err){toast(err.message);return}}render();toast(({contacted:'蜜蜂开始授粉了',closed:'结出一颗籽',spam:'已拔掉杂草'})[l.status])});
     document.querySelectorAll('[data-tpl]').forEach(b=>b.onclick=()=>{const l=LEADS.find(x=>x.id==b.dataset.tpl);copy(`你好，我是小梨团队。看到你提到「${l.need}」。\n\n我们先确认两点：1）目前的流程是怎么做的；2）希望达到的结果是什么。方便的话约 20 分钟聊一下。\n\n（模板来自资产 a07 · 咨询首轮回复模板）`,'回复草稿已复制（模板 a07）')});
   },
   flow(){
@@ -1210,17 +1380,66 @@ const BIND={
   sys(){$('sim').onclick=()=>{S.alert=!S.alert;render()}},
 };
 document.addEventListener('click',e=>{
-  const ap=e.target.closest('[data-approve]');if(ap){const a=assetOf(ap.dataset.approve);a.ok=true;closeDrawer();render();toast('已盖章批准');return}
+  const ap=e.target.closest('[data-approve]');if(ap){const a=assetOf(ap.dataset.approve);a.ok=true;saveAsset(a).catch(err=>toast(err.message));closeDrawer();render();toast('已盖章批准');return}
   const as=e.target.closest('[data-asset]');if(as&&!e.target.closest('[data-go]')){lineage(as.dataset.asset);return}
   const od=e.target.closest('[data-order]');if(od){orderSheet(od.dataset.order,od.dataset.agent);return}
   const g=e.target.closest('[data-go]');if(g){closeDrawer();return go(g.dataset.go,g.dataset.ep?{ep:g.dataset.ep}:null)}
   const c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy,c.dataset.toast||'已复制');return}
   const t=e.target.closest('[data-toast]');if(t)toast(t.dataset.toast);
 });
-$('rf').onclick=()=>{render();toast('已刷新')};
-$('out').onclick=()=>toast('原型里不会真的退出');
+$('rf').onclick=()=>{boot(true)};
+$('out').onclick=()=>{try{localStorage.removeItem('xl_admin')}catch(e){}TOKEN='';LIVE=false;if(NEED_AUTH)gate(true);else{gate(false);location.reload()}};
 $('alertFix').onclick=()=>go('sys');
-render();
+$('gateLogo').innerHTML=sunflower(56,21);
+function gate(on,msg){
+  $('gate').classList.toggle('show',!!on);
+  $('gateErr').textContent=msg||'';
+  if(on){$('tk').value='';setTimeout(()=>$('tk').focus(),80)}
+}
+$('go').onclick=()=>{TOKEN=$('tk').value.trim();boot()};
+$('tk').onkeydown=e=>{if(e.key==='Enter')$('go').click()};
+
+function sessFrom(fp,quant){
+  const out=[];
+  (fp||[]).forEach(r=>out.push({g:'fp',src:r.src||'',stage:r.posters?'poster':r.ev==='end'?'end':'start',pair:!!r.pair,code:r.code||'',ts:r.ts||r.t0||NOW}));
+  (quant||[]).forEach(r=>out.push({g:'quant',src:r.src||'',stage:r.ev==='end'?'end':'start',pair:false,code:r.code||r.adv||'',ts:r.ts||r.t0||NOW}));
+  const day=NOW-864e5;
+  const today=out.filter(s=>s.ts>=day);
+  return (today.length?today:out).sort((a,b)=>a.ts-b.ts);
+}
+async function boot(silent){
+  if(!TOKEN){if(NEED_AUTH){gate(true);return}render();return}
+  gate(false);
+  try{
+    const [h,st,fp,quant,leads,assets]=await Promise.all([
+      fetch('/api/health',{cache:'no-store'}).then(r=>r.json()).catch(()=>({})),
+      fetch('/api/stats',{cache:'no-store'}).then(r=>r.json()).catch(()=>({})),
+      exportAll('e_fp_'),exportAll('r_'),exportAll('lead_'),
+      adminList('asset_').catch(e=>{if(e.message==='auth')throw e;return[]})
+    ]);
+    LIVE=true;
+    S.alert=!(h&&h.kv);
+    const liveSess=sessFrom(fp,quant);
+    if(liveSess.length){SESS.length=0;liveSess.forEach(x=>SESS.push(x));WEEK[6]=SESS.length}
+    if(leads&&leads.length){
+      LEADS.length=0;
+      leads.sort((a,b)=>(b.ts||0)-(a.ts||0)).forEach((l,i)=>LEADS.push({id:l.id||i+1,ts:l.ts,topic:l.topic||'咨询',need:l.need||'',contact:l.contact||'',src:l.src||'',ep:l.ep||null,status:l.status||'new',note:l.note||'',amount:l.amount||0,_k:l._k}));
+    }
+    if(assets&&assets.length){
+      ASSETS.length=0;
+      assets.sort((a,b)=>(b.d||b.ts_up||0)-(a.d||a.ts_up||0)).forEach(a=>ASSETS.push(Object.assign({used:[],ok:false,place:'tray'},a)));
+    }else{
+      ASSETS.length=0;
+    }
+    try{localStorage.setItem('xl_admin',TOKEN)}catch(e){}
+    render();if(!silent)toast(ASSETS.length?`园门开了 · 仓里 ${ASSETS.length} 颗种子`:'园门开了 · 把材料丢到地图上开始');
+  }catch(e){
+    LIVE=false;
+    if(e.message==='auth'){try{localStorage.removeItem('xl_admin')}catch(x){}TOKEN='';gate(true,'口令不对');return}
+    gate(true,e.message==='kv_not_bound'?'KV 还没有绑定（变量名 xl_kv）':'读取失败：'+e.message);
+  }
+}
+boot();
 </script>
 </body>
 </html>

@@ -19,6 +19,7 @@ functions/api/                 后端接口（EdgeOne Pages 边缘函数，数�
   log/                         量化基金生存录每一局的选择和成绩
   stats/                       返回挑战人数（开场展示）
   export/                      管理员导出原始数据（需要口令）
+  admin/                       工作台读写：资产 / 任务 / 花期（需要口令）
 admin/index.html               小梨工作台（统一后台，需要口令）
 admin/quant/index.html         量化基金生存录详细看板
 tools/analyze.py               下载数据并生成 Excel 分析报告
@@ -33,7 +34,7 @@ tools/analyze.py               下载数据并生成 Excel 分析报告
 | 工作台（所有数据） | https://xiaolipearl.com/admin/ |
 | 部署自检 | https://xiaolipearl.com/api/health ，`"ok":true` 表示 KV 和口令都配好了 |
 
-KV 里的数据按前缀区分：`r_` 量化基金每局，`e_fp_` 金融人格每局，`lead_` 咨询申请，`c_` 计数器。
+KV 里的数据按前缀区分：`r_` 量化基金每局，`e_fp_` 金融人格每局，`lead_` 咨询申请，`c_` 计数器，`asset_` 工作台资产索引（把封面/脚本/成片拖到王国地图上就会写入）。大文件仍放网盘，仓里只记来自哪、用在哪、外链。
 
 **工作台演进与发群监控说明（给 Codex / 协作者）：见根目录 [`ADMIN_ROADMAP.md`](./ADMIN_ROADMAP.md)。**
 
