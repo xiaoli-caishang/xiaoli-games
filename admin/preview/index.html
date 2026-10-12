@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>小梨工作台 · 向阳花园（设计原型）</title>
+<title>小梨工作台 · 向阳花园（设计母版 v2）</title>
 <style>
 :root{
   --cream:#FBF3DF;--paper:#FFFBF1;--paper-2:#FFF5DC;--line:#EADFC4;--line-2:#DCCBA4;
@@ -12,7 +12,7 @@
   --sun:#F2A91F;--sun-2:#FFD45C;--sun-3:#FFF0B8;
   --seed:#3E2716;--seed-2:#6B4325;--husk:#A9794A;--pale:#EBCB8B;
   --leaf:#4F7A3A;--leaf-2:#8FB36B;--leaf-3:#E3EDCF;
-  --sky:#DCEBEA;--bad:#C2462E;--bad-2:#FBE3DA;--warn:#D98A1C;
+  --sky:#DCEBEA;--bad:#C2462E;--bad-2:#FBE3DA;--warn:#D98A1C;--info:#2D6470;
   --display:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC","SimSun",serif;
   --body:"PingFang SC","HarmonyOS Sans SC","MiSans","Microsoft YaHei UI","Microsoft YaHei",sans-serif;
   --num:"DIN Alternate","Bahnschrift","DIN Condensed",Georgia,sans-serif;
@@ -48,6 +48,9 @@ aside{position:sticky;top:0;height:100vh;overflow:auto;background:#2E1F12;color:
 .nav button.on::before{content:"";position:absolute;left:-16px;top:50%;width:10px;height:18px;margin-top:-9px;background:var(--leaf-2);border-radius:0 18px 0 18px}
 .tag{font-size:10px;padding:1px 7px;border-radius:99px;border:1px solid currentColor;opacity:.75;white-space:nowrap}
 .dot{min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--bad);color:#fff;font:700 11px/20px var(--num);text-align:center}
+.shout{all:unset;cursor:pointer;display:flex;align-items:center;gap:8px;background:#3A2715;border:1px solid #4E3720;border-radius:12px;padding:8px 12px;color:#C9AE7C;font-size:12px}
+.shout:hover{background:#45301b}
+.kbd{margin-left:auto;font:700 11px/1 var(--num);padding:3px 6px;border-radius:6px;background:#2E1F12;border:1px solid #5C4428;color:#E6D3AC}
 .plan{margin-top:auto;background:#3A2715;border:1px solid #4E3720;border-radius:16px;padding:14px 14px 10px}
 .plan h4{margin:0 0 2px;font:700 13px var(--display);color:#FFE7A8;letter-spacing:.06em}
 .plan p{margin:0 0 10px;font-size:11px;color:#A88E62}
@@ -68,11 +71,13 @@ main{padding:26px 34px 70px;min-width:0}
 .top h1 em{font-style:normal;background:linear-gradient(transparent 62%,var(--sun-2) 62%)}
 .top .meta{color:var(--sub);font-size:13px;margin-top:6px}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--paper);border-radius:12px;padding:7px 13px;font-weight:600;font-size:13px;transition:transform .15s,box-shadow .15s}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--paper);border-radius:12px;padding:7px 13px;font-weight:600;font-size:13px;transition:transform .15s,box-shadow .15s;white-space:nowrap}
 .btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px -10px rgba(92,60,18,.6)}
 .btn.sun{background:var(--sun);border-color:#D9930F;color:#2B1A0B}
 .btn.dark{background:var(--seed);border-color:var(--seed);color:#FFE7A8}
+.btn.leaf{background:var(--leaf);border-color:var(--leaf);color:#fff}
 .btn.sm{padding:4px 10px;font-size:12px;border-radius:10px}
+.btn.ghost{background:transparent;border-style:dashed}
 .demo{font-size:12px;padding:4px 10px;border-radius:99px;background:var(--sun-3);color:#7A5410;border:1px dashed #E0B04A}
 .alert{display:none;align-items:center;gap:12px;background:linear-gradient(90deg,#5A6670,#7B8790);color:#fff;border-radius:16px;padding:12px 16px;margin-bottom:16px;box-shadow:var(--shadow)}
 .alert.show{display:flex;animation:drop .4s ease}
@@ -81,7 +86,7 @@ main{padding:26px 34px 70px;min-width:0}
 @keyframes drop{from{transform:translateY(-8px);opacity:0}}
 
 .grid{display:grid;gap:16px;grid-template-columns:repeat(12,1fr)}
-.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c9{grid-column:span 9}.c12{grid-column:span 12}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);position:relative;min-width:0;animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
 .grid>.card:nth-child(2){animation-delay:.05s}.grid>.card:nth-child(3){animation-delay:.1s}.grid>.card:nth-child(4){animation-delay:.15s}.grid>.card:nth-child(5){animation-delay:.2s}.grid>.card:nth-child(6){animation-delay:.25s}
 @keyframes rise{from{opacity:0;transform:translateY(10px)}}
@@ -91,22 +96,94 @@ main{padding:26px 34px 70px;min-width:0}
 .sub{color:var(--sub);font-size:12px}
 .big{font:700 40px/1 var(--num)}
 .muted{color:var(--sub)}
+.eyebrow{font-size:11px;letter-spacing:.24em;color:var(--husk);font-weight:700}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.pill.ok{background:var(--leaf-3);color:var(--leaf)}.pill.fail{background:var(--bad-2);color:var(--bad)}.pill.idle{background:#EFE8DA;color:var(--sub)}.pill.sun{background:var(--sun-3);color:#7A5410}.pill.info{background:#DCEBEA;color:var(--info)}
+
+/* 王国全景地图（封面页） */
+.mapcard{padding:0;overflow:hidden;background:#F6EBD2}
+.mapcard .hd{position:absolute;left:16px;top:14px;z-index:3;margin:0;gap:8px}
+.mapcard .hd .pill{background:rgba(255,251,241,.9);border:1px solid var(--line-2);color:var(--seed-2)}
+.mapwrap{position:relative;aspect-ratio:3/2;overflow:hidden;cursor:crosshair}
+.mapinner{position:absolute;inset:0;transition:transform .65s cubic-bezier(.5,0,.2,1),filter .65s;will-change:transform}
+.mapinner img{width:100%;height:100%;display:block;object-fit:cover;image-rendering:auto}
+.mapwrap.zoom .mapinner img{image-rendering:pixelated}
+.spot{position:absolute;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;z-index:2;transition:opacity .3s,transform .3s}
+.mapwrap.zoom .spot{opacity:0;pointer-events:none}
+.sign{background:#FFF8E6;border:2px solid var(--seed);border-radius:6px;padding:4px 9px 3px;box-shadow:3px 3px 0 var(--seed);font:700 12px/1.2 var(--body);display:flex;align-items:center;gap:6px;white-space:nowrap;transition:transform .15s}
+.sign small{font:400 10px var(--body);color:var(--sub);display:block}
+.sign .n{font:700 14px var(--num);color:var(--seed-2)}
+.sign .n.bad{color:var(--bad)}
+.spot:hover .sign{transform:translateY(-3px)}
+.spot:hover .pin::after{animation-duration:.8s}
+.pin{width:14px;height:14px;border-radius:50%;background:var(--sun);border:3px solid #fff;box-shadow:0 2px 0 rgba(0,0,0,.25);position:relative}
+.pin::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2px solid var(--sun);animation:ping 1.8s ease-out infinite}
+.pin.bad{background:var(--bad)}.pin.bad::after{border-color:var(--bad)}
+@keyframes ping{from{transform:scale(.5);opacity:1}to{transform:scale(1.6);opacity:0}}
+.spot.king .sign{background:var(--sun-2);border-color:var(--seed);font-size:13px}
+.mapfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 16px;font-size:12px;color:var(--sub);flex-wrap:wrap;border-top:1px solid var(--line)}
+.mapfoot .kbd{margin:0;background:var(--paper-2);border-color:var(--line-2);color:var(--seed)}
+.kpis-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:0}
+.kpis-strip>div{padding:14px 18px;border-right:1px dashed var(--line);display:flex;flex-direction:column;gap:2px}
+.kpis-strip>div:last-child{border-right:0}
+.kpis-strip b{font:700 28px/1 var(--num)}
+.kpis-strip small{color:var(--sub);font-size:12px}
+.kpis-strip .eyebrow{font-size:10px}
+
+/* 场景页头：从地图上切下来的那栋建筑 */
+.scenehead{display:flex;align-items:center;gap:16px;margin-bottom:16px;animation:rise .45s ease both}
+.scenehead .thumb{width:84px;height:84px;border-radius:18px;border:3px solid #fff;box-shadow:0 10px 24px -14px rgba(46,31,18,.6);background-size:420%;flex:none;image-rendering:pixelated}
+.scenehead h2{margin:2px 0 0;font:700 24px/1.2 var(--display)}
+.scenehead p{margin:4px 0 0;color:var(--sub);font-size:13px}
+.scenehead .nav2{margin-left:auto;display:flex;gap:6px;align-items:center}
+
+/* 巡园（可交互 PPT）底栏 */
+.tourbar{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120%);width:min(880px,calc(100% - 24px));background:#2E1F12;color:#FFF3CF;border-radius:20px;padding:12px 16px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;z-index:65;box-shadow:0 30px 60px -30px rgba(0,0,0,.8);transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.tourbar{visibility:hidden}
+.tourbar.show{transform:translate(-50%,0);visibility:visible}
+.tourbar .ctl{display:flex;gap:4px}
+.tourbar .ctl button{all:unset;cursor:pointer;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#3E2716;color:#FFD45C}
+.tourbar .ctl button:hover{background:#5A3519}
+.tourbar .say{font:500 14px/1.5 var(--display);min-width:0}
+.tourbar .say small{display:block;font:700 10px var(--body);letter-spacing:.2em;color:#E0B04A;margin-bottom:2px}
+.tourbar .dots{display:flex;gap:6px;align-items:center}
+.tourbar .dots i{width:8px;height:8px;border-radius:50%;background:#5C4428;cursor:pointer;transition:.2s}
+.tourbar .dots i.on{background:var(--sun-2);width:22px;border-radius:99px}
+.tourbar .bar{position:absolute;left:16px;right:16px;bottom:4px;height:2px;background:#5C4428;border-radius:2px;overflow:hidden}
+.tourbar .bar i{display:block;height:100%;background:var(--sun-2);width:0}
+.tourbar.playing .bar i{animation:tourfill var(--dur,7s) linear forwards}
+@keyframes tourfill{from{width:0}to{width:100%}}
+
+/* 园长日报 + 今日三件事 */
+.brief.v{grid-template-columns:1fr;gap:16px;height:100%}
+.brief{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;background:linear-gradient(120deg,#3E2716,#5A3519 60%,#6B4325);color:#FFF3CF;border:0}
+.brief .eyebrow{color:#E0B04A}
+.brief p{margin:8px 0 0;font:500 18px/1.6 var(--display);color:#FFF3CF}
+.brief p b{color:#FFD45C;font-family:var(--num);font-size:22px}
+.brief .streak{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;color:#E6D3AC;background:rgba(255,255,255,.08);padding:4px 10px;border-radius:99px}
+.todo3{display:flex;flex-direction:column;gap:8px}
+.todo3 h4{margin:0 0 2px;font:700 13px var(--display);color:#E0B04A;letter-spacing:.1em}
+.todo{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:8px 10px;cursor:pointer;transition:background .2s}
+.todo:hover{background:rgba(255,255,255,.14)}
+.todo i{width:22px;height:22px;border-radius:50%;border:2px solid #E0B04A;display:grid;place-items:center;flex:none;font-style:normal;font:700 12px var(--num);color:#FFD45C}
+.todo.done{opacity:.5}.todo.done i{background:var(--leaf-2);border-color:var(--leaf-2);color:#1d2a14}.todo.done b{text-decoration:line-through}
+.todo b{display:block;font-size:13px;line-height:1.3}.todo small{color:#C9AE7C;font-size:11px}
+.todo .go{margin-left:auto;color:#FFD45C;font-size:12px;white-space:nowrap}
 
 /* hero 花盘 */
-.hero{display:grid;grid-template-columns:1fr 380px;gap:10px;align-items:center;overflow:hidden;
+.hero{display:grid;grid-template-columns:1fr 340px;gap:10px;align-items:center;overflow:hidden;
   background:radial-gradient(circle at 78% 50%,#FFF0B8 0,rgba(255,240,184,0) 55%),var(--paper)}
 .hero::after{content:"";position:absolute;right:-120px;top:-120px;width:620px;height:620px;pointer-events:none;opacity:.35;
   background:repeating-conic-gradient(from 0deg,rgba(242,169,31,.25) 0 4deg,transparent 4deg 12deg);border-radius:50%;
   -webkit-mask:radial-gradient(circle,#000 20%,transparent 70%);mask:radial-gradient(circle,#000 20%,transparent 70%)}
-.hero h2{margin:6px 0 10px;font:700 28px/1.3 var(--display)}
-.hero h2 .num{font-size:56px;color:var(--seed-2);vertical-align:-6px;margin:0 4px}
-.eyebrow{font-size:11px;letter-spacing:.24em;color:var(--husk);font-weight:700}
+.hero h2{margin:6px 0 10px;font:700 26px/1.3 var(--display)}
+.hero h2 .num{font-size:50px;color:var(--seed-2);vertical-align:-6px;margin:0 4px}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:14px 0 4px;font-size:12px;color:var(--sub)}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
 .seg{display:inline-flex;background:var(--paper-2);border:1px solid var(--line);border-radius:12px;padding:3px}
 .seg button{border:0;background:none;padding:4px 12px;border-radius:9px;font-size:12px;font-weight:600;color:var(--sub)}
 .seg button.on{background:var(--seed);color:#FFE7A8}
-.head{width:100%;max-width:380px;aspect-ratio:1;position:relative;z-index:1}
+.head{width:100%;max-width:340px;aspect-ratio:1;position:relative;z-index:1}
 .head .petal{transform-box:fill-box;transform-origin:50% 100%;animation:open .9s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:var(--d)}
 .head .s{transform-box:fill-box;transform-origin:center;animation:pop .35s ease-out both;animation-delay:var(--d)}
 .head .s:hover{stroke:#fff;stroke-width:2}
@@ -117,32 +194,38 @@ main{padding:26px 34px 70px;min-width:0}
 .kpis b{font:700 24px/1.1 var(--num)}
 .kpis small{color:var(--sub);font-size:12px}
 
-/* 天气 */
+/* 天气 / 蜜蜂 */
 .weather{display:flex;gap:14px;align-items:center;cursor:pointer}
-.weather .sky{width:72px;height:72px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(160deg,#BFE0E6,#F7EBC1);flex:none}
+.weather .sky{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(160deg,#BFE0E6,#F7EBC1);flex:none}
 .weather.cloudy .sky{background:linear-gradient(160deg,#9AA7B0,#D6DCDF)}
-.weather .sky svg{width:44px;height:44px}
-.weather b{font:700 22px var(--display)}
-.chk{display:flex;flex-direction:column;gap:2px;margin-top:10px;font-size:12px}
+.weather .sky svg{width:38px;height:38px}
+.weather b{font:700 20px var(--display)}
+.chk{display:flex;flex-direction:column;gap:2px;margin-top:8px;font-size:12px}
 .chk span::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--leaf);margin-right:7px;vertical-align:1px}
 .chk span.x::before{background:var(--bad)}
-
-/* 蜜蜂 */
 .bees{display:flex;align-items:center;gap:14px}
-.bees .hive{width:72px;height:72px;border-radius:20px;background:var(--sun-3);display:grid;place-items:center;position:relative;flex:none}
-.bees .hive svg{width:40px;height:40px;color:var(--seed);animation:buzz 2.4s ease-in-out infinite}
+.bees .hive{width:64px;height:64px;border-radius:18px;background:var(--sun-3);display:grid;place-items:center;position:relative;flex:none}
+.bees .hive svg{width:36px;height:36px;color:var(--seed);animation:buzz 2.4s ease-in-out infinite}
 @keyframes buzz{25%{transform:translate(2px,-3px) rotate(6deg)}75%{transform:translate(-2px,2px) rotate(-5deg)}}
 
-/* 撒种子 */
+/* 撒种子 + 播种记录 */
 .sow .row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
 .chip{border:1px solid var(--line-2);background:var(--paper);border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600}
 .chip.on{background:var(--leaf);border-color:var(--leaf);color:#fff}
 .link{display:flex;gap:6px;align-items:center;background:var(--paper-2);border:1px dashed var(--line-2);border-radius:12px;padding:8px 10px;font:12px ui-monospace,Consolas,monospace;word-break:break-all}
-.link code{flex:1}
+.link code{flex:1;background:none;border:0;padding:0}
 select,.inp{border:1px solid var(--line-2);background:var(--paper);border-radius:10px;padding:6px 10px;font-size:13px}
 .inp{min-width:0}
+.sows{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;display:flex;flex-direction:column;gap:6px}
+.sowrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;font-size:12px}
+.sowrow .when{font-family:var(--num);color:var(--sub)}
+.sowrow .eff{display:flex;align-items:center;gap:6px}
+.sowrow .eff b{font:700 16px var(--num);color:var(--leaf)}
+.sprouts{display:inline-flex;gap:2px}
+.sprouts i{width:5px;height:12px;border-radius:3px 3px 0 0;background:var(--leaf-2);display:inline-block;transform-origin:bottom;animation:grow-y .5s ease both}
+@keyframes grow-y{from{transform:scaleY(0)}}
 
-/* 漏斗：生长链 */
+/* 漏斗 */
 .funnel{display:flex;align-items:stretch;gap:0;margin:6px 0 4px}
 .stage{flex:1;text-align:center;padding:12px 6px 10px;border-radius:16px;background:var(--paper-2);border:1px solid var(--line);min-width:0}
 .stage svg.ic{width:26px;height:26px;color:var(--leaf)}
@@ -156,15 +239,24 @@ select,.inp{border:1px solid var(--line-2);background:var(--paper);border-radius
 .game-row:first-of-type{border-top:0;padding-top:0}
 .game-row h4{margin:0 0 6px;font-size:13px;display:flex;justify-content:space-between}
 
-/* 渠道：阳光条 */
+/* 渠道条 */
 .ray{display:grid;grid-template-columns:72px 1fr 64px;align-items:center;gap:10px;margin:7px 0;font-size:13px}
 .ray .bar{height:14px;border-radius:2px 99px 99px 2px;transform-origin:left;animation:grow .8s cubic-bezier(.2,.8,.2,1) both}
 .ray .v{text-align:right;color:var(--sub);font-size:12px}
 @keyframes grow{from{transform:scaleX(0)}}
 
+/* 素材结籽 */
+.insights{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.ins{background:var(--paper-2);border:1px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden}
+.ins::after{content:"";position:absolute;right:-18px;bottom:-18px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(242,169,31,.25),transparent 70%)}
+.ins .n{font:700 30px/1 var(--num);color:var(--seed-2)}
+.ins p{margin:0;font-size:13px;line-height:1.5}
+.ins .ft{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:4px}
+.ins.saved{border-color:var(--leaf-2);background:#F3F7EA}
+
 /* 飞轮 */
-.wheel{display:grid;grid-template-columns:1fr 120px 1fr;grid-template-rows:auto 120px auto;gap:8px;align-items:center;justify-items:center;position:relative;margin-top:4px}
-.wheel .core{grid-area:2/2;width:120px;height:120px;position:relative}
+.wheel{display:grid;grid-template-columns:1fr 110px 1fr;grid-template-rows:auto 110px auto;gap:8px;align-items:center;justify-items:center;position:relative;margin-top:4px}
+.wheel .core{grid-area:2/2;width:110px;height:110px;position:relative}
 .wheel .core svg{width:100%;height:100%;animation:spin 60s linear infinite}
 .wheel .n{background:var(--paper-2);border:1px solid var(--line);border-radius:14px;padding:8px 12px;text-align:center;min-width:120px}
 .wheel .n b{display:block;font:700 18px var(--num)}
@@ -172,6 +264,28 @@ select,.inp{border:1px solid var(--line-2);background:var(--paper);border-radius
 .wheel .n span{display:block;font:700 13px var(--display)}
 .wheel .n1{grid-area:1/2}.wheel .n2{grid-area:2/3;justify-self:start}.wheel .n3{grid-area:3/2}.wheel .n4{grid-area:2/1;justify-self:end}
 .wheel .ring{position:absolute;inset:0;pointer-events:none}
+
+/* 花期：时间线 + 流程 */
+.timeline{display:flex;gap:10px;overflow-x:auto;padding:6px 2px 10px}
+.ep{flex:1;min-width:150px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:12px 10px 10px;text-align:center;cursor:pointer;transition:transform .15s,border-color .15s;position:relative}
+.ep:hover{transform:translateY(-2px)}
+.ep.on{border-color:var(--sun);box-shadow:0 0 0 3px var(--sun-3)}
+.ep svg{width:84px;height:84px;display:block;margin:0 auto 4px}
+.ep b{display:block;font:700 13px/1.35 var(--display)}
+.ep small{color:var(--sub);font-size:11px;display:block}
+.ep .pill{position:absolute;top:8px;right:8px}
+.steps{display:flex;align-items:center;gap:0;margin:6px 0 4px;flex-wrap:wrap}
+.step{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--faint)}
+.step i{width:12px;height:12px;border-radius:50%;border:2px solid var(--line-2);display:inline-block;background:var(--paper)}
+.step.done{color:var(--leaf)}.step.done i{background:var(--leaf-2);border-color:var(--leaf-2)}
+.step.now{color:var(--seed);font-weight:700}.step.now i{background:var(--sun-2);border-color:var(--sun);box-shadow:0 0 0 3px var(--sun-3)}
+.step+.step::before{content:"";width:22px;height:2px;background:var(--line);margin:0 6px}
+.step.done+.step::before{background:var(--leaf-2)}
+.mini{display:flex;flex-direction:column;gap:6px}
+.mini .it{display:flex;align-items:center;gap:8px;font-size:13px;padding:7px 10px;background:var(--paper-2);border:1px solid var(--line);border-radius:12px}
+.mini .it .pill{margin-left:auto}
+.harvest{display:grid;grid-template-columns:68px 1fr auto;gap:6px 10px;align-items:center;font-size:12px}
+.harvest i{display:block;height:9px;border-radius:2px 99px 99px 2px;animation:grow .8s ease both}
 
 /* 看板 */
 .board{display:grid;grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px;overflow-x:auto;padding-bottom:6px}
@@ -185,34 +299,47 @@ select,.inp{border:1px solid var(--line-2);background:var(--paper);border-radius
 .tk p{margin:6px 0;font-size:12px;color:var(--sub);white-space:pre-wrap}
 .tk .ft{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;color:var(--sub);margin-top:6px}
 .tk .ft .btn{margin-left:auto}
-.type{font-size:11px;padding:1px 8px;border-radius:99px;font-weight:700}
-.t-设计{background:#FCE3C2;color:#8A4F0B}.t-拍摄{background:#DCEBEA;color:#2D6470}.t-文案{background:var(--leaf-3);color:#3C5E2B}.t-剪辑{background:#EEDCF0;color:#6A3B72}
+.type{font-size:11px;padding:1px 8px;border-radius:99px;font-weight:700;white-space:nowrap;flex:none}
+.t-设计{background:#FCE3C2;color:#8A4F0B}.t-拍摄{background:#DCEBEA;color:#2D6470}.t-文案{background:var(--leaf-3);color:#3C5E2B}.t-剪辑{background:#EEDCF0;color:#6A3B72}.t-运营{background:#F0EBDD;color:#6B4325}
 .t-AI{background:#FCE3C2;color:#8A4F0B}.t-数据{background:#DCEBEA;color:#2D6470}.t-内容{background:var(--leaf-3);color:#3C5E2B}
 .late{color:var(--bad);font-weight:700}
+.epmark{font-size:11px;color:var(--husk);font-weight:700}
 
 /* 园丁 */
 .agents{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
 .ag{display:flex;flex-direction:column;gap:8px}
 .ag .face{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;background:var(--sun-3);color:var(--seed)}
 .ag .face svg.ic{width:30px;height:30px}
-.ag .st{position:absolute;right:16px;top:16px;font-size:11px;font-weight:700;padding:2px 9px;border-radius:99px}
-.st.ok{background:var(--leaf-3);color:var(--leaf)}.st.fail{background:var(--bad-2);color:var(--bad)}.st.idle{background:#EFE8DA;color:var(--sub)}
+.ag .st{position:absolute;right:16px;top:16px}
 .ag dl{display:grid;grid-template-columns:64px 1fr;gap:2px 8px;margin:0;font-size:12px}
 .ag dt{color:var(--faint)}.ag dd{margin:0}
-.ag .acts{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.ag .acts{display:flex;gap:6px;margin-top:auto;padding-top:6px;flex-wrap:wrap}
 .ag.add{border-style:dashed;background:transparent;box-shadow:none;align-items:center;justify-content:center;text-align:center;color:var(--sub);min-height:220px}
 
 /* 种子包 */
 .packets{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
-.pk{background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 16px 16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;animation:rise .4s ease both;position:relative}
+.pk{background:var(--paper);border:1px solid var(--line);border-radius:6px 6px 16px 16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;animation:rise .4s ease both;position:relative;cursor:pointer;transition:transform .15s}
+.pk:hover{transform:translateY(-2px)}
 .pk::before{content:"";height:10px;background:repeating-linear-gradient(90deg,var(--line-2) 0 6px,transparent 6px 10px);opacity:.7}
 .pk .band{height:84px;display:grid;place-items:center;position:relative}
 .pk .band svg{width:64px;height:64px}
 .pk .bd{padding:10px 12px 12px;display:flex;flex-direction:column;gap:4px;flex:1}
 .pk b{font:700 14px/1.35 var(--display)}
+.pk .lin{font-size:11px;color:var(--sub);display:flex;flex-direction:column;gap:1px}
+.pk .lin span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--leaf-2);margin-right:6px;vertical-align:1px}
 .pk .ft{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--sub);margin-top:auto;padding-top:6px}
 .stamp{position:absolute;right:10px;top:18px;font:700 11px var(--display);padding:2px 8px;border:2px solid;border-radius:6px;transform:rotate(8deg);background:rgba(255,251,241,.85)}
 .stamp.ok{color:var(--leaf)}.stamp.cand{color:var(--warn);border-style:dashed}
+
+/* 谱系 */
+.lineage{list-style:none;margin:0;padding:0 0 0 18px;position:relative}
+.lineage::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:linear-gradient(var(--leaf-2),var(--sun),var(--seed-2))}
+.lineage li{position:relative;padding:4px 0 14px 12px}
+.lineage li::before{content:"";position:absolute;left:-18px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--paper);border:3px solid var(--leaf-2)}
+.lineage li.me::before{border-color:var(--sun);background:var(--sun-2)}
+.lineage li.next::before{border-color:var(--seed-2)}
+.lineage li small{display:block;color:var(--faint);font-size:11px;letter-spacing:.1em}
+.lineage li b{font:700 14px var(--display)}
 
 /* 表格 */
 table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px}
@@ -220,28 +347,52 @@ th,td{text-align:left;padding:9px 10px;border-bottom:1px dashed var(--line)}
 th{font-size:11px;color:var(--faint);font-weight:600;letter-spacing:.06em}
 tr:last-child td{border-bottom:0}
 code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding:1px 6px;border-radius:6px;border:1px solid var(--line)}
-.pair{display:grid;grid-template-columns:72px 1fr;gap:4px 10px;align-items:center;margin:10px 0}
-.pair .bars{display:flex;flex-direction:column;gap:3px}
-.pair .bars i{display:block;height:9px;border-radius:2px 99px 99px 2px;animation:grow .8s ease both}
 .roots{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .rt{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--paper-2)}
 .rt b{font:700 14px var(--display)}
 .ph{border:1px dashed var(--line-2);color:var(--faint)}
 
-.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--seed);color:#FFE7A8;padding:10px 18px;border-radius:99px;font-weight:600;opacity:0;transition:.3s;z-index:60;pointer-events:none}
+/* 抽屉 / 喊一声 / toast */
+.scrim{position:fixed;inset:0;background:rgba(46,31,18,.35);backdrop-filter:blur(2px);z-index:70;display:none}
+.scrim.show{display:block;animation:fade .2s ease}
+@keyframes fade{from{opacity:0}}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(520px,100%);background:var(--paper);z-index:71;box-shadow:-20px 0 50px -30px rgba(46,31,18,.6);padding:24px 26px;overflow:auto;transform:translateX(100%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.drawer.show{transform:none}
+.drawer h2{margin:0 0 4px;font:700 22px var(--display)}
+.drawer .x{position:absolute;right:16px;top:16px}
+.drawer textarea{width:100%;min-height:260px;border:1px solid var(--line-2);border-radius:12px;padding:12px;background:var(--paper-2);font:12.5px/1.6 ui-monospace,Consolas,monospace;resize:vertical}
+.drawer label{display:block;font-size:12px;color:var(--sub);margin:14px 0 4px}
+.drawer .opt{display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:6px;cursor:pointer;background:var(--paper-2)}
+.drawer .opt.on{border-color:var(--leaf);background:#F3F7EA}
+.drawer .opt input{accent-color:var(--leaf)}
+.palette{position:fixed;left:50%;top:14vh;transform:translate(-50%,-10px);width:min(620px,92vw);background:var(--paper);border:1px solid var(--line-2);border-radius:20px;box-shadow:0 30px 80px -30px rgba(46,31,18,.7);z-index:72;display:none;overflow:hidden}
+.palette.show{display:block;animation:palin .2s ease forwards}
+@keyframes palin{to{transform:translate(-50%,0)}}
+.palette input{width:100%;border:0;border-bottom:1px solid var(--line);padding:16px 20px;font:16px var(--body);background:transparent;outline:0}
+.palette ul{list-style:none;margin:0;padding:8px;max-height:50vh;overflow:auto}
+.palette li{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;cursor:pointer;font-size:13px}
+.palette li:hover,.palette li.on{background:var(--sun-3)}
+.palette li .k{font-size:11px;color:var(--faint);min-width:40px}
+.palette li .go{margin-left:auto;color:var(--faint);font-size:11px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--seed);color:#FFE7A8;padding:10px 18px;border-radius:99px;font-weight:600;opacity:0;transition:.3s;z-index:80;pointer-events:none}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
-@media (max-width:1180px){.hero{grid-template-columns:1fr}.head{margin:auto}.c3,.c4,.c5{grid-column:span 6}.c7,.c8{grid-column:span 12}}
+@media (max-width:1180px){.hero{grid-template-columns:1fr}.head{margin:auto}.brief{grid-template-columns:1fr}.c3,.c4,.c5{grid-column:span 6}.c7,.c8,.c9{grid-column:span 12}}
 @media (max-width:860px){
   body{grid-template-columns:1fr}
   aside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px}
   .nav{flex-direction:row;overflow-x:auto;width:100%}.nav button{grid-template-columns:20px auto auto;white-space:nowrap}.nav button .f,.nav .tag{display:none}.nav button.on::before{display:none}
-  .plan{display:none}main{padding:18px 14px 60px}
+  .plan,.shout{display:none}main{padding:18px 14px 60px}
   .grid{grid-template-columns:minmax(0,1fr)}.grid>*{grid-column:1/-1!important}
   .board{grid-template-columns:repeat(4,240px)}
   .hero h2{font-size:22px}.hero h2 .num{font-size:42px}
   .card{padding:16px}.vine{width:26px}.stage b{font-size:20px}.stage small{font-size:11px}
   .wheel{grid-template-columns:1fr 90px 1fr;grid-template-rows:auto 90px auto}.wheel .core{width:90px;height:90px}.wheel .n{min-width:0;padding:6px 8px}
+  .brief p{font-size:16px}
+  .kpis-strip{grid-template-columns:repeat(2,1fr)}.kpis-strip>div{border-bottom:1px dashed var(--line)}.kpis-strip b{font-size:22px}
+  .scenehead{flex-wrap:wrap}.scenehead .nav2{margin-left:0;width:100%;flex-wrap:wrap}
+  .sign small{display:none}.sign{font-size:11px;padding:3px 7px 2px}
+  .tourbar{grid-template-columns:1fr;gap:8px}.tourbar .dots{display:none}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
@@ -266,11 +417,15 @@ code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
   <symbol id="i-pear" viewBox="0 0 24 24"><path d="M12 5.5c1 0 1.6.8 1.6 1.8 0 1.4 1.4 2.1 2.4 3.4 1.5 2 1.6 5 0 7.2-1.4 1.9-3.2 2.6-4 2.6s-2.6-.7-4-2.6c-1.6-2.2-1.5-5.2 0-7.2 1-1.3 2.4-2 2.4-3.4 0-1 .6-1.8 1.6-1.8z"/><path d="M12 5.5c.3-1.4 1.3-2.3 2.8-2.5"/></symbol>
 </svg>
 
 <aside>
   <div class="brand"><svg id="logo" viewBox="-60 -60 120 120" aria-hidden="true"></svg><div><b>小梨工作台</b><small>SUNFLOWER · STUDIO</small></div></div>
+  <button class="shout" id="shout"></button>
   <nav class="nav" id="nav"></nav>
   <div class="plan">
     <h4>王国生长计划</h4>
@@ -283,7 +438,7 @@ code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding
   <div class="top">
     <div><h1 id="hello"></h1><div class="meta" id="meta"></div></div>
     <div class="tools">
-      <span class="demo">设计原型 · 演示数据</span>
+      <span class="demo">设计母版 v2 · 演示数据</span>
       <button class="btn" id="rf"><svg class="ic"><use href="#i-refresh"/></svg>刷新</button>
       <button class="btn" id="out"><svg class="ic"><use href="#i-out"/></svg>退出</button>
     </div>
@@ -295,6 +450,10 @@ code{font:12px ui-monospace,Consolas,monospace;background:var(--paper-2);padding
   </div>
   <div id="view"></div>
 </main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"></aside>
+<div class="palette" id="palette"><input id="palIn" placeholder="喊一声：找任务、资产、线索，或直接下命令……"><ul id="palList"></ul></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -305,96 +464,156 @@ const pct=(a,b)=>b?Math.round(a/b*100)+'%':'—';
 const ic=(n,st)=>`<svg class="ic"${st?` style="${st}"`:''}><use href="#i-${n}"/></svg>`;
 const hm=ms=>new Date(ms).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit',hour12:false});
 const md=ms=>new Date(ms).toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});
-function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),1800)}
-function copy(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('已复制，去群里撒种子吧'),()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast('已复制')})}
+const ago=ms=>{const h=(Date.now()-ms)/36e5;return h<1?Math.round(h*60)+' 分钟前':h<24?Math.round(h)+' 小时前':Math.round(h/24)+' 天前'};
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),2000)}
+function copy(t,msg){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast(msg||'已复制'),()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast(msg||'已复制')})}
 
 /* ================= 演示数据（落地时替换为 /api/export 读到的 KV） ================= */
 const rnd=(s=>()=>(s=s*16807%2147483647)/2147483647)(20261012);
 const pick=arr=>{let x=rnd(),a=0;for(const [v,w] of arr){a+=w;if(x<a)return v}return arr[arr.length-1][0]};
-const SRC=[['wx',.34],['wx-qin',.14],['wx-tongshi',.1],['xhs',.16],['dy',.13],['bl',.08],['',.05]];
-const SRC_NAME={wx:'微信','wx-qin':'亲友群','wx-tongshi':'同事群',xhs:'小红书',dy:'抖音',bl:'B站','':'直接打开'};
-const SRC_COLOR={wx:'#4F7A3A','wx-qin':'#86A95C','wx-tongshi':'#B9CC86',xhs:'#D9543F',dy:'#2B2117',bl:'#4E9CC0','':'#CDBB98'};
+const SRC=[['wx',.3],['wx-qin',.14],['wx-tongshi',.1],['xhs',.14],['dy',.12],['bl',.07],['ep3',.08],['',.05]];
+const SRC_NAME={wx:'微信','wx-qin':'亲友群','wx-tongshi':'同事群',xhs:'小红书',dy:'抖音',bl:'B站',ep3:'第 3 期视频','':'直接打开'};
+const SRC_COLOR={wx:'#4F7A3A','wx-qin':'#86A95C','wx-tongshi':'#B9CC86',xhs:'#D9543F',dy:'#2B2117',bl:'#4E9CC0',ep3:'#F2A91F','':'#CDBB98'};
 const STAGE_COLOR={start:'#EBCB8B',end:'#8A5A2E',poster:'#2E1A0C'};
+const CODES=['稳健登','冲锋登','佛系登','算账登','抄底登','躺平登'];
 const NOW=Date.now();
 const SESS=Array.from({length:142},()=>{
   const g=rnd()<.64?'fp':'quant',end=rnd()<(g==='fp'?.74:.58),poster=g==='fp'&&end&&rnd()<.42;
-  return{g,src:pick(SRC),stage:poster?'poster':end?'end':'start',pair:g==='fp'&&end&&rnd()<.16,ts:NOW-rnd()*24*3600e3};
+  return{g,src:pick(SRC),stage:poster?'poster':end?'end':'start',pair:g==='fp'&&end&&rnd()<.16,code:CODES[Math.floor(Math.pow(rnd(),1.6)*CODES.length)],ts:NOW-rnd()*24*3600e3};
 }).sort((a,b)=>a.ts-b.ts);
 const WEEK=[58,73,66,91,120,104,SESS.length];
+
+const EPISODES=[
+  {id:'ep1',n:1,title:'金融里，你是什么登？',stage:'harvest',game:'finance-persona',pub:NOW-26*864e5,step:7,games:412,leads:2,metrics:{dy:[22100,1500],xhs:[11200,2100],bl:[5100,700],wx:[2600,420]}},
+  {id:'ep2',n:2,title:'量化基金生存录：十年活下来',stage:'harvest',game:'quant-fund',pub:NOW-15*864e5,step:7,games:305,leads:2,metrics:{dy:[18200,1260],xhs:[9400,1820],bl:[4300,610],wx:[2100,340]}},
+  {id:'ep3',n:3,title:'基金经理最怕的六句话',stage:'published',game:'quant-fund',pub:NOW-2*864e5,step:6,games:96,leads:1,metrics:{dy:[6400,520],xhs:[3100,640],bl:[1200,150],wx:[800,120]}},
+  {id:'ep4',n:4,title:'复利到底差在哪',stage:'producing',game:'finance-persona',pub:null,step:3,games:0,leads:0,metrics:{}},
+  {id:'ep5',n:5,title:'你的工资是几份沙拉？',stage:'planning',game:'finance-persona',pub:null,step:1,games:0,leads:0,metrics:{}},
+];
+const STEPS=['选题','脚本','拍摄','剪辑','封面','发布','收成'];
+const STAGE_META={planning:['花苞','选题与脚本','idle'],producing:['开花中','拍摄 / 剪辑 / 封面','sun'],published:['盛开','已发布，收数据中','ok'],harvest:['结籽','收成期，沉淀素材','info']};
+const PLAT={dy:'抖音',xhs:'小红书',bl:'B站',wx:'公众号'};
+const PLAT_COLOR={dy:'#2B2117',xhs:'#D9543F',bl:'#4E9CC0',wx:'#4F7A3A'};
+const epOf=id=>EPISODES.find(e=>e.id===id);
+const epName=id=>{const e=epOf(id);return e?`第 ${e.n} 期`:'日常'};
+
 const LEADS=[
-  {id:1,ts:NOW-3.2e6,topic:'AI 工作流',need:'每天要手动整理 200 封客户邮件，想自动分类并生成回复草稿。',contact:'wx: li***23',src:'xhs',status:'new',note:''},
-  {id:2,ts:NOW-9.8e6,topic:'数据',need:'想学用 Python 做简单的基金回测，给团队做内部培训。',contact:'ch***@qq.com',src:'bl',status:'new',note:''},
-  {id:3,ts:NOW-2.1e7,topic:'内容',need:'理财类账号，想合作一期「金融人格」联名测试。',contact:'wx: mo***88',src:'dy',status:'new',note:''},
-  {id:4,ts:NOW-1.1e8,topic:'AI 工作流',need:'财务报表每月合并要两天，能否用 Agent 做？',contact:'wx: zh***01',src:'wx',status:'contacted',note:'已加微信，周四电话'},
-  {id:5,ts:NOW-2.6e8,topic:'数据',need:'研究生，想做一个量化入门的课程项目。',contact:'yu***@163.com',src:'wx-tongshi',status:'closed',note:'已发免费资料包，结案'},
+  {id:1,ts:NOW-3.2e6,topic:'AI 工作流',need:'每天要手动整理 200 封客户邮件，想自动分类并生成回复草稿。',contact:'wx: li***23',src:'xhs',ep:'ep3',status:'new',note:''},
+  {id:2,ts:NOW-9.8e6,topic:'数据',need:'想学用 Python 做简单的基金回测，给团队做内部培训。',contact:'ch***@qq.com',src:'bl',ep:'ep2',status:'new',note:''},
+  {id:3,ts:NOW-2.1e7,topic:'内容',need:'理财类账号，想合作一期「金融人格」联名测试。',contact:'wx: mo***88',src:'dy',ep:'ep1',status:'new',note:''},
+  {id:4,ts:NOW-1.1e8,topic:'AI 工作流',need:'财务报表每月合并要两天，能否用 Agent 做？',contact:'wx: zh***01',src:'wx',ep:'ep2',status:'contacted',note:'已加微信，周四电话'},
+  {id:5,ts:NOW-2.6e8,topic:'数据',need:'研究生，想做一个量化入门的课程项目。',contact:'yu***@163.com',src:'wx-tongshi',ep:'ep1',status:'closed',amount:3000,note:'成交：3 次一对一辅导'},
   {id:6,ts:NOW-3.0e8,topic:'内容',need:'加我领取高收益理财群！！！',contact:'qq: 9***',src:'',status:'spam',note:''},
 ];
 const TASKS=[
-  {id:1,t:'第 4 期视频：「复利到底差在哪」分镜',type:'文案',who:'小梨',st:'doing',due:2},
-  {id:2,t:'金融人格海报 v3 · 小红书尺寸',type:'设计',who:'封面园丁',st:'review',due:1},
-  {id:3,t:'量化生存录 · 结局页录屏素材',type:'拍摄',who:'Brian',st:'todo',due:5},
-  {id:4,t:'第 3 期粗剪 → 精剪',type:'剪辑',who:'剪辑园丁',st:'doing',due:-1},
-  {id:5,t:'官网「王国图书馆」资料页文案',type:'文案',who:'小梨',st:'todo',due:7},
-  {id:6,t:'角色规范：小梨三视图定稿',type:'设计',who:'Brian',st:'done',due:-3},
-  {id:7,t:'发群话术 · 亲友群 / 同事群两版',type:'文案',who:'专业回复园丁',st:'done',due:-1},
-  {id:8,t:'B 站封面 A/B 两版',type:'设计',who:'封面园丁',st:'todo',due:3},
+  {id:1,t:'分镜：「复利到底差在哪」',type:'文案',who:'小梨',st:'doing',due:2,ep:'ep4'},
+  {id:2,t:'封面候选 A/B（抖音 + 小红书尺寸）',type:'设计',who:'封面园丁',st:'review',due:1,ep:'ep4'},
+  {id:3,t:'第 4 期粗剪 → 精剪',type:'剪辑',who:'剪辑园丁',st:'doing',due:-1,ep:'ep4'},
+  {id:4,t:'选题调研：三地工资换算成沙拉',type:'文案',who:'小梨',st:'todo',due:5,ep:'ep5'},
+  {id:5,t:'第 3 期发群复盘：对比亲友群 / 同事群',type:'运营',who:'Brian',st:'todo',due:0,ep:'ep3'},
+  {id:6,t:'官网「王国图书馆」资料页文案',type:'文案',who:'小梨',st:'todo',due:7,ep:null},
+  {id:7,t:'角色规范：小梨三视图定稿',type:'设计',who:'Brian',st:'done',due:-3,ep:null,out:'a01'},
+  {id:8,t:'发群话术 · 亲友群 / 同事群两版',type:'文案',who:'专业回复园丁',st:'done',due:-1,ep:'ep3',out:'a14'},
 ];
 const AGENTS=[
-  {id:'cutter',n:'剪辑园丁',d:'把原始录屏切成可用片段，按脚本时间码出粗剪清单。',how:'HTTP',skill:'video-frames / ffmpeg',st:'ok',last:NOW-5.4e6,out:'asset_video_031',runs:14,icon:'play'},
-  {id:'cover',n:'封面园丁',d:'按品牌规范出 3 版封面候选，落到资产库待审。',how:'任务单',skill:'cover-design',st:'fail',last:NOW-1.6e7,out:'—',err:'参考图链接失效',runs:9,icon:'flower'},
-  {id:'reply',n:'专业回复园丁',d:'对咨询线索起草第一轮专业回复，人工确认后发送。',how:'任务单',skill:'consult-reply',st:'idle',last:NOW-8.6e7,out:'asset_script_012',runs:6,icon:'bee'},
+  {id:'cutter',n:'剪辑园丁',d:'把原始录屏切成可用片段，按脚本时间码出粗剪清单。',how:'HTTP',skill:'video-frames / ffmpeg',st:'ok',last:NOW-5.4e6,out:'a05',runs:14,icon:'play'},
+  {id:'cover',n:'封面园丁',d:'按品牌规范出 3 版封面候选，落到资产库待审。',how:'任务单',skill:'cover-design',st:'fail',last:NOW-1.6e7,out:'',err:'参考图链接失效',runs:9,icon:'flower'},
+  {id:'reply',n:'专业回复园丁',d:'对咨询线索起草第一轮专业回复，人工确认后发送。',how:'任务单',skill:'consult-reply',st:'idle',last:NOW-8.6e7,out:'a07',runs:6,icon:'bee'},
 ];
 const RUNS=[
-  {ts:NOW-5.4e6,a:'剪辑园丁',who:'Brian',in:'第 3 期 · 素材 12 段',out:'asset_video_031',ok:true},
-  {ts:NOW-1.6e7,a:'封面园丁',who:'Brian',in:'金融人格海报 v3',out:'',ok:false,err:'参考图链接失效'},
-  {ts:NOW-8.6e7,a:'专业回复园丁',who:'小梨',in:'线索 #4 财务报表合并',out:'asset_script_012',ok:true},
+  {ts:NOW-5.4e6,a:'剪辑园丁',who:'Brian',in:'第 4 期 · 素材 12 段',out:'a05',ok:true},
+  {ts:NOW-1.6e7,a:'封面园丁',who:'Brian',in:'第 4 期封面候选',out:'',ok:false,err:'参考图链接失效'},
+  {ts:NOW-8.6e7,a:'专业回复园丁',who:'小梨',in:'线索 #4 财务报表合并',out:'a07',ok:true},
 ];
-const ASSET_TYPES=[['brand','品牌规范','#F2A91F'],['covers','封面','#D9543F'],['videos','成片','#4E9CC0'],['scripts','脚本','#4F7A3A'],['skills','技能','#8A5A2E'],['decisions','决策','#6A3B72']];
+const ASSET_TYPES=[['brand','品牌规范','#F2A91F'],['insights','素材','#2D6470'],['scripts','脚本','#4F7A3A'],['covers','封面','#D9543F'],['videos','成片','#4E9CC0'],['skills','技能','#8A5A2E'],['decisions','决策','#6A3B72']];
 const ASSETS=[
-  {t:'小梨角色规范 · 三视图',type:'brand',ok:true,v:'v2',by:'Brian',d:NOW-2.6e8},
-  {t:'向阳花园 · 工作台视觉规范',type:'brand',ok:false,v:'v0.1',by:'设计原型',d:NOW},
-  {t:'第 2 期封面定稿',type:'covers',ok:true,v:'final',by:'封面园丁',d:NOW-6e8},
-  {t:'金融人格海报 v3（候选 A）',type:'covers',ok:false,v:'A',by:'封面园丁',d:NOW-1.6e7},
-  {t:'第 3 期成片 · 量化生存录',type:'videos',ok:true,v:'1080p',by:'剪辑园丁',d:NOW-5.4e6},
-  {t:'第 4 期脚本：复利到底差在哪',type:'scripts',ok:false,v:'草稿',by:'小梨',d:NOW-3e7},
-  {t:'咨询首轮回复模板',type:'scripts',ok:true,v:'v1',by:'专业回复园丁',d:NOW-8.6e7},
-  {t:'consult-reply 技能快照',type:'skills',ok:true,v:'1011',by:'交接包',d:NOW-1.2e8},
-  {t:'cover-design 技能快照',type:'skills',ok:true,v:'1011',by:'交接包',d:NOW-1.2e8},
-  {t:'不迁移域名到 xiaoli-games',type:'decisions',ok:true,v:'已批准',by:'Brian',d:NOW-1.8e8},
-  {t:'统计不记录 IP / 姓名手机',type:'decisions',ok:true,v:'已批准',by:'Brian',d:NOW-4e8},
-  {t:'是否开放付费资料区',type:'decisions',ok:false,v:'讨论中',by:'小梨',d:NOW-2e7},
+  {id:'a01',t:'小梨角色规范 · 三视图',type:'brand',ok:true,v:'v2',by:'Brian',d:NOW-2.6e8,from:'人工设计',used:['ep1','ep2','ep3','ep4']},
+  {id:'a02',t:'向阳花园 · 工作台视觉规范',type:'brand',ok:false,v:'v0.2',by:'设计母版',d:NOW,from:'ADMIN_DESIGN.md',used:[]},
+  {id:'a10',t:'素材：61% 的玩家第 3 年就被赎回',type:'insights',ok:true,v:'快照 10/01',by:'量化数据',d:NOW-11*864e5,ep:'ep2',from:'第 2 期游戏数据',used:['ep4']},
+  {id:'a06',t:'第 4 期脚本：复利到底差在哪',type:'scripts',ok:false,v:'草稿 2',by:'小梨',d:NOW-3e7,ep:'ep4',from:'素材 a10 + 小梨',used:[]},
+  {id:'a14',t:'发群话术 · 亲友群 / 同事群两版',type:'scripts',ok:true,v:'v1',by:'专业回复园丁',d:NOW-2*864e5,ep:'ep3',from:'任务 #8',used:['ep3']},
+  {id:'a07',t:'咨询首轮回复模板',type:'scripts',ok:true,v:'v1',by:'专业回复园丁',d:NOW-8.6e7,from:'运行记录 · 专业回复园丁',used:['lead']},
+  {id:'a03',t:'第 2 期封面定稿',type:'covers',ok:true,v:'final',by:'封面园丁',d:NOW-16*864e5,ep:'ep2',from:'封面园丁 · 运行 #7',used:['ep2']},
+  {id:'a04',t:'第 4 期封面候选 A',type:'covers',ok:false,v:'A',by:'封面园丁',d:NOW-1.6e7,ep:'ep4',from:'封面园丁 · 运行 #9',used:[]},
+  {id:'a05',t:'第 3 期成片 · 基金经理最怕的六句话',type:'videos',ok:true,v:'1080p',by:'剪辑园丁',d:NOW-2.2*864e5,ep:'ep3',from:'剪辑园丁 · 运行 #14',used:['ep3']},
+  {id:'a08',t:'consult-reply 技能快照',type:'skills',ok:true,v:'1011',by:'交接包',d:NOW-1.2e8,from:'小梨工作交接1011',used:['lead']},
+  {id:'a09',t:'cover-design 技能快照',type:'skills',ok:true,v:'1011',by:'交接包',d:NOW-1.2e8,from:'小梨工作交接1011',used:['ep2','ep4']},
+  {id:'a11',t:'不迁移域名到 xiaoli-games',type:'decisions',ok:true,v:'已批准',by:'Brian',d:NOW-1.8e8,from:'ADMIN_ROADMAP.md',used:[]},
+  {id:'a12',t:'统计不记录 IP / 姓名手机',type:'decisions',ok:true,v:'已批准',by:'Brian',d:NOW-4e8,from:'README',used:['ep1','ep2','ep3']},
+  {id:'a13',t:'是否开放付费资料区',type:'decisions',ok:false,v:'讨论中',by:'小梨',d:NOW-2e7,from:'周会',used:[]},
 ];
-const METRICS=[
-  {p:'dy',name:'抖音',play:18200,inter:1260},
-  {p:'xhs',name:'小红书',play:9400,inter:1820},
-  {p:'bl',name:'B站',play:4300,inter:610},
-  {p:'wx',name:'微信/公众号',play:2100,inter:340},
+const assetOf=id=>ASSETS.find(a=>a.id===id);
+const SOWS=[
+  {ts:NOW-5.6e6,game:'finance-persona',from:'wx-qin',note:'亲友群 · 32 人'},
+  {ts:NOW-2.9e7,game:'quant-fund',from:'wx-tongshi',note:'同事群 · 18 人'},
 ];
+const sowEffect=s=>SESS.filter(x=>x.src===s.from&&x.ts>=s.ts&&x.ts<s.ts+864e5).length;
+
+/* 从数据里长出来的素材（真实实现：在前端按同样规则对 KV 记录计算） */
+function insights(){
+  const fp=SESS.filter(s=>s.g==='fp'),end=fp.filter(s=>s.stage!=='start');
+  const by=(arr,f)=>arr.reduce((m,r)=>{const k=f(r);m[k]=(m[k]||0)+1;return m},{});
+  const codes=Object.entries(by(end,r=>r.code)).sort((a,b)=>b[1]-a[1]);
+  const srcs=Object.keys(SRC_NAME).map(k=>{const a=SESS.filter(s=>s.src===k);return[k,a.length,a.filter(s=>s.stage!=='start').length]}).filter(x=>x[1]>=8).map(x=>[x[0],x[2]/x[1]]).sort((a,b)=>b[1]-a[1]);
+  const avg=SESS.filter(s=>s.stage!=='start').length/SESS.length;
+  const hours=by(SESS,r=>new Date(r.ts).getHours());const peak=Object.entries(hours).sort((a,b)=>b[1]-a[1])[0];
+  const posters=fp.filter(s=>s.stage==='poster').length;
+  const qt=SESS.filter(s=>s.g==='quant');
+  return[
+    {id:'i1',n:pct(codes[0][1],end.length),p:`完成的人里最多的是「${codes[0][0]}」，第二是「${codes[1][0]}」。`,tag:'可做选题',t:`素材：${pct(codes[0][1],end.length)} 的人是「${codes[0][0]}」`},
+    {id:'i2',n:pct(Math.round(srcs[0][1]*100),100),p:`${SRC_NAME[srcs[0][0]]}的完成率最高，比平均高 ${Math.round((srcs[0][1]-avg)*100)} 个点。`,tag:'发群策略',t:`素材：${SRC_NAME[srcs[0][0]]}完成率 ${pct(Math.round(srcs[0][1]*100),100)}`},
+    {id:'i3',n:posters,p:`每 100 个玩完的人里有 ${Math.round(posters/Math.max(1,end.length)*100)} 个生成了海报，这是免费传播。`,tag:'可做封面文案',t:`素材：${Math.round(posters/Math.max(1,end.length)*100)}% 完成者生成海报`},
+    {id:'i4',n:peak[0]+' 点',p:`${peak[0]} 点是开局高峰（${peak[1]} 局），发群尽量在这之前。`,tag:'发群时间',t:`素材：${peak[0]} 点是开局高峰`},
+    {id:'i5',n:pct(qt.filter(s=>s.stage!=='start').length,qt.length),p:`量化生存录完成率 ${pct(qt.filter(s=>s.stage!=='start').length,qt.length)}，比金融人格低，可以做一期「为什么大家活不过十年」。`,tag:'可做选题',t:`素材：量化生存录完成率 ${pct(qt.filter(s=>s.stage!=='start').length,qt.length)}`},
+  ];
+}
+const SAVED=new Set();
 
 /* ================= 导航与路线图 ================= */
 const NAV=[
   {k:'home',n:'总览',f:'今日日照',i:'sun',step:'A·B'},
-  {k:'prod',n:'产品数据',f:'花田长势',i:'flower',step:'H'},
+  {k:'ep',n:'花期',f:'一期内容的一生',i:'calendar',step:'D·E·F'},
+  {k:'prod',n:'产品数据',f:'花田长势 · 素材结籽',i:'flower',step:'H'},
   {k:'lead',n:'咨询线索',f:'来访蜜蜂',i:'bee',step:'C'},
-  {k:'content',n:'内容渠道',f:'阳光来源',i:'ray',step:'F'},
   {k:'flow',n:'工作流',f:'育苗看板',i:'sprout',step:'D'},
+  {k:'asset',n:'资产库',f:'葵花籽仓 · 种子谱系',i:'bag',step:'E'},
   {k:'agent',n:'Agent 中心',f:'园丁小队',i:'can',step:'G'},
-  {k:'asset',n:'资产库',f:'葵花籽仓',i:'bag',step:'E'},
   {k:'sys',n:'系统',f:'根系',i:'root'},
 ];
+/* 王国地图上的建筑 ↔ 页面（坐标是图片的百分比） */
+const MAP='/assets/brand/kingdom-map.png';
+const SCENES=[
+  {k:'home',x:50,y:30,place:'梨王城堡 · 议事厅',name:'王国全景',desc:'站在城堡顶上看一眼整个王国：哪里旺、哪里缺水。'},
+  {k:'ep',x:78,y:76,place:'后花园 · 浇水的小梨',name:'花期',desc:'一期内容是一朵花，从花苞到结籽，所有产出都挂在这朵花上。'},
+  {k:'prod',x:50,y:82,place:'钓鱼塘 · 等鱼上钩',name:'产品数据',desc:'每条上钩的鱼是一局游戏。塘里的发现可以捞起来做素材。'},
+  {k:'lead',x:11,y:78,place:'梨子市集 · 来客',name:'咨询线索',desc:'来市集的蜜蜂要接待，成交就是结籽。'},
+  {k:'flow',x:43,y:63,place:'广场 · 拿铅笔的小梨',name:'工作流',desc:'育苗看板：种子、发芽、含苞、盛开。盛开前必须结籽。'},
+  {k:'asset',x:16,y:44,place:'王国图书馆',name:'资产库',desc:'每颗种子都记着来自哪、用在哪。'},
+  {k:'agent',x:79,y:52,place:'研究小屋 · 机器人',name:'Agent 中心',desc:'园丁小队在这里待命，任务单自动带上下文。'},
+  {k:'sys',x:93,y:40,place:'风车 · 根系',name:'系统',desc:'风车转，花园才有水：KV、口令、导出。'},
+];
+const sceneOf=k=>SCENES.find(s=>s.k===k);
 const ROADMAP=[['地基','KV · 口令 · 两游戏上报','done'],['A','发群监控','now'],['B','扫一眼决策',''],['C','咨询轻 CRM',''],['D','工作流看板',''],['E','资产沉淀',''],['F','内容渠道数据',''],['G','Agent 中心',''],['H','新游戏规范','']];
-const S={tab:'home',mode:'stage',alert:false,game:'finance-persona',from:'wx',assetType:'all',q:''};
-try{const t=new URLSearchParams(location.hash.slice(1)).get('tab');if(t&&NAV.some(n=>n.k===t))S.tab=t}catch(e){}
+const S={tab:'home',mode:'stage',alert:false,game:'finance-persona',from:'wx',assetType:'all',q:'',ep:'ep4',epFilter:'all',doneTodo:new Set()};
+try{const h=new URLSearchParams(location.hash.slice(1));const t=h.get('tab');if(t&&NAV.some(n=>n.k===t))S.tab=t;if(h.get('ep')&&epOf(h.get('ep')))S.ep=h.get('ep')}catch(e){}
 
-function sunflower(R,petals,inner){
+function sunflower(R,petals,inner,ps=1,pc=['#F2A91F','#FFD45C']){
   let p='';
-  for(let l=0;l<2;l++)for(let i=0;i<petals;i++){const a=i*360/petals+l*180/petals;
-    p+=`<g transform="rotate(${a.toFixed(2)})"><ellipse cx="0" cy="${-(R*.62+R*.2)}" rx="${R*(l?.11:.13)}" ry="${R*(l?.3:.36)}" fill="${l?'#FFD45C':'#F2A91F'}"/></g>`}
+  if(ps>0)for(let l=0;l<2;l++)for(let i=0;i<petals;i++){const a=i*360/petals+l*180/petals;
+    p+=`<g transform="rotate(${a.toFixed(2)})"><ellipse cx="0" cy="${-(R*.62+R*.2*ps)}" rx="${R*(l?.11:.13)*Math.max(.6,ps)}" ry="${R*(l?.3:.36)*ps}" fill="${l?pc[1]:pc[0]}"/></g>`}
   let s='';const n=90;for(let i=0;i<n;i++){const r=R*.5*Math.sqrt((i+.5)/n),t=i*2.39996;s+=`<circle cx="${(r*Math.cos(t)).toFixed(1)}" cy="${(r*Math.sin(t)).toFixed(1)}" r="${R*.035}" fill="${i<n*.35?'#8A5A2E':'#5A3519'}"/>`}
   return p+`<circle r="${R*.54}" fill="#3E2716"/>`+s+(inner||'');
 }
+function bloom(stage){
+  const R=40;
+  if(stage==='planning')return `<svg viewBox="-60 -70 120 130"><path d="M0 60V10" stroke="#4F7A3A" stroke-width="4" stroke-linecap="round"/><path d="M0 30c-14 2-22-8-24-20 12-2 20 6 24 20z" fill="#8FB36B"/><path d="M0 10c-18-2-26-18-22-38 10 4 16 12 22 38zM0 10c18-2 26-18 22-38-10 4-16 12-22 38z" fill="#4F7A3A"/><ellipse cx="0" cy="-14" rx="12" ry="20" fill="#FFD45C"/><ellipse cx="0" cy="-14" rx="6" ry="16" fill="#F2A91F"/></svg>`;
+  if(stage==='producing')return `<svg viewBox="-60 -60 120 130"><path d="M0 70V40" stroke="#4F7A3A" stroke-width="4" stroke-linecap="round"/>${sunflower(R,17,'',.55)}</svg>`;
+  if(stage==='published')return `<svg viewBox="-60 -60 120 130"><path d="M0 70V40" stroke="#4F7A3A" stroke-width="4" stroke-linecap="round"/>${sunflower(R,21,'',1)}</svg>`;
+  return `<svg viewBox="-60 -60 120 130"><path d="M0 70V40" stroke="#4F7A3A" stroke-width="4" stroke-linecap="round"/><g transform="translate(0,8)">${sunflower(R*1.25,0,'',0)}</g><g fill="#C79A57"><ellipse cx="-40" cy="22" rx="5" ry="12" transform="rotate(35 -40 22)"/><ellipse cx="40" cy="22" rx="5" ry="12" transform="rotate(-35 40 22)"/><ellipse cx="0" cy="-44" rx="5" ry="11"/></g></svg>`;
+}
 $('logo').innerHTML=sunflower(56,21,`<g transform="translate(-13,-14) scale(1.1)" fill="#FFE7A8" stroke="#FFE7A8" stroke-width="1.2"><path d="M12 5.5c1 0 1.6.8 1.6 1.8 0 1.4 1.4 2.1 2.4 3.4 1.5 2 1.6 5 0 7.2-1.4 1.9-3.2 2.6-4 2.6s-2.6-.7-4-2.6c-1.6-2.2-1.5-5.2 0-7.2 1-1.3 2.4-2 2.4-3.4 0-1 .6-1.8 1.6-1.8z"/><path fill="none" d="M12 5.5c.3-1.4 1.3-2.3 2.8-2.5"/></g>`);
 $('stem').innerHTML=ROADMAP.map(([k,n,c])=>`<li class="${c}"><b style="font-weight:inherit">${n}</b><span>${k}</span></li>`).join('');
+$('shout').innerHTML=`${ic('search')}喊一声 · 搜任务 / 资产 / 线索<span class="kbd">/</span>`;
 
 function header(){
   const h=new Date().getHours();
@@ -407,8 +626,56 @@ function header(){
   document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>go(b.dataset.k));
   $('alert').classList.toggle('show',S.alert);
 }
-function go(k){S.tab=k;history.replaceState(null,'','#tab='+k);render();window.scrollTo({top:0,behavior:'smooth'})}
-function render(){header();$('view').innerHTML=VIEWS[S.tab]();(BIND[S.tab]||(()=>{}))()}
+function go(k,extra){S.tab=k;if(extra&&extra.ep)S.ep=extra.ep;history.replaceState(null,'','#tab='+k+(k==='ep'?'&ep='+S.ep:''));render();window.scrollTo({top:0,behavior:'smooth'})}
+function sceneHead(k){
+  const s=sceneOf(k);if(!s||k==='home')return'';
+  const i=SCENES.findIndex(x=>x.k===k),prev=SCENES[(i+SCENES.length-1)%SCENES.length],next=SCENES[(i+1)%SCENES.length];
+  return `<div class="scenehead"><div class="thumb" style="background-image:url('${MAP}');background-position:${s.x}% ${s.y}%"></div>
+    <div><div class="eyebrow">王国 › ${esc(s.place)}</div><h2>${esc(s.name)}</h2><p>${esc(s.desc)}</p></div>
+    <div class="nav2"><button class="btn sm" data-go="${prev.k}" title="上一页 ←">← ${esc(prev.name)}</button><button class="btn sm" data-go="home">${ic('flower')}回王国全景</button><button class="btn sm" data-go="${next.k}" title="下一页 →">${esc(next.name)} →</button></div></div>`;
+}
+function render(){header();$('view').innerHTML=sceneHead(S.tab)+VIEWS[S.tab]();(BIND[S.tab]||(()=>{}))();tourRender()}
+/* 镜头推进：从地图上的建筑推进去，再翻页 */
+function zoomTo(k){
+  const s=sceneOf(k),w=$('mapwrap'),inner=$('mapinner');
+  if(!w||!inner||k==='home')return go(k);
+  w.classList.add('zoom');inner.style.transformOrigin=`${s.x}% ${s.y}%`;inner.style.transform='scale(2.6)';inner.style.filter='saturate(1.15)';
+  setTimeout(()=>go(k),620);
+}
+/* 巡园 = 可交互 PPT：按顺序走一遍王国，每一站的旁白来自数据 */
+const TOUR={on:false,playing:false,timer:null,dur:7000};
+function narrate(k){
+  const nl=LEADS.filter(l=>l.status==='new').length,done=SESS.filter(s=>s.stage!=='start').length;
+  const fail=AGENTS.filter(a=>a.st==='fail'),late=TASKS.filter(t=>t.due<0&&t.st!=='done'),cur=EPISODES.find(e=>e.stage==='producing');
+  return({
+    home:`王国今天落下 ${SESS.length} 颗籽，${nl} 只蜜蜂在等，${late.length} 个任务超期。先看三件事，再逛一圈。`,
+    ep:`第 ${cur.n} 期《${cur.title}》正在${STEPS[cur.step]}，用了上一期结的 ${ASSETS.filter(a=>a.type==='insights'&&(a.used||[]).includes(cur.id)).length} 颗素材。第 3 期发布两天，已带来 ${epOf('ep3').games} 局。`,
+    prod:`完成率 ${pct(done,SESS.length)}，${SESS.filter(s=>s.stage==='poster').length} 人生成了海报。塘里有 ${insights().filter(i=>!SAVED.has(i.id)).length} 颗素材还没捞起来。`,
+    lead:`${nl} 位来客还没接待，已成交 ¥${LEADS.filter(l=>l.amount).reduce((s,l)=>s+l.amount,0).toLocaleString()}。回复可以直接用模板 a07。`,
+    flow:`${TASKS.filter(t=>t.st==='doing').length} 个任务在发芽，${TASKS.filter(t=>t.st==='review').length} 个含苞待审${late.length?`，「${late[0].t}」已超期 ${-late[0].due} 天`:''}。`,
+    asset:`仓里 ${ASSETS.length} 颗种子，${ASSETS.filter(a=>!a.ok).length} 颗还是候选。本周新增 ${ASSETS.filter(a=>a.d>NOW-7*864e5).length} 颗。`,
+    agent:`${AGENTS.length} 位园丁，${fail.length?fail.map(a=>a.n).join('、')+'水管堵了：'+fail[0].err:'都在正常浇水'}。`,
+    sys:`${S.alert?'KV 存储无响应，发群前先修。':'KV 与口令正常，main 分支自动部署。'}在用前缀 4 个，规划中 5 个。`,
+  })[k]||'';
+}
+function tourRender(){
+  let bar=$('tourbar');
+  if(!bar){bar=document.createElement('div');bar.id='tourbar';bar.className='tourbar';document.body.appendChild(bar)}
+  if(!TOUR.on){bar.classList.remove('show','playing');return}
+  const i=SCENES.findIndex(s=>s.k===S.tab),s=SCENES[i];
+  bar.style.setProperty('--dur',TOUR.dur+'ms');
+  bar.innerHTML=`<div class="ctl"><button id="tPrev" title="上一站 ←">‹</button><button id="tPlay" title="播放 / 暂停（空格）">${TOUR.playing?'❚❚':'▶'}</button><button id="tNext" title="下一站 →">›</button></div>
+    <div class="say"><small>巡园 · 第 ${i+1}/${SCENES.length} 站 · ${esc(s.place)}</small>${esc(narrate(s.k))}</div>
+    <div class="dots">${SCENES.map((x,j)=>`<i class="${j===i?'on':''}" data-j="${j}" title="${esc(x.name)}"></i>`).join('')}<button class="btn sm" id="tExit" style="margin-left:8px;background:#3E2716;border-color:#5C4428;color:#FFE7A8">结束</button></div>
+    <div class="bar"><i></i></div>`;
+  bar.classList.add('show');bar.classList.toggle('playing',TOUR.playing);
+  $('tPrev').onclick=()=>step(-1);$('tNext').onclick=()=>step(1);$('tPlay').onclick=()=>tourPlay(!TOUR.playing);$('tExit').onclick=()=>tourStart(false);
+  bar.querySelectorAll('.dots i').forEach(d=>d.onclick=()=>go(SCENES[d.dataset.j].k));
+  clearTimeout(TOUR.timer);if(TOUR.playing)TOUR.timer=setTimeout(()=>step(1),TOUR.dur);
+}
+function step(d){const i=SCENES.findIndex(s=>s.k===S.tab);go(SCENES[(i+d+SCENES.length)%SCENES.length].k)}
+function tourPlay(p){TOUR.playing=p;tourRender()}
+function tourStart(on){TOUR.on=on;TOUR.playing=on;clearTimeout(TOUR.timer);if(on){go('home');toast('巡园开始：← → 翻页，空格暂停，Esc 结束')}else tourRender()}
 
 /* ================= 组件 ================= */
 function seedhead(list,mode){
@@ -451,6 +718,27 @@ function weekField(){
     <path d="M10 ${B} H ${W-10}" stroke="#DCCBA4" stroke-width="2" stroke-dasharray="2 6"/></svg>`;
 }
 const link=()=>`https://xiaolipearl.com/games/${S.game}/${S.from?'?from='+encodeURIComponent(S.from):''}`;
+const stamp=a=>`<span class="stamp ${a.ok?'ok':'cand'}">${a.ok?'已批准':'候选'}</span>`;
+
+/* 园长日报 + 今日三件事 */
+function brief(){
+  const N=SESS.length,done=SESS.filter(s=>s.stage!=='start').length;
+  const m={};SESS.forEach(s=>m[s.src]=(m[s.src]||0)+1);const top=Object.entries(m).sort((a,b)=>b[1]-a[1])[0];
+  const nl=LEADS.filter(l=>l.status==='new').length,fail=AGENTS.filter(a=>a.st==='fail'),late=TASKS.filter(t=>t.due<0&&t.st!=='done');
+  const last=SOWS[0],eff=sowEffect(last);
+  return `过去 24 小时落下 <b>${N}</b> 颗籽，<b>${SRC_NAME[top[0]]}</b> 贡献最多（${top[1]} 颗），完成率 <b>${pct(done,N)}</b>。上次播种在${SRC_NAME[last.from]}，${ago(last.ts)}，已发芽 <b>${eff}</b> 颗。${nl?`有 <b>${nl}</b> 只蜜蜂在等；`:''}${fail.length?`${fail.map(a=>a.n).join('、')}水管堵了；`:''}${late.length?`<b>${late.length}</b> 个任务超期。`:'任务都在期内。'}${S.alert?' 系统有乌云，先去根系看看。':''}`;
+}
+function todo3(){
+  const out=[];
+  const nl=LEADS.filter(l=>l.status==='new');if(nl.length)out.push({id:'t-lead',b:`回复 ${nl.length} 条新咨询`,s:`最早的一条已等 ${ago(Math.min(...nl.map(l=>l.ts)))}`,go:'lead'});
+  const late=TASKS.filter(t=>t.due<0&&t.st!=='done');if(late.length)out.push({id:'t-late',b:`处理超期任务：${late[0].t}`,s:`${epName(late[0].ep)} · ${late[0].who}`,go:'flow'});
+  const fail=AGENTS.find(a=>a.st==='fail');if(fail)out.push({id:'t-agent',b:`修一下${fail.n}：${fail.err}`,s:'重跑后记得把产出挂到资产库',go:'agent'});
+  const rev=TASKS.filter(t=>t.st==='review');if(rev.length)out.push({id:'t-rev',b:`审核 ${rev.length} 个含苞任务`,s:rev.map(t=>t.t).join('；'),go:'flow'});
+  const uns=insights().filter(i=>!SAVED.has(i.id)).length;if(uns)out.push({id:'t-ins',b:`今天有 ${uns} 颗素材可以结籽`,s:'一键存进资产库，下期选题直接用',go:'prod'});
+  const due0=TASKS.filter(t=>t.due===0&&t.st!=='done');if(due0.length)out.push({id:'t-due',b:`今天截止：${due0[0].t}`,s:epName(due0[0].ep),go:'flow'});
+  if(!SOWS.some(s=>s.ts>NOW-12*36e5))out.push({id:'t-sow',b:'今天还没播种',s:'建议 21 点前发一次亲友群',go:'home'});
+  return out.sort((a,b)=>(S.doneTodo.has(a.id)?1:0)-(S.doneTodo.has(b.id)?1:0)).slice(0,3);
+}
 
 /* ================= 视图 ================= */
 const VIEWS={
@@ -458,40 +746,45 @@ home(){
   const fp=SESS.filter(s=>s.g==='fp'),qt=SESS.filter(s=>s.g==='quant');
   const done=SESS.filter(s=>s.stage!=='start').length,posters=SESS.filter(s=>s.stage==='poster').length;
   const nl=LEADS.filter(l=>l.status==='new');
+  const plays=EPISODES.filter(e=>e.pub&&e.pub>NOW-7*864e5).reduce((s,e)=>s+Object.values(e.metrics).reduce((a,m)=>a+m[0],0),0);
+  const money=LEADS.filter(l=>l.amount).reduce((s,l)=>s+l.amount,0);
+  const fail=AGENTS.filter(a=>a.st==='fail').length,late=TASKS.filter(t=>t.due<0&&t.st!=='done').length,uns=insights().filter(i=>!SAVED.has(i.id)).length;
+  const badge={home:null,ep:{n:`第 ${EPISODES.find(e=>e.stage==='producing').n} 期开花中`,bad:false},prod:{n:`${SESS.length} 局 · ${uns} 颗素材`,bad:false},lead:{n:`${nl.length} 只蜜蜂`,bad:nl.length>0},flow:{n:late?`${late} 个超期`:`${TASKS.filter(t=>t.st==='doing').length} 个发芽`,bad:late>0},asset:{n:`${ASSETS.length} 颗种子`,bad:false},agent:{n:fail?`${fail} 位水管堵了`:'园丁都在',bad:fail>0},sys:{n:S.alert?'乌云':'晴',bad:S.alert}};
   return `<div class="grid">
-  <section class="card hero c8">
-    <div style="position:relative;z-index:1">
-      <div class="eyebrow">TODAY'S SEED HEAD · 最近 24 小时</div>
-      <h2>王国今天落下了<span class="num">${SESS.length}</span>颗葵花籽</h2>
-      <p class="muted" style="margin:0;max-width:420px">每一局游戏是一颗籽：最早的在花心，最新的在外圈，按黄金角 137.5° 排开。花瓣越长，说明完成率越高。</p>
-      <div class="kpis"><div><b class="num">${pct(done,SESS.length)}</b><small>完成率</small></div><div><b class="num">${posters}</b><small>生成海报</small></div><div><b class="num" style="color:var(--bad)">${nl.length}</b><small>新咨询</small></div></div>
-      <div style="margin-top:16px" class="seg" id="mode"><button data-m="stage" class="${S.mode==='stage'?'on':''}">按进度上色</button><button data-m="src" class="${S.mode==='src'?'on':''}">按渠道上色</button></div>
-      <div class="legend">${legend(S.mode)}</div>
-    </div>
-    <div id="headbox">${seedhead(SESS,S.mode)}</div>
+  <section class="card mapcard c8">
+    <div class="hd"><span class="pill">王国全景 · 点建筑走进去</span><button class="btn sm sun" id="tour">${ic('play')}巡园</button></div>
+    <div class="mapwrap" id="mapwrap"><div class="mapinner" id="mapinner"><img src="${MAP}" alt="小梨知识王国像素地图">
+      ${SCENES.map(s=>{const b=badge[s.k];return `<div class="spot ${s.k==='home'?'king':''}" style="left:${s.x}%;top:${s.y}%" data-zoom="${s.k}" title="${esc(s.desc)}"><div class="sign">${s.k==='home'?ic('pear','width:14px;height:14px'):''}<span>${esc(s.name)}<small>${esc(s.place.split(' · ')[0])}</small></span>${b?`<span class="n ${b.bad?'bad':''}">${esc(b.n)}</span>`:''}</div><div class="pin ${b&&b.bad?'bad':''}"></div></div>`}).join('')}
+    </div></div>
+    <div class="mapfoot"><span>每栋建筑是一个工作区，牌子上的数字是实时的。</span><span>翻页 <span class="kbd">←</span> <span class="kbd">→</span> · 搜索 <span class="kbd">/</span> · 返回 <span class="kbd">Esc</span></span></div>
   </section>
-  <div class="c4" style="display:flex;flex-direction:column;gap:16px">
-    <section class="card weather ${S.alert?'cloudy':''}" id="wx" title="点击模拟异常状态">
-      <div class="sky">${S.alert?ic('cloud','width:44px;height:44px;color:#fff'):ic('sun','width:44px;height:44px;color:#F2A91F')}</div>
-      <div><div class="eyebrow">系统天气</div><b>${S.alert?'阴，有雷阵雨':'晴，适合发群'}</b>
-        <div class="chk"><span class="${S.alert?'x':''}">KV 存储 ${S.alert?'无响应':'正常'}</span><span>管理员口令 已配置</span><span>最近一次写入 ${S.alert?'47 分钟前':'2 分钟前'}</span></div></div>
-    </section>
-    <section class="card bees">
-      <div class="hive">${ic('bee')}</div>
-      <div style="flex:1"><div class="eyebrow">来访蜜蜂</div><b style="font:700 20px var(--display)">${nl.length} 只蜜蜂在等你</b>
-        <div class="sub">最近一只：${esc(nl[0]?nl[0].topic:'—')} · ${nl[0]?hm(nl[0].ts):''}</div></div>
-      <button class="btn sm dark" data-go="lead">接待</button>
-    </section>
+  <section class="card brief v c4">
+    <div><div class="eyebrow">园长日报 · ${md(NOW)}</div><p>${brief()}</p>
+      <span class="streak">${ic('sprout','width:14px;height:14px')}连续 6 天有新籽落下</span></div>
+    <div class="todo3"><h4>今天，先拍板</h4>${todo3().map((t,i)=>`<div class="todo ${S.doneTodo.has(t.id)?'done':''}" data-todo="${t.id}" data-go="${t.go}"><i>${S.doneTodo.has(t.id)?'✓':i+1}</i><div><b>${esc(t.b)}</b><small>${esc(t.s)}</small></div><span class="go">去做 →</span></div>`).join('')}</div>
+  </section>
+
+  <section class="card kpis-strip c12">
+    <div><span class="eyebrow">今日开局</span><b class="num">${SESS.length}</b><small>较昨日 <span style="color:var(--leaf)">+${pct(WEEK[6]-WEEK[5],WEEK[5])}</span></small></div>
+    <div><span class="eyebrow">完成率</span><b class="num">${pct(done,SESS.length)}</b><small>${posters} 人生成海报</small></div>
+    <div><span class="eyebrow">来访蜜蜂</span><b class="num" style="color:${nl.length?'var(--bad)':'inherit'}">${nl.length}</b><small>最近：${esc(nl[0]?nl[0].topic:'—')} · ${esc(nl[0]?epName(nl[0].ep)+'带来':'')}</small></div>
+    <div><span class="eyebrow">本周新种子</span><b class="num">+${ASSETS.filter(a=>a.d>NOW-7*864e5).length}</b><small>仓里共 ${ASSETS.length} 颗</small></div>
+    <div id="wx" style="cursor:pointer" title="点击模拟异常状态"><span class="eyebrow">系统天气</span><b style="font:700 22px/1.3 var(--display);display:flex;align-items:center;gap:8px">${S.alert?ic('cloud','color:#5A6670'):ic('sun','color:var(--sun)')}${S.alert?'阴，有雷阵雨':'晴，适合发群'}</b><small>${S.alert?'KV 无响应 · 最近写入 47 分钟前':'KV 正常 · 最近写入 2 分钟前'}</small></div>
+  </section>
+
+  <div class="c5" style="display:flex;flex-direction:column;gap:16px">
     <section class="card sow">
-      <div class="hd" style="margin-bottom:4px"><h3>${ic('seed')}撒种子 <small>复制发群链接</small></h3></div>
+      <div class="hd" style="margin-bottom:4px"><h3>${ic('seed')}撒种子 <small>复制链接 · 记一次播种</small></h3></div>
       <select id="game"><option value="finance-persona"${S.game==='finance-persona'?' selected':''}>金融里，你是什么登？</option><option value="quant-fund"${S.game==='quant-fund'?' selected':''}>量化基金生存录</option></select>
-      <div class="row" id="froms">${['wx','wx-qin','wx-tongshi','xhs','dy','bl'].map(f=>`<button class="chip ${S.from===f?'on':''}" data-f="${f}">${SRC_NAME[f]}</button>`).join('')}<input class="inp" id="fromIn" placeholder="自定义 from" style="width:110px;padding:3px 10px;border-radius:99px;font-size:12px" value="${['wx','wx-qin','wx-tongshi','xhs','dy','bl'].includes(S.from)?'':esc(S.from)}"></div>
+      <div class="row" id="froms">${['wx','wx-qin','wx-tongshi','xhs','dy','bl'].map(f=>`<button class="chip ${S.from===f?'on':''}" data-f="${f}">${SRC_NAME[f]}</button>`).join('')}<input class="inp" id="fromIn" placeholder="自定义，如 ep4" style="width:110px;padding:3px 10px;border-radius:99px;font-size:12px" value="${['wx','wx-qin','wx-tongshi','xhs','dy','bl'].includes(S.from)?'':esc(S.from)}"></div>
       <div class="link"><code id="lk">${esc(link())}</code><button class="btn sm sun" id="cp">${ic('copy')}复制</button></div>
+      <div style="display:flex;gap:6px;margin-top:8px;align-items:center"><button class="btn sm leaf" id="sowNow">${ic('sprout')}已发出去，记一次播种</button><span class="sub">记了才知道这一把发了多少芽</span></div>
+      <div class="sows" id="sows">${SOWS.slice(0,3).map(s=>{const e=sowEffect(s);return `<div class="sowrow"><span class="when">${md(s.ts)} ${hm(s.ts)}</span><span>${SRC_NAME[s.from]||s.from} · ${s.game==='finance-persona'?'金融人格':'量化'}${s.note?` · ${esc(s.note)}`:''}</span><span class="eff"><span class="sprouts">${Array.from({length:Math.min(12,e)},(_,i)=>`<i style="animation-delay:${i*40}ms;height:${6+(i%3)*3}px"></i>`).join('')}</span><b>${e}</b><small class="sub">芽/24h</small></span></div>`}).join('')}</div>
     </section>
   </div>
 
   <section class="card c7">
-    <div class="hd"><h3>${ic('sprout')}花田长势 <small>开始 → 完成 → 传播</small></h3><button class="btn sm" data-go="prod">看详情</button></div>
+    <div class="hd"><h3>${ic('sprout')}花田长势 <small>开始 → 完成 → 传播</small></h3><button class="btn sm" data-go="prod">看详情 · 结籽</button></div>
     <div class="game-row"><h4><span>金融里，你是什么登？</span><span class="sub">${fp.length} 局</span></h4>
       ${funnel([{n:'播种 · 开始',v:fp.length,i:'seed'},{n:'开花 · 完成',v:fp.filter(s=>s.stage!=='start').length,i:'flower'},{n:'结籽 · 海报',v:fp.filter(s=>s.stage==='poster').length,i:'sun'},{n:'授粉 · 合盘',v:fp.filter(s=>s.pair).length,i:'bee'}])}</div>
     <div class="game-row"><h4><span>量化基金生存录</span><span class="sub">${qt.length} 局</span></h4>
@@ -500,42 +793,96 @@ home(){
   <section class="card c5">
     <div class="hd"><h3>${ic('ray')}阳光从哪来 <small>按 ?from= 汇总</small></h3></div>
     ${rays(SESS)}
-    <div class="sub" style="margin-top:10px">「直接打开」= 链接没带 from。发群前记得在左侧撒种子卡片复制带参数的链接。</div>
+    <div class="sub" style="margin-top:10px">「第 3 期视频」= 视频里挂的链接带了 <code>?from=ep3</code>，所以能把这期的功劳算回去。</div>
   </section>
 
   <section class="card c7">
-    <div class="hd"><h3>${ic('flower')}七日花田 <small>每天的开局数，花越高越旺</small></h3><span class="sub">较昨日 <b class="num" style="color:var(--leaf)">+${pct(WEEK[6]-WEEK[5],WEEK[5])}</b></span></div>
-    ${weekField()}
-  </section>
-  <section class="card c5">
     <div class="hd"><h3>${ic('sun')}向阳飞轮 <small>小梨王国的商业循环</small></h3></div>
     <div class="wheel">
       <svg class="ring" viewBox="0 0 100 100" preserveAspectRatio="none"><ellipse cx="50" cy="50" rx="36" ry="38" fill="none" stroke="#DCCBA4" stroke-width=".5" stroke-dasharray="1.5 2"/></svg>
-      <div class="n n1"><span>内容 · 阳光</span><b>3.4 万</b><small>本周播放（手工录入）</small></div>
-      <div class="n n2"><span>游戏 · 开花</span><b>${SESS.length}</b><small>今日开局</small></div>
-      <div class="n n3"><span>咨询 · 结籽</span><b>${LEADS.filter(l=>l.status!=='spam').length}</b><small>有效线索</small></div>
-      <div class="n n4"><span>资产 · 再播种</span><b>${ASSETS.length}</b><small>可复用资产</small></div>
+      <div class="n n1"><span>内容 · 阳光</span><b class="num">${(plays/1e4).toFixed(1)} 万</b><small>近 7 天发布的播放</small></div>
+      <div class="n n2"><span>游戏 · 开花</span><b class="num">${SESS.length}</b><small>今日开局</small></div>
+      <div class="n n3"><span>咨询 · 结籽</span><b class="num">${LEADS.filter(l=>l.status!=='spam').length} · ¥${money.toLocaleString()}</b><small>有效线索 · 已成交</small></div>
+      <div class="n n4"><span>资产 · 再播种</span><b class="num">${ASSETS.length}</b><small>可复用资产 · 本周 +${ASSETS.filter(a=>a.d>NOW-7*864e5).length}</small></div>
       <div class="core"><svg viewBox="-60 -60 120 120">${sunflower(56,21)}</svg></div>
     </div>
     <p class="sub" style="margin:10px 0 0;text-align:center">内容带来曝光 → 游戏把曝光变成互动 → 咨询把互动变成收入 → 产出沉淀成资产，喂给下一期内容</p>
   </section>
+  <section class="card c12">
+    <div class="hd"><h3>${ic('flower')}七日花田 <small>每天的开局数，花越高越旺</small></h3><span class="sub">较昨日 <b class="num" style="color:var(--leaf)">+${pct(WEEK[6]-WEEK[5],WEEK[5])}</b></span></div>
+    ${weekField()}
+  </section>
+  </div>`;
+},
+ep(){
+  const e=epOf(S.ep)||EPISODES[0];const [sn,sd,sc]=STAGE_META[e.stage];
+  const tasks=TASKS.filter(t=>t.ep===e.id),assets=ASSETS.filter(a=>a.ep===e.id||(a.used||[]).includes(e.id)),leads=LEADS.filter(l=>l.ep===e.id);
+  const ins=ASSETS.filter(a=>a.type==='insights'&&(a.used||[]).includes(e.id));
+  const plays=Object.values(e.metrics).reduce((s,m)=>s+m[0],0),maxP=Math.max(1,...Object.values(e.metrics).map(m=>m[0]));
+  const nextIns=ASSETS.filter(a=>a.type==='insights'&&a.ep===e.id);
+  return `<div class="card" style="margin-bottom:16px;padding:14px 16px 8px">
+    <div class="hd" style="margin-bottom:4px"><h3>${ic('calendar')}花期 <small>一期内容 = 一朵花：花苞 → 开花 → 盛开 → 结籽</small></h3><button class="btn sm sun" data-toast="新建一期（原型）">${ic('plus')}种下新一期</button></div>
+    <div class="timeline">${EPISODES.map(x=>{const [n,,c]=STAGE_META[x.stage];return `<div class="ep ${x.id===S.ep?'on':''}" data-ep="${x.id}"><span class="pill ${c}">${n}</span>${bloom(x.stage)}<b>第 ${x.n} 期 · ${esc(x.title)}</b><small>${x.pub?'发布于 '+md(x.pub):STEPS[x.step]+'中'}${x.games?` · ${x.games} 局`:''}</small></div>`}).join('')}</div>
+  </div>
+  <div class="grid">
+    <section class="card c12">
+      <div class="hd"><div><div class="eyebrow">第 ${e.n} 期 · ${sd}</div><h3 style="font-size:22px">${esc(e.title)} <span class="pill ${sc}">${sn}</span></h3></div>
+        <div class="tools"><div class="link" style="padding:6px 10px"><code>https://xiaolipearl.com/games/${e.game}/?from=${e.id}</code><button class="btn sm sun" data-copy="https://xiaolipearl.com/games/${e.game}/?from=${e.id}">${ic('copy')}复制这期的链接</button></div></div></div>
+      <div class="steps">${STEPS.map((s,i)=>`<span class="step ${i<e.step?'done':i===e.step?'now':''}"><i></i>${s}</span>`).join('')}</div>
+      <p class="sub" style="margin:8px 0 0">视频里、评论置顶里挂的链接统一带 <code>?from=${e.id}</code>，这期带来的局数和咨询就能算回这朵花上。</p>
+    </section>
+
+    <section class="card c4">
+      <div class="hd"><h3>${ic('sprout')}这期的任务 <small>${tasks.filter(t=>t.st==='done').length}/${tasks.length} 盛开</small></h3><button class="btn sm" data-toast="新建任务已挂到第 ${e.n} 期（原型）">${ic('plus')}</button></div>
+      <div class="mini">${tasks.map(t=>`<div class="it"><span class="type t-${t.type}">${t.type}</span><span>${esc(t.t)}</span><span class="pill ${t.st==='done'?'ok':t.due<0?'fail':t.st==='review'?'sun':'idle'}">${({todo:'种子',doing:'发芽',review:'含苞',done:'盛开'})[t.st]}${t.due<0&&t.st!=='done'?' · 超期':''}</span></div>`).join('')||'<div class="sub">还没有任务，先种一颗。</div>'}</div>
+      ${e.stage==='planning'||e.stage==='producing'?`<button class="btn sm ghost" style="margin-top:10px;width:100%;justify-content:center" data-order="${e.id}">${ic('can')}给园丁下任务单（带这期上下文）</button>`:''}
+    </section>
+    <section class="card c4">
+      <div class="hd"><h3>${ic('bag')}这期的种子 <small>用到的 · 产出的</small></h3></div>
+      <div class="mini">${assets.map(a=>{const [,n,c]=ASSET_TYPES.find(t=>t[0]===a.type);return `<div class="it" data-asset="${a.id}" style="cursor:pointer"><span class="type" style="background:${c}22;color:${c}">${n}</span><span>${esc(a.t)}</span><span class="pill ${a.ok?'ok':'sun'}">${a.ep===e.id?'产出':'用到'} · ${a.ok?'已批准':'候选'}</span></div>`}).join('')||'<div class="sub">还没有资产。</div>'}</div>
+      ${ins.length?`<p class="sub" style="margin:10px 0 0">这期用了 ${ins.length} 颗上一期结的素材，这就是飞轮转起来的样子。</p>`:''}
+    </section>
+    <section class="card c4">
+      <div class="hd"><h3>${ic('sun')}这期的收成 <small>内容 → 游戏 → 咨询</small></h3></div>
+      ${e.pub?`<div class="kpis" style="margin:0 0 10px"><div><b class="num">${(plays/1e4).toFixed(1)} 万</b><small>总播放</small></div><div><b class="num">${e.games}</b><small>带来局数</small></div><div><b class="num">${e.leads}</b><small>带来咨询</small></div><div><b class="num">${(e.games/plays*1000).toFixed(1)}</b><small>每千播放 → 局</small></div></div>
+      <div class="harvest">${Object.entries(e.metrics).map(([p,[play,inter]],i)=>`<b>${PLAT[p]}</b><i style="width:${play/maxP*100}%;background:${PLAT_COLOR[p]};animation-delay:${i*70}ms"></i><span class="num">${play.toLocaleString()} · 互动 ${(inter/play*100).toFixed(1)}%</span>`).join('')}</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><button class="btn sm" data-toast="录入窗口（原型）：平台 · 播放 · 互动 → metric_${e.id}_平台">${ic('plus')}记一笔阳光</button>${e.stage==='harvest'||e.stage==='published'?`<button class="btn sm leaf" data-go="prod">${ic('seed')}去结籽</button>`:''}</div>
+      ${nextIns.length?`<div class="mini" style="margin-top:10px">${nextIns.map(a=>`<div class="it" data-asset="${a.id}" style="cursor:pointer;background:#F3F7EA;border-color:var(--leaf-2)">${ic('seed','color:var(--leaf)')}<span>${esc(a.t)}</span><span class="pill ok">已喂给${(a.used||[]).map(epName).join('、')||'下一期'}</span></div>`).join('')}</div>`:''}`
+      :`<div class="sub">还没发布。发布那天把各平台链接贴到这里，之后每天记一笔播放，收成就会长出来。</div><div style="margin-top:10px">${leads.length?'':'<span class="pill idle">暂无收成</span>'}</div>`}
+      ${leads.length?`<p class="sub" style="margin:10px 0 0">带来的咨询：${leads.map(l=>esc(l.topic)+(l.amount?`（¥${l.amount}）`:'')).join('、')}</p>`:''}
+    </section>
   </div>`;
 },
 prod(){
-  const fp=SESS.filter(s=>s.g==='fp'),qt=SESS.filter(s=>s.g==='quant');
-  const codes=['稳健登','冲锋登','佛系登','算账登','抄底登','躺平登'];
-  const dist=codes.map((c,i)=>[c,Math.round(fp.filter(s=>s.stage!=='start').length*[.24,.19,.17,.15,.14,.11][i])]);
-  const max=dist[0][1];
+  const fp=SESS.filter(s=>s.g==='fp'),qt=SESS.filter(s=>s.g==='quant'),end=fp.filter(s=>s.stage!=='start');
+  const dist=CODES.map(c=>[c,end.filter(s=>s.code===c).length]).sort((a,b)=>b[1]-a[1]);const max=dist[0][1]||1;
+  const INS=insights();
   const card=(title,slug,list,stages,extra)=>`<section class="card c6">
     <div class="hd"><h3>${ic('flower')}${title}</h3><div class="tools"><a class="btn sm" href="/games/${slug}/?from=admin-test" target="_blank">自测一局</a><button class="btn sm" data-toast="CSV 已开始下载（原型）">${ic('down')}CSV</button></div></div>
     ${funnel(stages)}
-    <div style="margin-top:16px" class="grid"><div class="c6" style="grid-column:span 6"><div class="eyebrow" style="margin-bottom:6px">渠道</div>${rays(list)}</div><div style="grid-column:span 6">${extra}</div></div>
+    <div style="margin-top:16px" class="grid"><div style="grid-column:span 6"><div class="eyebrow" style="margin-bottom:6px">渠道</div>${rays(list)}</div><div style="grid-column:span 6">${extra}</div></div>
   </section>`;
+  const done=SESS.filter(s=>s.stage!=='start').length,posters=SESS.filter(s=>s.stage==='poster').length;
   return `<div class="grid">
-    ${card('金融里，你是什么登？','finance-persona',fp,[{n:'开始',v:fp.length,i:'seed'},{n:'完成',v:fp.filter(s=>s.stage!=='start').length,i:'flower'},{n:'海报',v:fp.filter(s=>s.stage==='poster').length,i:'sun'},{n:'合盘',v:fp.filter(s=>s.pair).length,i:'bee'}],
+    <section class="card hero c12">
+      <div style="position:relative;z-index:1">
+        <div class="eyebrow">TODAY'S SEED HEAD · 最近 24 小时</div>
+        <h2>塘里今天钓起了<span class="num">${SESS.length}</span>条鱼</h2>
+        <p class="muted" style="margin:0;max-width:460px">每一局游戏是一颗籽：最早的在花心，最新的在外圈，按黄金角 137.5° 排开。花瓣越长，完成率越高。鼠标停在籽上能看那一局是谁、从哪来。</p>
+        <div class="kpis"><div><b class="num">${pct(done,SESS.length)}</b><small>完成率</small></div><div><b class="num">${posters}</b><small>生成海报</small></div><div><b class="num">${SESS.filter(s=>s.pair).length}</b><small>合盘</small></div></div>
+        <div style="margin-top:16px" class="seg" id="mode"><button data-m="stage" class="${S.mode==='stage'?'on':''}">按进度上色</button><button data-m="src" class="${S.mode==='src'?'on':''}">按渠道上色</button></div>
+        <div class="legend">${legend(S.mode)}</div>
+      </div>
+      <div id="headbox">${seedhead(SESS,S.mode)}</div>
+    </section>
+    <section class="card c12" style="background:linear-gradient(120deg,var(--paper),#F3F7EA)">
+      <div class="hd"><h3>${ic('seed')}素材结籽 <small>数据里长出来的发现，一键存进资产库，下期选题直接用</small></h3><span class="sub">已结 ${SAVED.size}/${INS.length} 颗</span></div>
+      <div class="insights">${INS.map(i=>`<div class="ins ${SAVED.has(i.id)?'saved':''}"><span class="pill ${SAVED.has(i.id)?'ok':'info'}" style="align-self:flex-start">${SAVED.has(i.id)?'已结籽':i.tag}</span><span class="n">${esc(i.n)}</span><p>${esc(i.p)}</p><div class="ft"><span class="sub">今日快照</span>${SAVED.has(i.id)?`<button class="btn sm" data-go="asset">看种子</button>`:`<button class="btn sm leaf" data-save="${i.id}">${ic('seed')}存为素材</button>`}</div></div>`).join('')}</div>
+    </section>
+    ${card('金融里，你是什么登？','finance-persona',fp,[{n:'开始',v:fp.length,i:'seed'},{n:'完成',v:end.length,i:'flower'},{n:'海报',v:fp.filter(s=>s.stage==='poster').length,i:'sun'},{n:'合盘',v:fp.filter(s=>s.pair).length,i:'bee'}],
       `<div class="eyebrow" style="margin-bottom:6px">人格分布（完成局）</div>${dist.map(([c,v],i)=>`<div class="ray" style="grid-template-columns:56px 1fr 30px"><span>${c}</span><i class="bar" style="width:${v/max*100}%;background:${['#F2A91F','#E58A1F','#FFD45C','#8A5A2E','#C79A57','#EBCB8B'][i]};animation-delay:${i*60}ms"></i><span class="v num">${v}</span></div>`).join('')}`)}
     ${card('量化基金生存录','quant-fund',qt,[{n:'开始',v:qt.length,i:'seed'},{n:'完成',v:qt.filter(s=>s.stage!=='start').length,i:'flower'}],
-      `<div class="eyebrow" style="margin-bottom:6px">详细看板</div><p class="sub">逐年选择、投资人格、思考时长沿用原有 <code>/admin/quant/</code> 看板，配色换成向阳花园主题即可。</p><a class="btn sm" href="/admin/quant/" target="_blank">打开完整看板</a>`)}
+      `<div class="eyebrow" style="margin-bottom:6px">详细看板</div><p class="sub">逐年选择、投资人格、思考时长沿用原有 <code>/admin/quant/</code> 看板，换成向阳花园配色即可。</p><a class="btn sm" href="/admin/quant/" target="_blank">打开完整看板</a>`)}
     <section class="card c12 ph" style="background:transparent;box-shadow:none;display:flex;align-items:center;gap:14px">
       ${ic('plus','width:28px;height:28px')}<div><b style="font:700 15px var(--display);color:var(--ink)">下一块花田：新游戏</b><div class="sub">按步骤 H：<code>games/&lt;slug&gt;/</code> + <code>/api/evt</code> 登记 + 这里自动多一张卡片。</div></div>
     </section>
@@ -545,67 +892,47 @@ lead(){
   const cols=[['new','新来访','bee','等你回复'],['contacted','授粉中','flower','已联系'],['closed','结籽','bag','已成交 / 结案'],['spam','杂草','weed','垃圾信息']];
   const next={new:'contacted',contacted:'closed'};
   return `<div class="card" style="margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
-      <span class="sub">步骤 C · 每条 <code>lead_</code> 增加 <code>status</code> 和 <code>note</code>，状态改动走 <code>POST /api/lead/update</code></span>
+      <span class="sub">步骤 C · 每条 <code>lead_</code> 增加 <code>status</code> <code>note</code> <code>amount</code>，并通过 <code>src</code> 算回是哪一期带来的</span>
       <span style="margin-left:auto" class="tools"><button class="btn sm" data-toast="CSV 已开始下载（原型）">${ic('down')}CSV</button></span></div>
     <div class="board">${cols.map(([k,n,i,s])=>{const list=LEADS.filter(l=>l.status===k);return `<div class="col"><header>${ic(i)}${n}<small>${s}</small><span class="n">${list.length}</span></header>
-      ${list.map(l=>`<article class="tk"${k==='spam'?' style="opacity:.6"':''}><div class="ft" style="margin:0 0 6px"><span class="type t-${l.topic==='AI 工作流'?'AI':l.topic}">${esc(l.topic)}</span><span>${md(l.ts)} ${hm(l.ts)}</span><span>· ${SRC_NAME[l.src]}</span></div>
-        <b>${esc(l.need)}</b><p>${esc(l.contact)}</p>${l.note?`<p style="color:var(--leaf)">备注：${esc(l.note)}</p>`:''}
-        <div class="ft">${next[k]?`<button class="btn sm dark" data-mv="${l.id}" data-to="${next[k]}">${k==='new'?'已联系 →':'结案 →'}</button>`:''}${k==='new'?`<button class="btn sm" data-mv="${l.id}" data-to="spam">杂草</button>`:''}</div></article>`).join('')||'<div class="sub" style="text-align:center;padding:20px 0">空空的花田</div>'}</div>`}).join('')}</div>`;
-},
-content(){
-  const g={};SESS.forEach(s=>{const k=s.src.startsWith('wx')?'wx':s.src;g[k]=(g[k]||0)+1});
-  const maxP=Math.max(...METRICS.map(m=>m.play));
-  return `<div class="grid">
-    <section class="card c7"><div class="hd"><h3>${ic('ray')}内容侧 vs 游戏侧 <small>步骤 F · 并排看转化</small></h3></div>
-      ${METRICS.map((m,i)=>`<div class="pair"><b style="font-size:13px">${m.name}</b><div class="bars"><i style="width:${m.play/maxP*100}%;background:var(--sun);animation-delay:${i*80}ms"></i><i style="width:${Math.max(3,(g[m.p]||0)/Math.max(...Object.values(g))*100)}%;background:var(--leaf);animation-delay:${i*80+40}ms"></i></div>
-        <span></span><span class="sub">播放 <b class="num">${m.play.toLocaleString()}</b> · 带来 <b class="num">${g[m.p]||0}</b> 局 · 每千次播放 <b class="num" style="color:var(--seed-2)">${((g[m.p]||0)/m.play*1000).toFixed(1)}</b> 局</span></div>`).join('')}
-      <div class="legend"><span><i style="background:var(--sun)"></i>内容播放（metric_ 手工录入）</span><span><i style="background:var(--leaf)"></i>游戏开局（?from= 自动统计）</span></div>
-    </section>
-    <section class="card c5"><div class="hd"><h3>${ic('plus')}录入今日阳光 <small>写入 metric_日期_平台</small></h3></div>
-      <div style="display:grid;gap:8px">
-        <select><option>抖音</option><option>小红书</option><option>B站</option><option>公众号</option></select>
-        <input class="inp" placeholder="作品 / 期数，例如：第 3 期">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><input class="inp" placeholder="播放"><input class="inp" placeholder="点赞+评论+收藏"></div>
-        <button class="btn sun" data-toast="已记录（原型不写入）">记一笔阳光</button>
-      </div>
-      <p class="sub">先手工录，连续几天后这里就能看到「哪个平台的阳光最能让花开」。不急着接开放平台 API。</p>
-    </section>
-    <section class="card c12"><div class="hd"><h3>最近录入</h3></div>
-      <table><tr><th>日期</th><th>平台</th><th>作品</th><th>播放</th><th>互动</th><th>互动率</th></tr>
-      ${METRICS.map((m,i)=>`<tr><td>${md(NOW-i*864e5)}</td><td>${m.name}</td><td>第 3 期 · 量化生存录</td><td class="num">${m.play.toLocaleString()}</td><td class="num">${m.inter.toLocaleString()}</td><td class="num">${(m.inter/m.play*100).toFixed(1)}%</td></tr>`).join('')}</table>
-    </section></div>`;
+      ${list.map(l=>`<article class="tk"${k==='spam'?' style="opacity:.6"':''}><div class="ft" style="margin:0 0 6px"><span class="type t-${l.topic==='AI 工作流'?'AI':l.topic}">${esc(l.topic)}</span><span>${md(l.ts)} ${hm(l.ts)}</span>${l.ep?`<span class="epmark" data-go="ep" data-ep="${l.ep}" style="cursor:pointer">· ${epName(l.ep)}带来</span>`:''}</div>
+        <b>${esc(l.need)}</b><p>${esc(l.contact)}${l.amount?` · <b style="color:var(--leaf)">¥${l.amount.toLocaleString()}</b>`:''}</p>${l.note?`<p style="color:var(--leaf)">备注：${esc(l.note)}</p>`:''}
+        <div class="ft">${k==='new'||k==='contacted'?`<button class="btn sm" data-tpl="${l.id}">${ic('copy')}用模板回复</button>`:''}${next[k]?`<button class="btn sm dark" data-mv="${l.id}" data-to="${next[k]}">${k==='new'?'已联系 →':'结案 →'}</button>`:''}${k==='new'?`<button class="btn sm" data-mv="${l.id}" data-to="spam">杂草</button>`:''}</div></article>`).join('')||'<div class="sub" style="text-align:center;padding:20px 0">空空的花田</div>'}</div>`}).join('')}</div>`;
 },
 flow(){
   const cols=[['todo','种子','seed','待办'],['doing','发芽','sprout','进行中'],['review','含苞','bud','待审核'],['done','盛开','flower','完成']];
   const next={todo:'doing',doing:'review',review:'done'};
+  const list=TASKS.filter(t=>S.epFilter==='all'||(S.epFilter==='none'?!t.ep:t.ep===S.epFilter));
   return `<div class="card" style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <span class="sub">步骤 D · <code>task_*</code>：标题、类型、负责人、状态、链接、截止日期</span>
-      <span class="tools" style="margin-left:auto">${['全部','设计','拍摄','文案','剪辑'].map((t,i)=>`<button class="chip ${i?'':'on'}">${t}</button>`).join('')}<button class="btn sm sun" data-toast="新建任务（原型）">${ic('plus')}种一颗</button></span></div>
-    <div class="board">${cols.map(([k,n,i,s])=>{const list=TASKS.filter(t=>t.st===k);return `<div class="col"><header>${ic(i)}${n}<small>${s}</small><span class="n">${list.length}</span></header>
-      ${list.map(t=>`<article class="tk"><div class="ft" style="margin:0 0 6px"><span class="type t-${t.type}">${t.type}</span><span>${esc(t.who)}</span></div><b>${esc(t.t)}</b>
+      <span class="tools" id="epf"><button class="chip ${S.epFilter==='all'?'on':''}" data-ef="all">全部</button>${EPISODES.filter(e=>e.stage!=='harvest').map(e=>`<button class="chip ${S.epFilter===e.id?'on':''}" data-ef="${e.id}">第 ${e.n} 期</button>`).join('')}<button class="chip ${S.epFilter==='none'?'on':''}" data-ef="none">日常</button></span>
+      <span class="sub">盛开前必须结籽：移到「完成」时要挂上产出资产，或说明没有产出。</span>
+      <span class="tools" style="margin-left:auto"><button class="btn sm sun" data-toast="新建任务（原型）：标题 · 类型 · 负责人 · 期数 · 截止">${ic('plus')}种一颗</button></span></div>
+    <div class="board">${cols.map(([k,n,i,s])=>{const l=list.filter(t=>t.st===k);return `<div class="col"><header>${ic(i)}${n}<small>${s}</small><span class="n">${l.length}</span></header>
+      ${l.map(t=>`<article class="tk"><div class="ft" style="margin:0 0 6px"><span class="type t-${t.type}">${t.type}</span><span>${esc(t.who)}</span><span class="epmark">${epName(t.ep)}</span></div><b>${esc(t.t)}</b>
+        ${t.out?`<p style="color:var(--leaf)" data-asset="${t.out}">产出 → ${esc(assetOf(t.out)?assetOf(t.out).t:t.out)}</p>`:''}
         <div class="ft"><span class="${t.due<0&&k!=='done'?'late':''}">${k==='done'?'已完成':t.due<0?`超期 ${-t.due} 天`:t.due===0?'今天截止':`${t.due} 天后截止`}</span>${next[k]?`<button class="btn sm" data-tk="${t.id}" data-to="${next[k]}">${({todo:'开始',doing:'送审',review:'通过'})[k]} →</button>`:''}</div></article>`).join('')}</div>`}).join('')}</div>`;
 },
+asset(){
+  return `<div class="card" style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input class="inp" id="q" placeholder="找一颗种子：角色规范、封面定稿、素材……" style="flex:1;min-width:200px" value="${esc(S.q)}">
+      <span class="tools" id="types"><button class="chip ${S.assetType==='all'?'on':''}" data-ty="all">全部</button>${ASSET_TYPES.map(([k,n])=>`<button class="chip ${S.assetType===k?'on':''}" data-ty="${k}">${n}</button>`).join('')}</span></div>
+    <div class="packets" id="packets"></div>
+    <p class="sub" style="margin-top:14px">每颗种子都记着「来自哪、用在哪」。点开看「一颗种子的一生」。实线章是定稿，虚线章是候选，按交接原则不能当成已批准使用。大文件放 COS / OneDrive，这里只存 <code>asset_*</code> 索引。</p>`;
+},
 agent(){
-  return `<div class="card" style="margin-bottom:16px"><span class="sub">步骤 G · <code>agent_*</code> 注册表 + 运行记录。先登记、可触发、可追溯；产出必须回写资产库才算完成。API Key 只放 EdgeOne 环境变量。</span></div>
-    <div class="agents">${AGENTS.map(a=>`<section class="card ag"><span class="st ${a.st}">${({ok:'正在浇水',fail:'水管堵了',idle:'在树荫下'})[a.st]}</span>
+  return `<div class="card" style="margin-bottom:16px"><span class="sub">步骤 G · <code>agent_*</code> 注册表 + 运行记录。任务单自动带上期数、品牌规范和素材，产出必须回写资产库才算完成。API Key 只放 EdgeOne 环境变量。</span></div>
+    <div class="agents">${AGENTS.map(a=>`<section class="card ag"><span class="pill st ${a.st}">${({ok:'正在浇水',fail:'水管堵了',idle:'在树荫下'})[a.st]}</span>
       <div class="face">${ic(a.icon)}</div><h3>${a.n}</h3><p class="sub" style="margin:0">${a.d}</p>
-      <dl><dt>调用方式</dt><dd>${a.how}</dd><dt>关联技能</dt><dd><code>${a.skill}</code></dd><dt>最近运行</dt><dd>${md(a.last)} ${hm(a.last)} · 共 ${a.runs} 次</dd><dt>${a.st==='fail'?'错误':'最近产出'}</dt><dd${a.st==='fail'?' class="late"':''}>${esc(a.st==='fail'?a.err:a.out)}</dd></dl>
-      <div class="acts"><button class="btn sm sun" data-toast="${a.how==='HTTP'?'已触发（原型）':'任务单已复制，可粘贴给 Cursor / Codex'}">${ic(a.how==='HTTP'?'play':'copy')}${a.how==='HTTP'?'触发':'复制任务单'}</button><button class="btn sm">运行记录</button></div></section>`).join('')}
+      <dl><dt>调用方式</dt><dd>${a.how}</dd><dt>关联技能</dt><dd><code>${a.skill}</code></dd><dt>最近运行</dt><dd>${md(a.last)} ${hm(a.last)} · 共 ${a.runs} 次</dd><dt>${a.st==='fail'?'错误':'最近产出'}</dt><dd${a.st==='fail'?' class="late"':''}>${a.st==='fail'?esc(a.err):a.out?`<span data-asset="${a.out}" style="cursor:pointer;text-decoration:underline dotted">${esc(assetOf(a.out).t)}</span>`:'—'}</dd></dl>
+      <div class="acts"><button class="btn sm sun" data-order="${S.ep}" data-agent="${a.id}">${ic(a.how==='HTTP'?'play':'copy')}${a.how==='HTTP'?'触发':'生成任务单'}</button><button class="btn sm" data-toast="运行记录在下方">运行记录</button></div></section>`).join('')}
       <section class="card ag add">${ic('plus','width:30px;height:30px')}<b style="font:700 15px var(--display);color:var(--ink)">招募新园丁</b><span class="sub">id · 名称 · 说明 · 调用方式 · 关联技能</span></section>
     </div>
     <section class="card" style="margin-top:16px"><div class="hd"><h3>浇水日志 <small>谁触发 · 入参 · 产出 · 错误</small></h3></div>
       <table><tr><th>时间</th><th>园丁</th><th>触发人</th><th>入参摘要</th><th>产出资产</th><th>结果</th></tr>
-      ${RUNS.map(r=>`<tr><td>${md(r.ts)} ${hm(r.ts)}</td><td>${r.a}</td><td>${r.who}</td><td>${esc(r.in)}</td><td>${r.out?`<code>${r.out}</code>`:'—'}</td><td>${r.ok?'<span class="st ok" style="padding:2px 8px;border-radius:99px;font-size:11px">成功</span>':`<span class="st fail" style="padding:2px 8px;border-radius:99px;font-size:11px">失败</span> <span class="sub">${esc(r.err)}</span>`}</td></tr>`).join('')}</table></section>`;
-},
-asset(){
-  return `<div class="card" style="margin-bottom:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <input class="inp" id="q" placeholder="找一颗种子：角色规范、封面定稿……" style="flex:1;min-width:200px" value="${esc(S.q)}">
-      <span class="tools" id="types"><button class="chip ${S.assetType==='all'?'on':''}" data-ty="all">全部</button>${ASSET_TYPES.map(([k,n])=>`<button class="chip ${S.assetType===k?'on':''}" data-ty="${k}">${n}</button>`).join('')}</span></div>
-    <div class="packets" id="packets"></div>
-    <p class="sub" style="margin-top:14px">盖「已批准」章的才是定稿；虚线章是候选，按交接原则不能当成已批准使用。大文件放 COS / OneDrive，这里只存 <code>asset_*</code> 索引。</p>`;
+      ${RUNS.map(r=>`<tr><td>${md(r.ts)} ${hm(r.ts)}</td><td>${r.a}</td><td>${r.who}</td><td>${esc(r.in)}</td><td>${r.out?`<span data-asset="${r.out}" style="cursor:pointer;text-decoration:underline dotted">${esc(assetOf(r.out).t)}</span>`:'—'}</td><td>${r.ok?'<span class="pill ok">成功</span>':`<span class="pill fail">失败</span> <span class="sub">${esc(r.err)}</span>`}</td></tr>`).join('')}</table></section>`;
 },
 sys(){
-  const P=[['r_','量化每局',1],['e_fp_','金融人格每局',1],['lead_','咨询线索',1],['c_','计数器',1],['task_','工作流',0],['asset_','资产索引',0],['agent_','Agent 注册',0],['metric_','渠道指标',0]];
+  const P=[['r_','量化每局',1],['e_fp_','金融人格每局',1],['lead_','咨询线索',1],['c_','计数器',1],['ep_','花期（一期内容）',0],['task_','工作流',0],['asset_','资产索引',0],['agent_','Agent 注册',0],['metric_','渠道指标 · 播种记录',0]];
   return `<div class="grid">
     <section class="card c5"><div class="hd"><h3>${ic('root')}根系体检 <small>/api/health</small></h3><button class="btn sm" id="sim">${S.alert?'恢复晴天':'模拟乌云'}</button></div>
       <div class="roots" style="grid-template-columns:1fr">
@@ -615,30 +942,128 @@ sys(){
       </div>
       <p class="sub">根扎得深，花才向阳：顶栏只在这里出问题时才变成乌云。</p></section>
     <section class="card c7"><div class="hd"><h3>${ic('down')}按前缀导出 <small>/api/export?prefix=</small></h3></div>
-      <table><tr><th>前缀</th><th>含义</th><th>状态</th><th></th></tr>${P.map(([p,n,on])=>`<tr><td><code>${p}</code></td><td>${n}</td><td>${on?'<span class="st ok" style="padding:2px 8px;border-radius:99px;font-size:11px">在用</span>':'<span class="st idle" style="padding:2px 8px;border-radius:99px;font-size:11px">规划</span>'}</td><td>${on?`<button class="btn sm" data-toast="导出 ${p}（原型）">导出 JSON</button>`:''}</td></tr>`).join('')}</table></section>
+      <table><tr><th>前缀</th><th>含义</th><th>状态</th><th></th></tr>${P.map(([p,n,on])=>`<tr><td><code>${p}</code></td><td>${n}</td><td>${on?'<span class="pill ok">在用</span>':'<span class="pill idle">规划</span>'}</td><td>${on?`<button class="btn sm" data-toast="导出 ${p}（原型）">导出 JSON</button>`:''}</td></tr>`).join('')}</table></section>
   </div>`;
 },
 };
+
+/* ================= 抽屉：谱系 / 任务单 / 盛开前结籽 ================= */
+function openDrawer(html){$('drawer').innerHTML=`<button class="btn sm x" id="dx">${ic('x')}关闭</button>`+html;$('drawer').classList.add('show');$('scrim').classList.add('show');$('dx').onclick=closeDrawer}
+function closeDrawer(){$('drawer').classList.remove('show');$('scrim').classList.remove('show')}
+function lineage(id){
+  const a=assetOf(id);if(!a)return;const [,tn,c]=ASSET_TYPES.find(t=>t[0]===a.type);
+  const used=(a.used||[]).map(u=>u==='lead'?{n:'咨询线索回复',s:'每条新线索的首轮回复都从这里出'}:(()=>{const e=epOf(u);return e?{n:`第 ${e.n} 期 · ${e.title}`,s:e.pub?`${(Object.values(e.metrics).reduce((s,m)=>s+m[0],0)/1e4).toFixed(1)} 万播放 · ${e.games} 局 · ${e.leads} 条咨询`:STAGE_META[e.stage][1],ep:e.id}:{n:u,s:''}})());
+  openDrawer(`<div class="eyebrow">一颗种子的一生</div><h2>${esc(a.t)}</h2>
+    <div style="display:flex;gap:6px;align-items:center;margin:6px 0 18px"><span class="type" style="background:${c}22;color:${c}">${tn}</span><span class="pill ${a.ok?'ok':'sun'}">${a.ok?'已批准':'候选'}</span><span class="sub">${esc(a.by)} · ${md(a.d)} · ${esc(a.v)}</span></div>
+    <ul class="lineage">
+      <li><small>来自</small><b>${esc(a.from)}</b>${a.ep?`<div class="sub">产自${epName(a.ep)}</div>`:''}</li>
+      <li class="me"><small>这颗种子</small><b>${esc(a.t)}</b><div class="sub">${a.ok?'已批准，可以放心复用。':'还是候选。按交接原则，批准前不要当成定稿用。'}</div></li>
+      ${used.length?used.map(u=>`<li class="next"><small>用在</small><b${u.ep?` data-go="ep" data-ep="${u.ep}" style="cursor:pointer;text-decoration:underline dotted"`:''}>${esc(u.n)}</b><div class="sub">${esc(u.s)}</div></li>`).join(''):'<li class="next"><small>用在</small><b class="sub" style="font-weight:400">还没被用过，等下一期来取。</b></li>'}
+    </ul>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">${a.ok?'':`<button class="btn sm leaf" data-approve="${a.id}">盖章批准</button>`}<button class="btn sm" data-toast="已复制资产 id ${a.id}" data-copy="${a.id}">${ic('copy')}复制 id</button><button class="btn sm" data-toast="外链打开（原型）">打开文件</button></div>`);
+}
+function orderSheet(epId,agentId){
+  const e=epOf(epId)||EPISODES[3];const a=AGENTS.find(x=>x.id===agentId)||AGENTS[1];
+  const brand=ASSETS.filter(x=>x.type==='brand'&&x.ok),ins=ASSETS.filter(x=>x.type==='insights'&&((x.used||[]).includes(e.id)||x.ep===e.id));
+  const text=`【任务单 · ${a.n}】
+期数：第 ${e.n} 期《${e.title}》 · 当前阶段：${STEPS[Math.min(e.step,6)]}
+目标：${a.d}
+必须遵守：
+${brand.map(b=>`  - ${b.t}（资产 ${b.id}，${b.v}）`).join('\n')}
+  - 品牌色 向日葵黄 #F2A91F / 葵籽棕 #3E2716 / 叶绿 #4F7A3A
+可用素材：
+${ins.length?ins.map(i=>`  - ${i.t}（资产 ${i.id}）`).join('\n'):'  - （这期还没有结籽素材，去产品数据页先结几颗）'}
+产出回写：资产库 type=${a.id==='cover'?'covers':a.id==='cutter'?'videos':'scripts'}，状态=候选，挂到 ${e.id}
+完成标准：候选 ≥ 2 版；每版附一句话说明；不含真实用户信息
+触发人：Brian · ${new Date().toLocaleString('zh-CN',{hour12:false})}`;
+  openDrawer(`<div class="eyebrow">给园丁下任务单</div><h2>${a.n} · 第 ${e.n} 期</h2><p class="sub">任务单自动带上这期的上下文、必须遵守的品牌资产和可用素材。复制后粘给 Cursor / Codex，或由 HTTP 触发。</p>
+    <label>任务单</label><textarea id="orderText">${esc(text)}</textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn sun" id="orderCopy">${ic('copy')}复制任务单</button>${a.how==='HTTP'?`<button class="btn dark" data-toast="已触发（原型）· 运行记录会出现在浇水日志">${ic('play')}直接触发</button>`:''}<button class="btn" data-toast="已记录到浇水日志（原型）">记为「已下单」</button></div>`);
+  $('orderCopy').onclick=()=>copy($('orderText').value,'任务单已复制，粘给园丁吧');
+}
+function bloomGate(taskId){
+  const t=TASKS.find(x=>x.id==taskId);const cands=ASSETS.filter(a=>!t.ep||a.ep===t.ep||!a.ep).slice(0,6);
+  let choice='new';
+  openDrawer(`<div class="eyebrow">盛开前先结籽</div><h2>${esc(t.t)}</h2><p class="sub">这个任务的产出是什么？挂上资产，以后别人（和下一期的你）才找得到。</p>
+    <label>选择产出</label>
+    <div class="opt on" data-c="new"><input type="radio" name="c" checked><div><b>登记一颗新种子</b><div class="sub">写进 asset_，状态=候选，挂到 ${epName(t.ep)}</div></div></div>
+    <input class="inp" id="newAsset" style="width:100%;margin:0 0 6px" value="${esc(t.t)}">
+    ${cands.map(a=>`<div class="opt" data-c="${a.id}"><input type="radio" name="c"><div><b>${esc(a.t)}</b><div class="sub">已有 · ${a.ok?'已批准':'候选'} · ${esc(a.by)}</div></div></div>`).join('')}
+    <div class="opt" data-c="none"><input type="radio" name="c"><div><b>这个任务没有产出</b><div class="sub">例如沟通、复盘；请写一句说明</div></div></div>
+    <input class="inp" id="noneWhy" style="width:100%" placeholder="为什么没有产出">
+    <div style="display:flex;gap:8px;margin-top:16px"><button class="btn leaf" id="bloomOk">${ic('flower')}盛开</button><button class="btn" id="bloomNo">再想想</button></div>`);
+  document.querySelectorAll('.drawer .opt').forEach(o=>o.onclick=()=>{choice=o.dataset.c;document.querySelectorAll('.drawer .opt').forEach(x=>{x.classList.toggle('on',x===o);x.querySelector('input').checked=x===o})});
+  $('bloomNo').onclick=closeDrawer;
+  $('bloomOk').onclick=()=>{
+    if(choice==='new'){const id='a'+(20+ASSETS.length);const map={设计:'covers',剪辑:'videos',文案:'scripts',拍摄:'videos',运营:'decisions'};ASSETS.unshift({id,t:$('newAsset').value||t.t,type:map[t.type]||'scripts',ok:false,v:'v1',by:t.who,d:Date.now(),ep:t.ep,from:`任务 #${t.id}`,used:[]});t.out=id}
+    else if(choice==='none'){if(!$('noneWhy').value.trim()){toast('写一句为什么没有产出');return}t.note=$('noneWhy').value}
+    else t.out=choice;
+    t.st='done';closeDrawer();render();toast(choice==='none'?'已盛开（无产出）':'又开了一朵，种子已入仓');
+  };
+}
+
+/* ================= 喊一声 ================= */
+function palette(open){
+  const p=$('palette');if(!open){p.classList.remove('show');$('scrim').classList.remove('show');return}
+  p.classList.add('show');$('scrim').classList.add('show');$('palIn').value='';palList('');$('palIn').focus();
+}
+function palItems(q){
+  q=q.trim().toLowerCase();const hit=s=>!q||String(s).toLowerCase().includes(q);
+  const acts=[{k:'动作',t:'复制当前发群链接',run:()=>copy(link(),'已复制，去群里撒种子吧')},{k:'动作',t:'记一次播种',run:()=>{SOWS.unshift({ts:Date.now(),game:S.game,from:S.from,note:'手动记录'});go('home');toast('已记录这次播种')}},{k:'动作',t:'给封面园丁下任务单',run:()=>orderSheet(S.ep,'cover')},{k:'动作',t:'去结籽（素材）',run:()=>go('prod')},{k:'动作',t:'打开系统 · 根系',run:()=>go('sys')}].filter(a=>hit(a.t));
+  const eps=EPISODES.filter(e=>hit(`第${e.n}期 ${e.title}`)).map(e=>({k:'花期',t:`第 ${e.n} 期 · ${e.title}`,run:()=>go('ep',{ep:e.id})}));
+  const tasks=TASKS.filter(t=>hit(t.t+t.who)).map(t=>({k:'任务',t:`${t.t} · ${t.who}`,run:()=>{S.epFilter='all';go('flow')}}));
+  const assets=ASSETS.filter(a=>hit(a.t)).map(a=>({k:'资产',t:a.t,run:()=>lineage(a.id)}));
+  const leads=LEADS.filter(l=>l.status!=='spam'&&hit(l.need+l.topic)).map(l=>({k:'线索',t:`${l.topic} · ${l.need.slice(0,28)}…`,run:()=>go('lead')}));
+  return[...acts,...eps,...tasks,...assets,...leads].slice(0,12);
+}
+let PAL=[];
+function palList(q){PAL=palItems(q);$('palList').innerHTML=PAL.map((it,i)=>`<li class="${i===0?'on':''}" data-i="${i}"><span class="k">${it.k}</span>${esc(it.t)}<span class="go">↵</span></li>`).join('')||'<li class="sub">没找到这颗种子</li>';document.querySelectorAll('#palList li[data-i]').forEach(li=>li.onclick=()=>{palette(false);PAL[li.dataset.i].run()})}
+$('palIn').oninput=e=>palList(e.target.value);
+$('palIn').onkeydown=e=>{if(e.key==='Enter'&&PAL[0]){palette(false);PAL[0].run()}if(e.key==='Escape')palette(false)};
+$('shout').onclick=()=>palette(true);
+document.addEventListener('keydown',e=>{
+  const tag=(e.target.tagName||'').toLowerCase(),typing=['input','textarea','select'].includes(tag);
+  if(e.key==='/'&&!typing){e.preventDefault();palette(true);return}
+  if(e.key==='Escape'){if($('palette').classList.contains('show')||$('drawer').classList.contains('show')){palette(false);closeDrawer()}else if(TOUR.on)tourStart(false);else if(S.tab!=='home')go('home');return}
+  if(typing||$('palette').classList.contains('show'))return;
+  if(e.key==='ArrowRight'){e.preventDefault();step(1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();step(-1)}
+  if(e.key===' '&&TOUR.on){e.preventDefault();tourPlay(!TOUR.playing)}
+});
+$('scrim').onclick=()=>{palette(false);closeDrawer()};
 
 /* ================= 交互绑定 ================= */
 function packets(){
   const q=S.q.trim().toLowerCase();
   const list=ASSETS.filter(a=>(S.assetType==='all'||a.type===S.assetType)&&(!q||a.t.toLowerCase().includes(q)));
-  $('packets').innerHTML=list.map((a,i)=>{const [,n,c]=ASSET_TYPES.find(t=>t[0]===a.type);return `<article class="pk" style="animation-delay:${i*40}ms">
-    <div class="band" style="background:linear-gradient(160deg,${c}22,${c}55)"><svg viewBox="-60 -60 120 120">${sunflower(48,13)}</svg><span class="stamp ${a.ok?'ok':'cand'}">${a.ok?'已批准':'候选'}</span></div>
-    <div class="bd"><span class="type" style="background:${c}22;color:${c};align-self:flex-start">${n}</span><b>${esc(a.t)}</b><div class="ft"><span>${esc(a.by)} · ${md(a.d)}</span><span class="num">${esc(a.v)}</span></div></div></article>`}).join('')||'<div class="card sub" style="grid-column:1/-1;text-align:center">仓里还没有这颗种子</div>';
+  $('packets').innerHTML=list.map((a,i)=>{const [,n,c]=ASSET_TYPES.find(t=>t[0]===a.type);return `<article class="pk" style="animation-delay:${i*40}ms" data-asset="${a.id}">
+    <div class="band" style="background:linear-gradient(160deg,${c}22,${c}55)"><svg viewBox="-60 -60 120 120">${sunflower(48,13)}</svg>${stamp(a)}</div>
+    <div class="bd"><span class="type" style="background:${c}22;color:${c};align-self:flex-start">${n}</span><b>${esc(a.t)}</b>
+      <div class="lin"><span>来自 ${esc(a.from)}</span><span>${(a.used||[]).length?'用在 '+(a.used||[]).map(u=>u==='lead'?'咨询回复':epName(u)).join('、'):'还没被用过'}</span></div>
+      <div class="ft"><span>${esc(a.by)} · ${md(a.d)}</span><span class="num">${esc(a.v)}</span></div></div></article>`}).join('')||'<div class="card sub" style="grid-column:1/-1;text-align:center">仓里还没有这颗种子</div>';
 }
 const BIND={
   home(){
-    document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;render()});
+    document.querySelectorAll('[data-zoom]').forEach(el=>el.onclick=e=>{e.stopPropagation();zoomTo(el.dataset.zoom)});
+    $('tour').onclick=()=>tourStart(true);
     $('wx').onclick=()=>{S.alert=!S.alert;render();toast(S.alert?'已模拟：KV 异常':'天晴了')};
     $('game').onchange=e=>{S.game=e.target.value;$('lk').textContent=link()};
     document.querySelectorAll('#froms .chip').forEach(b=>b.onclick=()=>{S.from=b.dataset.f;$('fromIn').value='';document.querySelectorAll('#froms .chip').forEach(x=>x.classList.toggle('on',x===b));$('lk').textContent=link()});
     $('fromIn').oninput=e=>{const v=e.target.value.replace(/[^a-zA-Z0-9-]/g,'').slice(0,24);e.target.value=v;S.from=v||'wx';document.querySelectorAll('#froms .chip').forEach(x=>x.classList.toggle('on',!v&&x.dataset.f==='wx'));$('lk').textContent=link()};
-    $('cp').onclick=()=>copy(link());
+    $('cp').onclick=()=>copy(link(),'已复制，去群里撒种子吧');
+    $('sowNow').onclick=()=>{SOWS.unshift({ts:Date.now(),game:S.game,from:S.from,note:'刚刚发出'});render();toast('记下了。24 小时内发芽数会自动长出来')};
+    document.querySelectorAll('[data-todo]').forEach(el=>el.querySelector('i').onclick=e=>{e.stopPropagation();const id=el.dataset.todo;S.doneTodo.has(id)?S.doneTodo.delete(id):S.doneTodo.add(id);render()});
   },
-  lead(){document.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const l=LEADS.find(x=>x.id==b.dataset.mv);l.status=b.dataset.to;render();toast(({contacted:'蜜蜂开始授粉了',closed:'结出一颗籽',spam:'已拔掉杂草'})[l.status])})},
-  flow(){document.querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{const t=TASKS.find(x=>x.id==b.dataset.tk);t.st=b.dataset.to;render();if(t.st==='done')toast('又开了一朵')})},
+  ep(){document.querySelectorAll('.ep[data-ep]').forEach(el=>el.onclick=()=>{S.ep=el.dataset.ep;go('ep')})},
+  prod(){document.querySelectorAll('#mode button').forEach(b=>b.onclick=()=>{S.mode=b.dataset.m;render()});document.querySelectorAll('[data-save]').forEach(b=>b.onclick=()=>{const i=insights().find(x=>x.id===b.dataset.save);SAVED.add(i.id);ASSETS.unshift({id:'a'+(20+ASSETS.length),t:i.t,type:'insights',ok:false,v:'快照 '+md(NOW),by:'游戏数据',d:Date.now(),ep:'ep3',from:'今日游戏数据快照',used:[]});render();toast('结籽成功，已存进资产库（候选）')})},
+  lead(){
+    document.querySelectorAll('[data-mv]').forEach(b=>b.onclick=()=>{const l=LEADS.find(x=>x.id==b.dataset.mv);l.status=b.dataset.to;if(l.status==='closed'&&!l.amount){l.note=l.note||'结案'}render();toast(({contacted:'蜜蜂开始授粉了',closed:'结出一颗籽',spam:'已拔掉杂草'})[l.status])});
+    document.querySelectorAll('[data-tpl]').forEach(b=>b.onclick=()=>{const l=LEADS.find(x=>x.id==b.dataset.tpl);copy(`你好，我是小梨团队。看到你提到「${l.need}」。\n\n我们先确认两点：1）目前的流程是怎么做的；2）希望达到的结果是什么。方便的话约 20 分钟聊一下。\n\n（模板来自资产 a07 · 咨询首轮回复模板）`,'回复草稿已复制（模板 a07）')});
+  },
+  flow(){
+    document.querySelectorAll('#epf .chip').forEach(b=>b.onclick=()=>{S.epFilter=b.dataset.ef;render()});
+    document.querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{const t=TASKS.find(x=>x.id==b.dataset.tk);if(b.dataset.to==='done')return bloomGate(t.id);t.st=b.dataset.to;render()});
+  },
   asset(){
     packets();
     $('q').oninput=e=>{S.q=e.target.value;packets()};
@@ -647,7 +1072,11 @@ const BIND={
   sys(){$('sim').onclick=()=>{S.alert=!S.alert;render()}},
 };
 document.addEventListener('click',e=>{
-  const g=e.target.closest('[data-go]');if(g)return go(g.dataset.go);
+  const ap=e.target.closest('[data-approve]');if(ap){const a=assetOf(ap.dataset.approve);a.ok=true;closeDrawer();render();toast('已盖章批准');return}
+  const as=e.target.closest('[data-asset]');if(as&&!e.target.closest('[data-go]')){lineage(as.dataset.asset);return}
+  const od=e.target.closest('[data-order]');if(od){orderSheet(od.dataset.order,od.dataset.agent);return}
+  const g=e.target.closest('[data-go]');if(g){closeDrawer();return go(g.dataset.go,g.dataset.ep?{ep:g.dataset.ep}:null)}
+  const c=e.target.closest('[data-copy]');if(c){copy(c.dataset.copy,c.dataset.toast||'已复制');return}
   const t=e.target.closest('[data-toast]');if(t)toast(t.dataset.toast);
 });
 $('rf').onclick=()=>{render();toast('已刷新')};
