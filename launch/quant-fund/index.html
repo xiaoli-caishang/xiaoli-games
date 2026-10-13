@@ -21,15 +21,13 @@ a{color:#8A5A10}
 .eyebrow{font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:700}
 h1{font-size:clamp(28px,6vw,42px);line-height:1.2;margin:.2em 0 .4em}
 h2{font-size:22px;margin:2.2em 0 .6em;line-height:1.3}
-h3{font-size:16px;margin:1.2em 0 .4em}
 .lead{font-size:18px;font-weight:800;background:var(--paper);border:1.5px dashed #E2CFA9;border-radius:16px;padding:16px 18px}
 .sub{color:var(--mut);font-size:14px}
 .card{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:0 8px 22px rgba(160,125,80,.08)}
 .grid{display:grid;gap:10px}
-@media(min-width:700px){.grid.two{grid-template-columns:1fr 1fr}}
+@media(min-width:700px){.grid.two{grid-template-columns:1fr 1fr}.grid.four{grid-template-columns:1fr 1fr}}
+@media(min-width:900px){.grid.four{grid-template-columns:1fr 1fr 1fr 1fr}}
 .k{font-size:12px;color:var(--mut);font-weight:700}
-.gold{color:var(--gold)}
-.chip{display:inline-block;border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:1px 10px;font-size:12px;font-weight:700;margin-right:6px}
 .time{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--gold);font-size:12px;font-weight:700}
 .script p{margin:.55em 0;font-size:18.5px;line-height:1.75}
 .script .say{color:var(--fg)}
@@ -48,9 +46,10 @@ th{color:var(--mut);font-weight:600}
 .go{border:0;background:var(--gold);color:var(--ink);box-shadow:0 4px 0 #C98A2A}
 .ghost{border:1px solid var(--line);background:var(--s2);color:var(--fg)}
 .nav{position:sticky;top:0;z-index:5;background:rgba(246,239,228,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:8px 18px;display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13px}
-.nav a{color:var(--inkm,#6B6157);text-decoration:none}
+.nav a{color:#6B6157;text-decoration:none}
 .toc{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px}
 .toc a{font-size:12.5px;border:1px solid var(--line);background:var(--s1);border-radius:999px;padding:4px 10px;text-decoration:none;color:var(--fg)}
+.card b.t{display:block;font-size:16px;margin-bottom:4px}
 </style>
 </head>
 <body>
@@ -63,14 +62,14 @@ th{color:var(--mut);font-weight:600}
   <a href="#ban">禁区</a>
 </nav>
 <div class="wrap">
-  <div class="eyebrow">@小梨🍐 · DY / B 站 · 3 分钟内</div>
+  <div class="eyebrow">@小梨🍐 · DY / B 站 · 3 分钟内 · V2</div>
   <h1>量化基金生存录<br>游戏发布会提词本</h1>
-  <p class="sub">给拍摄和剪辑用。口播按「逐字稿」念；金句加粗上字幕。游戏地址请用带渠道参数的链接。</p>
+  <p class="sub">V2 纠正：不卖四个字母（那是另一款人格测试）。这款卖的是「信息齐了你怎么选」，获得感是排名。</p>
 
-  <p class="lead">把机构那张椅子转过来，请你坐十分钟。正经科普，有趣的壳。不剧透结局。</p>
+  <p class="lead">机构的信息源和优势，全给你了。还是你会不会选。玩完比一比：59,049 种里，你排第几。</p>
 
   <div class="toc">
-    <a href="#why">为什么这样讲</a>
+    <a href="#why">爆点</a>
     <a href="#script">逐字稿</a>
     <a href="#cover">封面与标题</a>
     <a href="#shots">分镜</a>
@@ -79,68 +78,68 @@ th{color:var(--mut);font-weight:600}
     <a href="#review">审片</a>
   </div>
 
-  <h2 id="why">一句话主题</h2>
-  <div class="card ok">
-    你讨厌机构，是因为你从没坐过那张椅子。我做一个游戏，让你当十年量化基金经理——钱是张阿姨的，决定是你的。
+  <h2 id="why">这款游戏到底爆在哪</h2>
+  <p class="sub">发布会只卖这四件事。不卖性格卡，不卖功能列表。</p>
+  <div class="grid four">
+    <div class="card ok"><b class="t">1. 信息源全给你</b>早间新闻、公告、传闻、研究员、风控、渠道、大客户。机构桌上那一摞，你都有。</div>
+    <div class="card ok"><b class="t">2. 优势也给你</b>五亿规模、研究部、能建的工具。散户缺的那层，先抹平。</div>
+    <div class="card ok"><b class="t">3. 没有上帝视角</b>每年只给「年初就能知道的」。机构也在这一刻拍板。难的是决策。</div>
+    <div class="card ok"><b class="t">4. 获得感是名次</b>十年十个决定，3¹⁰＝59,049。每一种都跑完。玩完比排名，不是领一张标签。</div>
+  </div>
+  <div class="card">
+    <div class="k">有趣 × 有意义</div>
+    <p>有趣：你真的坐进决策会，信号打架，你来拍板，最后甩出一个能晒的名次。<br>
+    有意义：大家以为机构和散户差在内幕。把信息和优势摊平以后，差距只剩十个决定。所以不必迷信机构，也别空骂——先排个名。</p>
   </div>
 
-  <div class="grid two">
-    <div class="card"><div class="k">给谁看</div>抖音、B 站泛流量：骂过基金、好奇机构、不一定懂量化的人</div>
-    <div class="card"><div class="k">要他们做什么</div>点进游戏 → 玩完截图人格 / 张阿姨还剩多少 → 回来评论站队</div>
-    <div class="card"><div class="k">卖什么</div>挑战和椅子，不卖功能。十年十个决定，59049 种人生</div>
-    <div class="card"><div class="k">口播时长</div>正文约 800 字，含停顿落在 3 分钟内。金句后留气口，宁短勿满</div>
-  </div>
-
-  <h2 id="script">逐字口播稿 · 当前版</h2>
+  <h2 id="script">逐字口播稿 · V2</h2>
   <p class="sub">每个字都会被说出口。（停）是气口。加粗是金句字幕。<code>&gt; 【画面】</code> 不念。</p>
 
   <div class="card script" id="tele">
-    <p class="dir">0:00–0:16　钩子　·　挑衅 + 邀请</p>
-    <p class="cut">&gt; 【画面】评论区滚动：换我来管 / 机构有内幕。切小梨，眼神稳。</p>
+    <p class="dir">0:00–0:16　钩子　·　接住好奇，把椅子和底牌一起让出去</p>
+    <p class="cut">&gt; 【画面】评论区：换我来管 / 机构有内幕。切小梨。</p>
     <p class="say">每次大盘一跌，评论区就有人说：<b>换我来管，都比基金经理强。</b></p>
     <p class="dir">（语气轻，带点挑衅）</p>
-    <p class="say">好。我给你这个机会。</p>
+    <p class="say">好。我给你这个机会。机构那套，我也给你。</p>
     <p class="dir">（停）</p>
 
-    <p class="dir">0:16–0:48　引子　·　好奇 + 冲突 + 初心</p>
-    <p class="say">说实话，大家对机构，又恨又好奇。恨的是凭什么他们总能先走一步。好奇的是，门后面到底在干什么。有内幕？有天眼？还是……其实也在猜。</p>
-    <p class="say">我跟你就直说了。<b>散户和机构的冲突，不是谁更聪明。是一张椅子。</b>椅子这边，钱是自己的，亏了可以骂。椅子那边，钱是别人的，错了，可能没有下一次。</p>
-    <p class="say">所以我做了这个游戏。不是证明机构有多神，也不是教你骂谁。我只是把那张椅子转过来，让你坐十分钟。</p>
-    <p class="say"><b>正经的东西，用有趣的方式讲完。</b>这是《量化基金生存录》的初心。</p>
+    <p class="dir">0:16–0:52　初心　·　大家以为差在信息，其实差在决策</p>
+    <p class="say">说实话，大家对机构，又恨又好奇。最想拆的就一件事：他们是不是有内幕。有别人看不到的信息，有散户没有的优势，所以总能先走一步。</p>
+    <p class="say">我跟你就直说了。<b>散户和机构的冲突，被讲成信息不对称太久了。</b>我做这个游戏，是把那一层先掀掉。</p>
+    <p class="say">机构早上能看到的信息源，你都能看到。新闻、公告、研究员、风控、渠道、大客户。机构能用的优势，你也有。规模五亿，研究部在。</p>
+    <p class="say">每年给你的，都是当年年初就能知道的。没有上帝视角。机构也没有。</p>
+    <p class="say">剩下最难的那一步，叫决策。<b>正经的东西，用有趣的方式讲完。</b>这是《量化基金生存录》的初心。</p>
     <p class="dir">（停）</p>
 
-    <p class="dir">0:48–1:42　体验　·　张阿姨 + 阿杰老周 + 59049</p>
-    <p class="cut">&gt; 【画面】游戏开场：2027 / AI 改变了一切 / 5 亿。张阿姨像素头像 + 10 万。</p>
-    <p class="say">2027 年。AI 改变了一切。未来科技指数，去年暴涨百分之八十六。你刚接手一只量化基金，规模五亿。里面有张阿姨的十万块退休金。每个月，她打电话问一次：我的钱呢？</p>
+    <p class="dir">0:52–1:38　巧思　·　张阿姨是脸，名次是尺</p>
+    <p class="cut">&gt; 【画面】早间新闻一条条翻出来，脚注：「都是年初就能知道的信息」。张阿姨 10 万。</p>
+    <p class="say">2027 年。AI 改变了一切。你刚接手一只量化基金。里面有张阿姨的十万块退休金。每个月她打电话问一次：我的钱呢？</p>
     <p class="say"><b>收益率是个百分比。张阿姨，是一个人。</b></p>
     <p class="dir">（语气沉一点）</p>
-    <p class="cut">&gt; 【画面】阿杰 / 老周并排。字幕：三个月没在一张桌上吃饭。</p>
-    <p class="say">你以为机构每天在看线。其实不是。机构是一个组织，声音越多，越不知道该听谁的。</p>
-    <p class="say">阿杰信趋势。老周上一轮看着产品清盘，只信先活下来。他们已经三个月，没在一张桌上吃饭了。</p>
-    <p class="say">这一行心照不宣：<b>会议室里嗓门最大的，往往不是战绩最好的。</b>每年他们吵。渠道要规模，大客户要比排名，张阿姨要本金。你来拍板。</p>
-    <p class="cut">&gt; 【画面】大字：10 年 · 10 个决定。再切：3¹⁰ = 59,049。</p>
-    <p class="say">十年。十个决定。每年三选一。<b>3 的 10 次方。五万九千零四十九种人生。</b>我把每一种都跑了一遍。玩完，告诉你排第几。</p>
+    <p class="say">桌上的信号会打架。有人要追，有人要守，渠道要规模，张阿姨要本金。声音越多，越不知道该听谁的。你来拍板。</p>
+    <p class="say">大家以为，这是个炒股游戏。其实不是。消息齐了，优势齐了，每年还是三选一。十年，十个决定。</p>
+    <p class="cut">&gt; 【画面】3¹⁰ 展开成 59,049。再切游戏成绩页的「第 X 名」，数字虚化。</p>
+    <p class="say"><b>3 的 10 次方。五万九千零四十九种人生。</b>我把每一种都跑了一遍。</p>
     <p class="dir">（停）</p>
 
-    <p class="dir">1:42–2:08　设计　·　卖挑战，不剧透</p>
-    <p class="say">大家以为这是炒股游戏。其实不是。你赌的不是涨还是跌，是狂热时听谁的，害怕时听谁的。</p>
-    <p class="say"><b>机构和散户真正的差距，不在赚钱那几年，在复盘那几天。</b>玩到一半觉得似曾相识，先别急。结局会告诉你为什么。</p>
+    <p class="dir">1:38–2:12　为什么这样设计　·　能比的东西只剩名次</p>
+    <p class="say">我为什么这样设计？因为把信息抹平以后，还剩下一个能比的东西：你排第几。</p>
+    <p class="say">同一起点，同样的信息，同样的优势，就差那十个决定。<b>玩完不是听我讲道理。玩完是一个名次。</b></p>
+    <p class="say">玩到一半觉得似曾相识，先别急。结局会告诉你为什么。</p>
 
-    <p class="dir">2:08–2:42　获得感　·　三句话 + 人格钩子</p>
+    <p class="dir">2:12–2:42　获得感　·　明说：比排名</p>
     <p class="dir">（语气放慢）</p>
-    <p class="cut">&gt; 【画面】三张金句卡片。最后「投资人格」四个字母打码，不揭晓类型名。</p>
-    <p class="say">玩完带走三样。</p>
-    <p class="say">第一句：<b>机构不是开了天眼，机构只是开了一张记分表。</b></p>
-    <p class="say">第二句：<b>曲线是给老板看的，回撤是给张阿姨看的。</b></p>
-    <p class="say">第三句：<b>不必找一个神。看懂规律，守住纪律，更重要。</b></p>
-    <p class="say">还有你的投资人格。截图那四个字母。下期，我对全网的答案。</p>
+    <p class="cut">&gt; 【画面】大字：59,049 种玩法里　第 ? 名。旁边张阿姨的十万。不要揭晓真相页。</p>
+    <p class="say">所以玩完你能带走的，就是这个名次。五万九千零四十九种里第几。也是你跟所有来玩的人，比一比。</p>
+    <p class="say">名次后面有一张脸。张阿姨的十万，还在不在，你会看见。</p>
+    <p class="say">有趣的是你真的坐进去吵完那十年。有意义的是：<b>原来机构也不是开了天眼。信息和优势给你了，难的是选。</b></p>
     <p class="dir">（停）</p>
 
-    <p class="dir">2:42–3:00　收口　·　作业 + 金句</p>
-    <p class="cut">&gt; 【画面】链接 + 二维码。结束定格金句。</p>
-    <p class="say">链接在下面。五分钟，测测你的财商。玩完告诉我：你听了阿杰，还是老周？张阿姨的十万，你还剩多少？</p>
-    <p class="say">你讨厌机构，可以。但你坐没坐过那张椅子，是两回事。</p>
-    <p class="say"><b>基金不是神。机构也不是天敌。难的是——钱是别人的，决定，是你的。</b></p>
+    <p class="dir">2:42–3:00　收口　·　报排名</p>
+    <p class="cut">&gt; 【画面】链接 + 二维码。定格：你排第几？</p>
+    <p class="say">链接在下面。五分钟。测测你的财商，看你排第几。</p>
+    <p class="say">玩完回来报两个数：你第几名。张阿姨的十万，还剩多少。</p>
+    <p class="say"><b>基金不是神。名次，才是老实话。</b></p>
   </div>
 
   <div class="btns">
@@ -152,115 +151,111 @@ th{color:var(--mut);font-weight:600}
   <h2 id="cover">封面、标题、简介</h2>
   <div class="card">
     <div class="k">抖音封面主字（3:4，人物居中留位）</div>
-    <div class="cover">换你来管</div>
-    <p>副字：张阿姨的十万，交给你　　角标：5 分钟小游戏</p>
-    <p class="sub">备选主字：一张椅子　/　机构没有天眼　/　59,049 种人生</p>
+    <div class="cover">你能排第几</div>
+    <p>副字：机构的信息，全给你了　　角标：59,049 种玩法</p>
+    <p class="sub">备选主字：信息齐了，看你怎么选　/　换你来管</p>
   </div>
   <div class="grid two">
     <div class="card">
       <div class="k">抖音标题</div>
-      <p>换我来管都比基金经理强？好，椅子让给你</p>
-      <p class="sub">备选：机构到底有没有天眼？我做了个游戏请你坐进去</p>
+      <p>机构的信息全给你了，59,049 种里你能排第几</p>
+      <p class="sub">备选：换我来管都比基金经理强？好，先报个名次</p>
     </div>
     <div class="card">
       <div class="k">B 站标题</div>
-      <p>【游戏发布会】请你当十年量化基金经理，张阿姨的十万交给你</p>
-      <p class="sub">备选：散户 vs 机构：我把那张椅子转过来了</p>
+      <p>【游戏发布会】请你当十年基金经理：信息齐了，看你排第几</p>
+      <p class="sub">备选：散户 vs 机构：我把信息源和优势都摊给你了</p>
     </div>
   </div>
   <div class="card">
-    <div class="k">简介（两平台通用，可略改）</div>
-    <p>每次大盘一跌，都有人说换我来管。好，我给你这张椅子。《量化基金生存录》：十年，十个决定，59,049 种玩法。玩完看你排第几，还有投资人格。<br>
-    玩游戏：https://xiaolipearl.com/games/quant-fund/?from=<span class="mono">dy</span>　（B 站把 dy 改成 <span class="mono">bl</span>）<br>
+    <div class="k">简介（两平台通用）</div>
+    <p>大家以为机构和散户差在内幕。我做了个游戏：机构的信息源和优势全给你，每年只给年初能知道的，十年十个决定。玩完看你在 59,049 种玩法里排第几。<br>
+    玩游戏：https://xiaolipearl.com/games/quant-fund/?from=<span class="mono">dy</span>　（B 站改成 <span class="mono">bl</span>）<br>
     财商教育小游戏，不构成任何投资建议。</p>
   </div>
 
-  <h2 id="shots">分镜（剪辑照这个走）</h2>
+  <h2 id="shots">分镜</h2>
   <div class="card" style="overflow-x:auto">
     <table>
       <tr><th>时间</th><th>口播任务</th><th>画面</th><th>字幕</th></tr>
-      <tr><td class="time">0:00</td><td>评论区原话</td><td>A-roll 近景 + 评论滚动</td><td>换我来管，都比基金经理强</td></tr>
-      <tr><td class="time">0:08</td><td>让椅子</td><td>眼神停半拍，再笑</td><td>好。我给你这个机会</td></tr>
-      <tr><td class="time">0:16</td><td>恨 + 好奇</td><td>门 / 空椅子</td><td>有内幕？有天眼？还是也在猜</td></tr>
-      <tr><td class="time">0:28</td><td>椅子理论</td><td>一张椅子转过来（真人侧）</td><td>冲突不是谁更聪明，是一张椅子</td></tr>
-      <tr><td class="time">0:44</td><td>初心</td><td>游戏标题卡</td><td>正经的东西，用有趣的方式讲完</td></tr>
-      <tr><td class="time">0:48</td><td>进入世界</td><td>游戏实机：2027、86%、5 亿</td><td>2027 · AI 改变了一切</td></tr>
-      <tr><td class="time">1:02</td><td>张阿姨</td><td>游戏里张阿姨 + 10 万</td><td>收益率是个百分比。张阿姨是一个人</td></tr>
-      <tr><td class="time">1:12</td><td>阿杰 / 老周</td><td>两人卡牌对切，不要配胜负</td><td>三个月没在一张桌上吃饭</td></tr>
-      <tr><td class="time">1:26</td><td>你来拍板</td><td>三选一按钮，手指悬停不点破</td><td>会议室里嗓门最大的，往往不是战绩最好的</td></tr>
-      <tr><td class="time">1:36</td><td>59049</td><td>3¹⁰ 展开成 59,049</td><td>3 的 10 次方。五万九千零四十九种人生</td></tr>
-      <tr><td class="time">1:42</td><td>不是炒股游戏</td><td>A-roll，判断句</td><td>差距不在赚钱那几年，在复盘那几天</td></tr>
+      <tr><td class="time">0:00</td><td>评论区原话</td><td>A-roll + 评论滚动</td><td>换我来管，都比基金经理强</td></tr>
+      <tr><td class="time">0:08</td><td>让椅子 + 让底牌</td><td>眼神停半拍</td><td>机构那套，我也给你</td></tr>
+      <tr><td class="time">0:16</td><td>恨 + 好奇</td><td>「有内幕？」大字</td><td>最想拆的就一件事：有没有内幕</td></tr>
+      <tr><td class="time">0:32</td><td>掀掉信息差</td><td>早间新闻实机：新闻 / 公告 / 群聊往下翻</td><td>信息源全给你。优势也给你</td></tr>
+      <tr><td class="time">0:44</td><td>没有上帝视角</td><td>游戏脚注特写：「都是年初就能知道的信息」</td><td>没有上帝视角。机构也没有</td></tr>
+      <tr><td class="time">0:52</td><td>初心</td><td>游戏标题卡</td><td>正经的东西，用有趣的方式讲完</td></tr>
+      <tr><td class="time">1:00</td><td>张阿姨</td><td>10 万数字 + 头像</td><td>收益率是个百分比。张阿姨是一个人</td></tr>
+      <tr><td class="time">1:12</td><td>信号打架</td><td>三选一按钮，手指悬停不点破</td><td>声音越多，越不知道该听谁的</td></tr>
+      <tr><td class="time">1:28</td><td>59049</td><td>3¹⁰ 展开成 59,049</td><td>五万九千零四十九种人生</td></tr>
+      <tr><td class="time">1:38</td><td>为什么这样设计</td><td>A-roll</td><td>玩完不是听我讲道理。玩完是一个名次</td></tr>
       <tr><td class="time">1:58</td><td>悬念</td><td>「揭晓真相」按钮虚化，不要点开</td><td>似曾相识，先别急</td></tr>
-      <tr><td class="time">2:08</td><td>三句获得感</td><td>三张卡片，一屏一句</td><td>三句金句原文</td></tr>
-      <tr><td class="time">2:32</td><td>人格钩子</td><td>四个字母打码 / 只露一个</td><td>截图那四个字母。下期对答案</td></tr>
-      <tr><td class="time">2:42</td><td>作业 + 收口</td><td>链接 + 二维码 + 定格金句</td><td>钱是别人的，决定是你的</td></tr>
+      <tr><td class="time">2:12</td><td>获得感</td><td>成绩页「第 ? 名」做主视觉</td><td>59,049 种里，你排第几</td></tr>
+      <tr><td class="time">2:42</td><td>报排名</td><td>链接 + 二维码 + 定格名次</td><td>基金不是神。名次，才是老实话</td></tr>
     </table>
   </div>
 
   <h2 id="viral">互动、裂变、以后能呼应</h2>
   <div class="grid two">
     <div class="card">
-      <div class="k">置顶评论（两平台同一条）</div>
-      <p>作业交这里：1. 你听阿杰还是老周？2. 张阿姨的十万还剩多少？3. 截图人格四个字母，下期对全网答案。<br>游戏：xiaolipearl.com/games/quant-fund/</p>
+      <div class="k">置顶评论</div>
+      <p>作业就一个：截图你的名次。59,049 种里第几，张阿姨还剩多少。<br>游戏：xiaolipearl.com/games/quant-fund/</p>
     </div>
     <div class="card">
-      <div class="k">抖音贴纸 / 互动</div>
-      <p>投票：狂热的时候你听谁的？阿杰 / 老周<br>引导：「先投，再点链接坐十分钟。」</p>
+      <div class="k">抖音贴纸</div>
+      <p>投票：机构和散户，到底差在哪？信息 / 决策<br>引导：「先投，再点链接看你排第几。」</p>
     </div>
     <div class="card">
-      <div class="k">裂变话术（口播里已埋，评论可重复）</div>
-      <p>把这条发给那个天天说「换我来管」的朋友。让他先坐十分钟，再回来骂。</p>
+      <div class="k">裂变</div>
+      <p>发给那个说「换我来管」的人。让他先报个名次，再回来骂。</p>
     </div>
     <div class="card">
-      <div class="k">下期能接的钩子（这期只点，不揭）</div>
-      <p>全网最多人是哪种人格 · 听阿杰的平均排第几 · 多少人在狂热年冲了进去 · 「似曾相识」到底是什么</p>
+      <div class="k">下期只点不揭</div>
+      <p>全网平均排第几 · 多少人没活过十年 · 前 5% 狂热那年怎么选 · 「似曾相识」到底是什么</p>
     </div>
   </div>
   <div class="card">
-    <div class="k">渠道链接（后台能分开看）</div>
+    <div class="k">渠道链接</div>
     <p class="mono">抖音　https://xiaolipearl.com/games/quant-fund/?from=dy<br>
     B站　　https://xiaolipearl.com/games/quant-fund/?from=bl<br>
     微信　https://xiaolipearl.com/games/quant-fund/?from=wx</p>
   </div>
 
-  <h2 id="ban">禁区（拍和剪都盯着）</h2>
+  <h2 id="ban">禁区</h2>
   <div class="card ban">
-    <p><b>结局反转绝对不能说。</b>不要点开「揭晓真相」做素材。不要出现真实历史年份、真实指数名字、某一场危机的对应关系。口播只用游戏自己的悬念句：玩到一半觉得似曾相识，先别急。</p>
-    <p>不说收割、不点名机构、不晒薪资、不荐股、不教买卖。可以说「财商教育小游戏，不是投资建议」，放简介和小字，口播收口不要被免责声明稀释。</p>
-    <p>阿杰和老周只介绍立场，不宣布谁是对的。人格类型名这期不揭晓，只让人去截四个字母。</p>
+    <p><b>不要拿另一款游戏的获得感来卖这一款。</b>不说四个字母、不说投资人格、不说性格测试。那是《金融里，你是什么登？》。这款的作业只有名次。</p>
+    <p><b>结局反转绝对不能说。</b>不要点开「揭晓真相」。不要出现真实历史年份、真实指数名字。只用：玩到一半觉得似曾相识，先别急。</p>
+    <p>不说收割、不点名机构、不荐股。免责放简介。不宣布会议上谁是对的。</p>
   </div>
 
-  <h2>金句字幕（一共 7 句，不要再堆）</h2>
+  <h2>金句字幕（5 句，不要再堆）</h2>
   <div class="card">
     <ol>
       <li>换我来管，都比基金经理强。</li>
-      <li>散户和机构的冲突，不是谁更聪明。是一张椅子。</li>
+      <li>散户和机构的冲突，被讲成信息不对称太久了。</li>
       <li>收益率是个百分比。张阿姨，是一个人。</li>
-      <li>会议室里嗓门最大的，往往不是战绩最好的。</li>
       <li>3 的 10 次方。五万九千零四十九种人生。</li>
-      <li>机构和散户真正的差距，不在赚钱那几年，在复盘那几天。</li>
-      <li>基金不是神。机构也不是天敌。难的是——钱是别人的，决定，是你的。</li>
+      <li>基金不是神。名次，才是老实话。</li>
     </ol>
-    <p class="sub">三句获得感是第二组字幕，和上面可以共用「记分表 / 张阿姨 / 不必找一个神」。</p>
+    <p class="sub">可穿插：玩完不是听我讲道理。玩完是一个名次。／ 信息和优势给你了，难的是选。</p>
   </div>
 
-  <h2 id="review">审片（内部）</h2>
+  <h2 id="review">审片（V2）</h2>
   <div class="card" style="overflow-x:auto">
     <table>
       <tr><th>标准</th><th>分</th><th>判断</th></tr>
-      <tr><td>3 秒钩子</td><td>9</td><td>开口就是评论区原话，先接住情绪再让椅子</td></tr>
-      <tr><td>受众宽度</td><td>8</td><td>张阿姨、椅子、打电话问钱，不懂量化也听得懂</td></tr>
-      <tr><td>立场张力</td><td>8</td><td>散户 vs 机构、阿杰 vs 老周，但不站到观众对面</td></tr>
-      <tr><td>认知增量</td><td>8</td><td>机构不是天眼，是一个会吵架的组织</td></tr>
-      <tr><td>获得感</td><td>9</td><td>三句话 + 排名 + 人格作业，收藏理由清楚</td></tr>
-      <tr><td>转发理由</td><td>8</td><td>发给那个说「换我来管」的人</td></tr>
-      <tr><td>人设记忆点</td><td>8</td><td>3 的 10 次方、张阿姨、让椅子，换别人念会瘪</td></tr>
-      <tr><td>风险</td><td>低</td><td>不剧透、不荐股、不对立词；金融题材仍走教育口径</td></tr>
+      <tr><td>3 秒钩子</td><td>9</td><td>评论区原话，紧接着「机构那套我也给你」</td></tr>
+      <tr><td>受众宽度</td><td>8</td><td>内幕、早间新闻、排第几，不懂量化也听得懂</td></tr>
+      <tr><td>立场张力</td><td>8</td><td>信息 vs 决策，邀请去比，不站对立面</td></tr>
+      <tr><td>认知增量</td><td>9</td><td>机构的优势被摊平以后，剩下的才是决策</td></tr>
+      <tr><td>获得感</td><td>9</td><td>名次，可截图、可评论、可跟别人比</td></tr>
+      <tr><td>转发理由</td><td>8</td><td>发给「换我来管」的人，让他报名次</td></tr>
+      <tr><td>人设记忆点</td><td>8</td><td>3 的 10 次方、没有上帝视角、名次才是老实话</td></tr>
+      <tr><td>风险</td><td>低</td><td>不剧透、不荐股、不和另一款游戏抢获得感</td></tr>
     </table>
-    <p>结论：通过。拍的时候金句后一定停，59049 要念全称，不要滑成「五万九」。</p>
+    <p>结论：通过。59049 念全称。成绩页只露「第 ? 名」，不要把结局页剪进去。</p>
   </div>
 
-  <p class="foot sub" style="margin-top:28px">《量化基金生存录》为财商教育演示，不构成任何投资建议。提词本仅供内容制作，游戏在 <a href="https://xiaolipearl.com/games/quant-fund/?from=launch">xiaolipearl.com/games/quant-fund/</a></p>
+  <p class="sub" style="margin-top:28px">《量化基金生存录》为财商教育演示，不构成任何投资建议。游戏在 <a href="https://xiaolipearl.com/games/quant-fund/?from=launch">xiaolipearl.com/games/quant-fund/</a></p>
 </div>
 <script>
 const spoken=[...document.querySelectorAll(".script .say")].map(p=>p.innerText).join("");
