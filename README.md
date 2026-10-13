@@ -88,6 +88,20 @@ python3 tools/analyze.py --url https://xiaolipearl.com --token 你的ADMIN_TOKEN
 
 会生成原始数据 `raw_日期.json` 和 `玩家数据报告_日期.xlsx`，报告包含：概览、流失漏斗、每年选择分布（标出最优选择）、投资人格分布、最常听谁的、成绩分布、每年思考时长、可直接用于下期视频的「下期素材」。
 
+## 剪辑工作室（/admin/studio）
+
+在网站上做视频：上传口播 → 电脑（worker）自动转写、粗剪、抠像、排画面 → 网站上改画面计划 → 渲染成片。网站只管调度（KV），文件放腾讯云 COS 私有桶，算力在小梨的电脑上（以后可以加云 GPU，网站不用改）。
+
+一次性设置：
+
+1. 腾讯云 COS：私有桶 `xiaoli-studio-1501112605`（广州），跨域规则放行 `https://xiaolipearl.com`、`https://www.xiaolipearl.com`、`http://127.0.0.1:8790`，方法 PUT/GET/POST/HEAD
+2. 访问管理里建子用户（只开编程访问），只关联策略 `XiaoliStudioCosRW`（只能读写这一个桶）
+3. EdgeOne 项目 → 设置 → 环境变量，新增：`COS_SECRET_ID`、`COS_SECRET_KEY`（子用户的密钥）、`COS_BUCKET=xiaoli-studio-1501112605`、`COS_REGION=ap-guangzhou`、`WORKER_TOKEN`（≥16 位，只给 worker 用）；重新部署
+4. 验证：`/api/health` 里 `cos` 和 `worker_token` 都是 `true`
+5. 电脑上（xiaoli-studio 工程）双击 `worker.bat`，粘贴同一个 `WORKER_TOKEN`；会注册成登录自启
+
+接口都在 `functions/api/studio/index.js`：浏览器用 `ADMIN_TOKEN`，worker 用 `WORKER_TOKEN`（只能领任务、报进度、签 COS 链接）。KV 前缀：`ep_`（一期索引，`.studio` 字段）、`job_`（任务）、`jlog_`（日志尾巴）、`wk_`（worker 心跳）。COS 路径：`raw/<期>/` 原片和稿子，`ep/<期>/` 粗剪、抠像、episode.json，`out/<期>/` 成片和封面，`assets/` 3D 序列、B-roll、画面计划历史版本。密钥只在 EdgeOne 环境变量里，浏览器和 worker 只拿短时签名链接。
+
 ## 免责声明
 
 所有游戏仅为财商教育演示，不构成任何投资建议。投资有风险，入市需谨慎。

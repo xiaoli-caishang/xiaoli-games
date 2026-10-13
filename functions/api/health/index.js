@@ -7,10 +7,14 @@ export async function onRequest({ env }) {
   if (kv) {
     try { await kv.get('c_start'); kvOk = true; } catch (e) { kvErr = String(e && e.message || e).slice(0, 120); }
   } else kvErr = 'kv_not_bound';
+  const g = (k) => (env && env[k]) || globalThis[k] || '';
+  const cos = !!(g('COS_SECRET_ID') && g('COS_SECRET_KEY') && g('COS_BUCKET') && g('COS_REGION'));
   return new Response(JSON.stringify({
     ok: kvOk && tok.length >= 12,
     kv: kvOk, kv_err: kvErr || undefined,
     admin_token: tok.length >= 12,
+    cos, // 小梨 Studio：COS 四个环境变量都填了
+    worker_token: g('WORKER_TOKEN').length >= 16,
     time: new Date().toISOString(),
   }), { headers: H });
 }
