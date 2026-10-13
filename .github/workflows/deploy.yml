@@ -72,3 +72,18 @@ jobs:
           done
           echo "::error::/api/health still not ok. Confirm domain xiaolipearl.com is on project $EDGEONE_PROJECT and trigger 重新部署 in EdgeOne."
           exit 1
+
+      - name: Verify WeChat workbench rollout
+        run: |
+          for i in $(seq 1 12); do
+            html_code=$(curl -s -o /tmp/wechat-page.html -w "%{http_code}" --max-time 20 "$SITE_URL/admin/wechat/" || true)
+            js_code=$(curl -s -o /tmp/wechat-script.js -w "%{http_code}" --max-time 20 "$SITE_URL/admin/wechat/wechat.js" || true)
+            if [ "$html_code" = "200" ] && [ "$js_code" = "200" ] && cmp -s admin/wechat/index.html /tmp/wechat-page.html && cmp -s admin/wechat/wechat.js /tmp/wechat-script.js; then
+              echo "WeChat workbench page and script match the deployed commit."
+              exit 0
+            fi
+            echo "WeChat rollout pending: page HTTP $html_code, script HTTP $js_code"
+            sleep 15
+          done
+          echo "::error::WeChat workbench did not serve the expected committed files."
+          exit 1
