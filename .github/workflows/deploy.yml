@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          cp -r games admin functions _site/
+          cp -r games admin functions assets letters _site/
 
       - name: Deploy via CLI (upload mode only)
         if: env.EDGEONE_DEPLOY_MODE == 'upload'
@@ -86,4 +86,19 @@ jobs:
             sleep 15
           done
           echo "::error::WeChat workbench did not serve the expected committed files."
+          exit 1
+
+      - name: Verify homepage and hero image
+        run: |
+          for i in $(seq 1 12); do
+            page_code=$(curl -s -o /tmp/home.html -w "%{http_code}" --max-time 20 "$SITE_URL/" || true)
+            img_code=$(curl -s -o /tmp/hero.webp -w "%{http_code}" --max-time 20 "$SITE_URL/assets/brand/kingdom-map.webp" || true)
+            if [ "$page_code" = "200" ] && [ "$img_code" = "200" ] && cmp -s index.html /tmp/home.html && cmp -s assets/brand/kingdom-map.webp /tmp/hero.webp; then
+              echo "Homepage and hero image match the deployed commit."
+              exit 0
+            fi
+            echo "Homepage rollout pending: page HTTP $page_code, image HTTP $img_code"
+            sleep 15
+          done
+          echo "::error::Homepage or hero image did not serve the expected committed files."
           exit 1
