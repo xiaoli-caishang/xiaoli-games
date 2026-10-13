@@ -55,6 +55,7 @@ th{color:var(--sub);font-weight:600}
 pre.log{background:#2E1F12;color:#EBDDBE;font:12px/1.5 ui-monospace,Consolas,monospace;padding:12px;border-radius:12px;max-height:420px;overflow:auto;white-space:pre-wrap;word-break:break-all}
 .detail{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
 video{width:100%;border-radius:12px;background:#000;aspect-ratio:16/9}
+video[hidden],#live[hidden],p[hidden]{display:none}
 .scene{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;background:#fff}
 .scene.cur{border-color:var(--sun);box-shadow:0 0 0 2px var(--sun-3)}
 .scene .hd{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -115,7 +116,7 @@ $('gateForm').onsubmit=(e)=>{e.preventDefault();TOKEN=$('gateTok').value.trim();
 const TABS=[['eps','片子'],['new','新建一期'],['jobs','任务'],['tools','3D · 竞品 · 素材'],['help','怎么用']];
 function tabs(){$('tabs').innerHTML=TABS.map(([k,n])=>`<button data-k="${k}" class="${S.tab===k?'on':''}">${n}</button>`).join('');
   document.querySelectorAll('#tabs button').forEach((b)=>b.onclick=()=>go(b.dataset.k))}
-function go(tab,ep){if(S.epDirty&&!confirm('画面计划还没保存，确定离开？'))return;S.tab=tab;S.ep=ep||null;S.epData=null;S.epDirty=false;S.job=null;
+function go(tab,ep){if(S.epDirty&&!confirm('画面计划还没保存，确定离开？'))return;destroyPlayer();S.tab=tab;S.ep=ep||null;S.epData=null;S.epDirty=false;S.job=null;
   try{history.replaceState(null,'','#'+tab+(ep?'/'+ep:''))}catch(e){}tabs();render()}
 
 function status(){const s=S.state;if(!s)return;
@@ -125,7 +126,7 @@ function status(){const s=S.state;if(!s)return;
 
 async function load(){
   if(!TOKEN){gate(true);return}
-  try{S.state=await call(null,'?a=state');status();render(true)}catch(e){if(e.message!=='auth')$('view').innerHTML=`<div class="empty">读取失败：${esc(e.message)}</div>`}
+  try{S.state=await call(null,'?a=state');status();render(!!S.loaded);S.loaded=true}catch(e){if(e.message!=='auth')$('view').innerHTML=`<div class="empty">读取失败：${esc(e.message)}</div>`}
 }
 function poll(){clearInterval(S.timer);S.timer=setInterval(async()=>{if(document.hidden||!TOKEN)return;
   try{S.state=await call(null,'?a=state');status();if(S.tab==='jobs'||S.tab==='eps'&&!S.ep)render(true);if(S.job)showJob(S.job,true)}catch(e){}},5000)}
@@ -165,8 +166,8 @@ async function epDetail(){
   const id=S.ep;const e=S.state.episodes.find((x)=>x.id===id)||{id,title:id,studio:{}};const s=e.studio||{};S.lastStage=JSON.stringify(s);
   $('view').innerHTML=`<div class="row" style="margin-bottom:12px"><button class="btn ghost" onclick="go('eps')">← 片子</button><h2 style="margin:0">${esc(e.title)}</h2><span class="pill">${STAGE_N[s.stage]||'—'}</span></div>
   <div class="detail"><div>
-    <div class="row" style="margin-bottom:6px"><span class="sub">看：</span><button class="btn" data-v="aroll">粗剪</button>${s.final?'<button class="btn" data-v="final">成片</button>':''}${s.cover?'<a class="btn" id="coverLink" target="_blank">封面</a>':''}</div>
-    <video id="vid" controls playsinline preload="metadata"></video>
+    <div class="row" style="margin-bottom:6px"><span class="sub">看：</span><button class="btn" data-v="live">包装预览</button><button class="btn" data-v="aroll">粗剪</button>${s.final?'<button class="btn" data-v="final">成片</button>':''}${s.cover?'<a class="btn" id="coverLink" target="_blank">封面</a>':''}</div>
+    <video id="vid" controls playsinline preload="metadata"></video><div id="live" hidden></div><p class="sub" id="liveNote" hidden style="margin:4px 0 0">实时预览：改画面立刻生效（Safari 不显示抠像层；最终以「渲染成片」为准）</p>
     <div class="tl" id="tl" title="点一下跳到这里"></div>
     <div class="row"><button class="btn sun" id="bRender">渲染成片</button><button class="btn" id="bCover">出封面</button><button class="btn" id="bReplan">按稿子重做画面</button></div>
     <h3>任务</h3><div id="epJobs"></div>
@@ -178,23 +179,28 @@ async function epDetail(){
     <div id="plan"><div class="empty">读取中…</div></div>
   </div></div>`;
   jobStrip();
-  const vid=$('vid');
-  const play=async(which)=>{try{vid.src=await signed('GET',which==='final'?s.final:`ep/${id}/aroll.mp4`,6*3600)}catch(x){toast('视频链接失败：'+x.message)}};
-  document.querySelectorAll('[data-v]').forEach((b)=>b.onclick=()=>play(b.dataset.v));play(s.final?'final':'aroll');
+  const vid=$('vid');destroyPlayer();S.view='aroll';
+  const play=async(which)=>{document.querySelectorAll('[data-v]').forEach((b)=>b.classList.toggle('sun',b.dataset.v===which));
+    if(which==='live'){if(!S.epData){toast('画面计划还没读到');return}S.view='live';vid.pause();vid.hidden=true;$('live').hidden=false;$('liveNote').hidden=false;try{await mountPlayer()}catch(x){toast('预览加载失败：'+x.message)}return}
+    S.view=which;if(S.player)S.player.pause();$('live').hidden=true;$('liveNote').hidden=true;vid.hidden=false;
+    try{vid.src=await signed('GET',which==='final'?s.final:`ep/${id}/aroll.mp4`,6*3600)}catch(x){toast('视频链接失败：'+x.message)}};
+  S.play=play;
+  document.querySelectorAll('[data-v]').forEach((b)=>b.onclick=()=>play(b.dataset.v));
   if(s.cover)signed('GET',s.cover,3600).then((u)=>{$('coverLink').href=u}).catch(()=>{});
   $('bRender').onclick=async()=>{if(S.epDirty&&!(await savePlan()))return;newJob('render',id,{}).then(jobStrip)};
   $('bCover').onclick=async()=>{const t=prompt('封面大字（≤10 字）',e.title.slice(0,10));if(t==null)return;const sub=prompt('封面小字（英文小标）','XIAOLI')||'XIAOLI';
-    const at=vid.currentTime||3;if(S.epDirty&&!(await savePlan()))return;newJob('cover',id,{title:t,sub,at:+at.toFixed(2)}).then(jobStrip)};
+    const at=T()||3;if(S.epDirty&&!(await savePlan()))return;newJob('cover',id,{title:t,sub,at:+at.toFixed(2)}).then(jobStrip)};
   $('bReplan').onclick=()=>{if(S.epData&&S.epData._locked){toast('画面计划已锁定，先取消锁定');return}if(confirm('按 raw/ 里的稿子重新生成画面计划？手改的内容会被覆盖（会先备份）。'))newJob('replan',id,{script:`raw/${id}/script.md`}).then(jobStrip)};
-  vid.ontimeupdate=()=>{const t=vid.currentTime;const b=$('tl').querySelector('b');if(b&&S.epData)b.style.left=(t/(S.epData.duration||1)*100)+'%';
-    const p=(S.epData&&S.epData.plan)||[];const i=p.findIndex((x)=>t>=+x.at&&t<+x.at+(+x.dur||0));if(i!==S.cur){S.cur=i;document.querySelectorAll('.scene').forEach((el,k)=>el.classList.toggle('cur',k===i))}};
-  $('tl').onclick=(ev)=>{if(!S.epData)return;const r=$('tl').getBoundingClientRect();vid.currentTime=(ev.clientX-r.left)/r.width*(S.epData.duration||0)};
+  vid.ontimeupdate=()=>onTime(vid.currentTime);
+  S.onTime=onTime;function onTime(t){const b=$('tl')&&$('tl').querySelector('b');if(b&&S.epData)b.style.left=(t/(S.epData.duration||1)*100)+'%';
+    const p=(S.epData&&S.epData.plan)||[];const i=p.findIndex((x)=>t>=+x.at&&t<+x.at+(+x.dur||0));if(i!==S.cur){S.cur=i;document.querySelectorAll('.scene').forEach((el,k)=>el.classList.toggle('cur',k===i))}}
+  $('tl').onclick=(ev)=>{if(!S.epData)return;const r=$('tl').getBoundingClientRect();SEEK((ev.clientX-r.left)/r.width*(S.epData.duration||0))};
   getText(`ep/${id}/work/exports/removed.txt`).then((t)=>{$('removed').textContent=t||'（没有记录：可能是从演示片同步来的）'}).catch((x)=>{$('removed').textContent='读取失败：'+x.message});
   const dl=[['剪映字幕 cut.srt',`ep/${id}/work/exports/cut.srt`],['达芬奇时间线 timeline.fcpxml',`ep/${id}/work/exports/timeline.fcpxml`],['episode.json',`ep/${id}/episode.json`]].concat(s.final?[['成片 final.mp4',s.final]]:[]);
   $('dl').innerHTML=dl.map(([n,k])=>`<button class="btn" data-dl="${esc(k)}">${esc(n)}</button>`).join('');
   $('dl').querySelectorAll('[data-dl]').forEach((b)=>b.onclick=async()=>{try{window.open(await signed('GET',b.dataset.dl,3600),'_blank')}catch(x){toast(x.message)}});
   try{const t=await getText(`ep/${id}/episode.json`);if(S.ep!==id)return;if(!t){$('plan').innerHTML='<div class="empty">COS 上还没有 episode.json（任务做完会自动出现）</div>';return}
-    S.epData=JSON.parse(t);drawPlan()}catch(x){$('plan').innerHTML=`<div class="empty">读取失败：${esc(x.message)}</div>`}
+    S.epData=JSON.parse(t);drawPlan();play(s.final&&!S.epDirty&&location.hash.includes('final')?'final':'live')}catch(x){play('aroll');$('plan').innerHTML=`<div class="empty">读取失败：${esc(x.message)}</div>`}
   $('bSave').onclick=savePlan;
 }
 function sceneText(sc){const o=Object.assign({},sc);delete o.at;delete o.dur;delete o.type;return JSON.stringify(o)}
@@ -212,12 +218,32 @@ function drawPlan(){const d=S.epData,p=d.plan||[];
   $('plan').querySelectorAll('.scene').forEach((el)=>{const i=+el.dataset.i;
     el.querySelectorAll('input.t').forEach((inp)=>inp.onchange=()=>{const v=parseFloat(inp.value);if(isNaN(v))return;p[i][inp.dataset.f]=Math.max(0,+v.toFixed(3));dirty();drawPlan()});
     el.querySelector('textarea').onchange=(ev)=>{try{const o=JSON.parse(ev.target.value);const keep={type:p[i].type,at:p[i].at,dur:p[i].dur};p[i]=Object.assign(keep,o);ev.target.style.borderColor='';dirty();el.querySelector('.sub').textContent=sceneLabel(p[i]).slice(0,60)}catch(x){ev.target.style.borderColor='var(--bad)';toast('JSON 格式不对')}};
-    el.querySelectorAll('[data-a]').forEach((b)=>b.onclick=()=>{const v=$('vid');
-      if(b.dataset.a==='seek')v.currentTime=+p[i].at||0;
-      if(b.dataset.a==='now'){p[i].at=+v.currentTime.toFixed(2);dirty();drawPlan()}
+    el.querySelectorAll('[data-a]').forEach((b)=>b.onclick=()=>{
+      if(b.dataset.a==='seek')SEEK(+p[i].at||0);
+      if(b.dataset.a==='now'){p[i].at=+T().toFixed(2);dirty();drawPlan()}
       if(b.dataset.a==='del'&&confirm('删掉这个画面？')){p.splice(i,1);dirty();drawPlan()}})});
 }
-function dirty(){S.epDirty=true;$('bSave').disabled=false;$('bSave').textContent='保存*'}
+function dirty(){S.epDirty=true;$('bSave').disabled=false;$('bSave').textContent='保存*';refreshPlayer()}
+
+/* ---------- 实时预览（Remotion Player，素材走 COS 签名链接） ---------- */
+const STATIC_BASE='/admin/studio/static';
+const T=()=>S.view==='live'&&S.player?S.player.time():($('vid')||{}).currentTime||0;
+const SEEK=(t)=>{if(S.view==='live'&&S.player)S.player.seek(t);else if($('vid'))$('vid').currentTime=t};
+S.urls={};
+function cosKey(p){p=String(p||'').replace(/^\/+/,'');if(/^episodes\//.test(p))return 'ep/'+p.slice(9);if(/^(broll|3d)\//.test(p))return 'assets/static/'+p;return null}
+function assetPaths(ep){const out=[ep.video&&ep.video.src,ep.video&&ep.video.person];
+  for(const x of ep.plan||[]){if(x.src)out.push(x.src);if(x.type==='seq3d'&&x.dir&&x.frames)for(let i=1;i<=Math.min(+x.frames,600);i++)out.push(`${x.dir.replace(/\/+$/,'')}/${String(i).padStart(4,'0')}.png`)}
+  return out.filter((p)=>p&&!/^(https?:|data:|blob:)/.test(p))}
+async function signAssets(ep){const need=[...new Set(assetPaths(ep).map(cosKey).filter((k)=>k&&!S.urls[k]))];
+  for(let i=0;i<need.length;i+=300){const d=await call({a:'sign',method:'GET',keys:need.slice(i,i+300),expires:6*3600});Object.assign(S.urls,d.urls)}}
+function loadPlayerJs(){if(window.XLPlayer)return Promise.resolve();if(S.pjs)return S.pjs;
+  window.remotion_staticBase=STATIC_BASE;S.pjs=new Promise((res,rej)=>{const sc=document.createElement('script');sc.src='/admin/studio/player.js?v=1';sc.onload=res;sc.onerror=()=>{S.pjs=null;rej(new Error('player.js 加载失败'))};document.head.appendChild(sc)});return S.pjs}
+const clone=(o)=>JSON.parse(JSON.stringify(o));
+async function mountPlayer(){const ep=S.epData;await Promise.all([loadPlayerJs(),signAssets(ep)]);if(S.epData!==ep||S.view!=='live')return;
+  if(S.player){S.player.update(clone(ep));return}
+  S.player=window.XLPlayer.mount($('live'),clone(ep),{staticBase:STATIC_BASE,resolve:(p)=>{const k=cosKey(p);return k?S.urls[k]:undefined},onTime:(t)=>S.onTime&&S.onTime(t)})}
+function destroyPlayer(){if(S.player){try{S.player.destroy()}catch(e){}S.player=null}}
+function refreshPlayer(){if(!S.player||S.view!=='live')return;clearTimeout(S.rp);S.rp=setTimeout(async()=>{try{await signAssets(S.epData);S.player&&S.player.update(clone(S.epData))}catch(e){}},250)}
 async function savePlan(){const d=S.epData;if(!d)return false;const b=$('bSave');b.disabled=true;b.textContent='保存中…';
   try{(d.plan||[]).sort((a,b)=>(+a.at||0)-(+b.at||0));const bak=`assets/history/${S.ep}/episode-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
     const old=await getText(`ep/${S.ep}/episode.json`);if(old)await putFile(bak,new Blob([old],{type:'application/json'}));
