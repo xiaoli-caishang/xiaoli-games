@@ -100,6 +100,8 @@ python3 tools/analyze.py --url https://xiaolipearl.com --token 你的ADMIN_TOKEN
 4. 验证：`/api/health` 里 `cos` 和 `worker_token` 都是 `true`
 5. 电脑上（xiaoli-studio 工程）双击 `worker.bat`，粘贴同一个 `WORKER_TOKEN`；会注册成登录自启
 
+实时预览：一期详情页的「包装预览」用 Remotion Player 在浏览器里直接播放带包装的画面，改画面立刻生效。`admin/studio/player.js` 由 xiaoli-studio 的 `remotion/src/web/player.tsx` 打包；字体、小梨部件、音效放在 `admin/studio/static/`，粗剪、抠像、B-roll、3D 序列走 COS 签名链接。
+
 接口都在 `functions/api/studio/index.js`：浏览器用 `ADMIN_TOKEN`，worker 用 `WORKER_TOKEN`（只能领任务、报进度、签 COS 链接）。KV 前缀：`ep_`（一期索引，`.studio` 字段）、`job_`（任务）、`jlog_`（日志尾巴）、`wk_`（worker 心跳）。COS 路径：`raw/<期>/` 原片和稿子，`ep/<期>/` 粗剪、抠像、episode.json，`out/<期>/` 成片和封面，`assets/` 3D 序列、B-roll、画面计划历史版本。密钥只在 EdgeOne 环境变量里，浏览器和 worker 只拿短时签名链接。
 
 ## 免责声明
