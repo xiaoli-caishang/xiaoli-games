@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          cp -r games admin functions assets _site/
+          cp -r games admin functions assets letters _site/
 
       - name: Deploy via CLI (upload mode only)
         if: env.EDGEONE_DEPLOY_MODE == 'upload'
