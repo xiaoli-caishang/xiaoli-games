@@ -1108,7 +1108,7 @@ ep(){
   const plays=Object.values(e.metrics).reduce((s,m)=>s+m[0],0),maxP=Math.max(1,...Object.values(e.metrics).map(m=>m[0]));
   const nextIns=ASSETS.filter(a=>a.type==='insights'&&a.ep===e.id);
   return `<div class="card" style="margin-bottom:16px;padding:14px 16px 8px">
-    <div class="hd" style="margin-bottom:4px"><h3>${ic('calendar')}花期 <small>一期内容 = 一朵花：花苞 → 开花 → 盛开 → 结籽</small></h3><button class="btn sm sun" data-toast="新建一期（原型）">${ic('plus')}种下新一期</button></div>
+    <div class="hd" style="margin-bottom:4px"><h3>${ic('calendar')}花期 <small>一期内容 = 一朵花：花苞 → 开花 → 盛开 → 结籽</small></h3><span class="tools" style="margin-left:auto"><a class="btn sm" href="/admin/studio/">${ic('ray')}剪辑工作室</a><button class="btn sm sun" data-toast="新建一期（原型）">${ic('plus')}种下新一期</button></span></div>
     <div class="timeline">${EPISODES.map(x=>{const [n,,c]=STAGE_META[x.stage];return `<div class="ep ${x.id===S.ep?'on':''}" data-ep="${x.id}"><span class="pill ${c}">${n}</span>${bloom(x.stage)}<b>第 ${x.n} 期 · ${esc(x.title)}</b><small>${x.pub?'发布于 '+md(x.pub):STEPS[x.step]+'中'}${x.games?` · ${x.games} 局`:''}</small></div>`}).join('')}</div>
   </div>
   <div class="grid">
