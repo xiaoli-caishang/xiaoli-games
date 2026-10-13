@@ -1067,8 +1067,8 @@ channel(){
   const wx=ACCOUNTS.find(a=>a.p==='wx');
   return `<div class="grid">
     <section class="card c12" style="padding:14px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-      <span class="sub">步骤 F · 每天一笔 <code>metric_日期_平台</code>（粉丝 / 播放 / 互动 / 发布数）。公众号可接微信接口自动抓；抖音、小红书、B站先手工录，后面再接开放平台。</span>
-      <span class="tools" style="margin-left:auto"><button class="btn sm sun" data-toast="录入窗口（原型）：平台 · 日期 · 粉丝 · 播放 · 互动 · 发布数">${ic('plus')}记今天的阳光</button><button class="btn sm" data-toast="CSV 已开始下载（原型）">${ic('down')}CSV</button></span></section>
+      <span class="sub">步骤 F · 每天一笔 <code>metric_日期_平台</code>（粉丝 / 播放 / 互动 / 发布数）。公众号粉丝与阅读在「微信实录」手工记录；下方四平台图表目前仍为演示指标。</span>
+      <span class="tools" style="margin-left:auto"><a class="btn sm sun" href="/admin/wechat/">${ic('plus')}微信实录</a><button class="btn sm" data-toast="CSV 已开始下载（原型）">${ic('down')}CSV</button></span></section>
     <div class="c12 accts">${ACCOUNTS.map((a,i)=>`<section class="card acct" style="--c:${PLAT_COLOR[a.p]};animation-delay:${i*60}ms">
       <div class="pf"><i>${a.name.slice(0,1)}</i><div><b>${a.name}</b><small>${esc(a.handle)} · ${a.api}</small></div></div>
       <div class="fans"><b class="num">${a.fans.toLocaleString()}</b><span class="${a.dfans<0?'down':''}">${a.dfans>=0?'+':''}${a.dfans} 本周</span></div>
