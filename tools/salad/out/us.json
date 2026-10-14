@@ -1,0 +1,552 @@
+{
+  "source": "h1b",
+  "currency": "USD",
+  "unit": "monthly (annual/12)",
+  "roles": {
+    "qr": {
+      "n": 453,
+      "median": 15000.0,
+      "p25": 11583.25,
+      "p75": 18750.0,
+      "cities": {
+        "New York": {
+          "n": 375,
+          "median": 16666.666666666668,
+          "p25": 11897.583333333334,
+          "p75": 19166.666666666668,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 72,
+          "median": 12500.0,
+          "p25": 10000.0,
+          "p75": 15000.0,
+          "years": [
+            2025
+          ]
+        },
+        "San Francisco": {
+          "n": 6,
+          "median": 10699.833333333334,
+          "p25": 10174.958333333334,
+          "p75": 10885.770833333334,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "QUANTITATIVE RESEARCHER",
+        "QUANTITATIVE ANALYST",
+        "QUANTITATIVE RESEARCH ANALYST",
+        "FINANCIAL QUANTITATIVE ANALYST",
+        "FINANCIAL QUANTITATIVE ANALYSTS"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "qdev": {
+      "n": 59,
+      "median": 16666.666666666668,
+      "p25": 12210.458333333334,
+      "p75": 18750.0,
+      "cities": {
+        "New York": {
+          "n": 49,
+          "median": 16666.666666666668,
+          "p25": 12389.833333333334,
+          "p75": 18750.0,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 10,
+          "median": 12687.5,
+          "p25": 11875.0,
+          "p75": 16666.666666666668,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "QUANTITATIVE DEVELOPER",
+        "QUANT DEVELOPER",
+        "QUANTITATIVE SOFTWARE ENGINEER"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "trader": {
+      "n": 151,
+      "median": 16666.666666666668,
+      "p25": 12500.0,
+      "p75": 20833.333333333332,
+      "cities": {
+        "New York": {
+          "n": 90,
+          "median": 18750.0,
+          "p25": 14583.333333333334,
+          "p75": 22835.8125,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 61,
+          "median": 12500.0,
+          "p25": 10833.333333333334,
+          "p75": 16666.666666666668,
+          "years": [
+            2025
+          ]
+        },
+        "San Francisco": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "TRADER",
+        "QUANTITATIVE TRADER",
+        "EQUITY TRADER",
+        "FIXED INCOME TRADER"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "research": {
+      "n": 103,
+      "median": 12500.0,
+      "p25": 10416.666666666666,
+      "p75": 15562.5,
+      "cities": {
+        "New York": {
+          "n": 71,
+          "median": 13333.333333333334,
+          "p25": 10585.5,
+          "p75": 16666.666666666668,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 8,
+          "median": 10323.333333333334,
+          "p25": 6476.791666666667,
+          "p75": 14875.0,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 24,
+          "median": 11833.333333333334,
+          "p25": 10487.1875,
+          "p75": 14361.708333333334,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "RESEARCH ANALYST",
+        "EQUITY RESEARCH ASSOCIATE",
+        "EQUITY RESEARCH ANALYST",
+        "INVESTMENT ANALYST"
+      ],
+      "finance_employer_filtered_titles": [
+        "RESEARCH ANALYST"
+      ],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "pm": {
+      "n": 65,
+      "median": 16250.0,
+      "p25": 12694.916666666666,
+      "p75": 18750.0,
+      "cities": {
+        "New York": {
+          "n": 59,
+          "median": 16250.0,
+          "p25": 12694.916666666666,
+          "p75": 18750.0,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "Chicago": {
+          "n": 3,
+          "median": 16666.666666666668,
+          "p25": 14489.25,
+          "p75": 17200.0,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 3,
+          "median": 33900.0,
+          "p25": 22575.0,
+          "p75": 37783.33333333333,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "PORTFOLIO MANAGER",
+        "ASSOCIATE PORTFOLIO MANAGER"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "vc": {
+      "n": 74,
+      "median": 11666.666666666666,
+      "p25": 10833.333333333334,
+      "p75": 14479.166666666668,
+      "cities": {
+        "New York": {
+          "n": 56,
+          "median": 12291.666666666668,
+          "p25": 10781.25,
+          "p75": 14656.25,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "Chicago": {
+          "n": 2,
+          "median": 8750.0,
+          "p25": 7708.333333333334,
+          "p75": 9791.666666666668,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 16,
+          "median": 11666.666666666666,
+          "p25": 11562.5,
+          "p75": 12180.770833333334,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "PRIVATE EQUITY ASSOCIATE",
+        "INVESTMENT ASSOCIATE",
+        "PRIVATE EQUITY ANALYST",
+        "VENTURE CAPITAL ASSOCIATE"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "risk": {
+      "n": 153,
+      "median": 12033.833333333334,
+      "p25": 9583.333333333334,
+      "p75": 14188.166666666666,
+      "cities": {
+        "New York": {
+          "n": 107,
+          "median": 12319.666666666666,
+          "p25": 10506.25,
+          "p75": 14583.333333333334,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 30,
+          "median": 10119.791666666668,
+          "p25": 7500.0,
+          "p75": 11939.3125,
+          "years": [
+            2025
+          ]
+        },
+        "San Francisco": {
+          "n": 16,
+          "median": 11362.5,
+          "p25": 9888.958333333332,
+          "p75": 14215.604166666666,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "RISK ANALYST",
+        "COMPLIANCE ANALYST",
+        "RISK MANAGER",
+        "FINANCIAL RISK SPECIALISTS",
+        "FINANCIAL RISK SPECIALIST"
+      ],
+      "finance_employer_filtered_titles": [
+        "RISK ANALYST",
+        "COMPLIANCE ANALYST",
+        "RISK MANAGER"
+      ],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "wealth": {
+      "n": 4,
+      "median": 11762.5,
+      "p25": 9616.666666666666,
+      "p75": 16770.833333333332,
+      "cities": {
+        "New York": {
+          "n": 4,
+          "median": 11762.5,
+          "p25": 9616.666666666666,
+          "p75": 16770.833333333332,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "Chicago": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "FINANCIAL ADVISOR",
+        "WEALTH MANAGEMENT ASSOCIATE",
+        "WEALTH ADVISOR",
+        "PRIVATE WEALTH ADVISOR",
+        "WEALTH MANAGEMENT ANALYST",
+        "FINANCIAL PLANNER",
+        "RELATIONSHIP MANAGER",
+        "PERSONAL FINANCIAL ADVISORS"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "sales": {
+      "n": 0,
+      "median": null,
+      "p25": null,
+      "p75": null,
+      "cities": {
+        "New York": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "Chicago": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 0,
+          "median": null,
+          "p25": null,
+          "p75": null,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "INSTITUTIONAL SALES",
+        "SALES TRADER",
+        "INSTITUTIONAL SALES ASSOCIATE",
+        "INSTITUTIONAL EQUITY SALES",
+        "EQUITY SALES",
+        "SALES AND TRADING ANALYST",
+        "SALES AND TRADING ASSOCIATE",
+        "FIXED INCOME SALES"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "product": {
+      "n": 84,
+      "median": 12751.916666666668,
+      "p25": 10932.5625,
+      "p75": 16223.3125,
+      "cities": {
+        "New York": {
+          "n": 51,
+          "median": 12500.0,
+          "p25": 10823.333333333332,
+          "p75": 16232.208333333332,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "Chicago": {
+          "n": 12,
+          "median": 11377.583333333334,
+          "p25": 10791.666666666668,
+          "p75": 11609.875,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 21,
+          "median": 15450.0,
+          "p25": 12916.666666666666,
+          "p75": 17916.666666666668,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "PRODUCT MANAGER",
+        "SENIOR PRODUCT MANAGER"
+      ],
+      "finance_employer_filtered_titles": [
+        "PRODUCT MANAGER",
+        "SENIOR PRODUCT MANAGER"
+      ],
+      "years": [
+        2024,
+        2025
+      ]
+    },
+    "actuary": {
+      "n": 56,
+      "median": 10757.25,
+      "p25": 8333.333333333334,
+      "p75": 16716.0,
+      "cities": {
+        "New York": {
+          "n": 33,
+          "median": 10847.833333333334,
+          "p25": 8500.0,
+          "p75": 14284.25,
+          "years": [
+            2025
+          ]
+        },
+        "Chicago": {
+          "n": 17,
+          "median": 11029.666666666666,
+          "p25": 7333.333333333333,
+          "p75": 17049.333333333332,
+          "years": [
+            2025,
+            2024
+          ]
+        },
+        "San Francisco": {
+          "n": 6,
+          "median": 9666.666666666668,
+          "p25": 7860.0,
+          "p75": 10583.333333333332,
+          "years": [
+            2025,
+            2024
+          ]
+        }
+      },
+      "titles": [
+        "ACTUARIAL ANALYST",
+        "ACTUARIES",
+        "ACTUARY",
+        "ACTUARIAL ASSOCIATE",
+        "ASSOCIATE ACTUARY"
+      ],
+      "finance_employer_filtered_titles": [],
+      "years": [
+        2024,
+        2025
+      ]
+    }
+  }
+}

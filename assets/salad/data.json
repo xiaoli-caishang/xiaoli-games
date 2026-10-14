@@ -1,0 +1,861 @@
+{
+  "meta": {
+    "date": "2026-10",
+    "level": "3–5 年经验",
+    "salad_cny": 1000,
+    "generated_at": "2026-10-14T18:44:21Z",
+    "fx": {
+      "HKD_CNY": 0.8544,
+      "USD_CNY": 6.705,
+      "as_of": "2026-10-14",
+      "src": "open.er-api.com"
+    },
+    "sources": [
+      {
+        "id": "jobui",
+        "name": "职友集",
+        "region": "cn",
+        "url": "https://www.jobui.com/",
+        "note": "岗位×城市 月薪分布，样本为近一年公开招聘信息；优先取 3–5 年经验筛选页"
+      },
+      {
+        "id": "jobsdb",
+        "name": "JobsDB",
+        "region": "hk",
+        "url": "https://hk.jobsdb.com/",
+        "note": "按月薪区间（每 1 万港元一档）的在招职位数量分布，职位标题二次筛选"
+      },
+      {
+        "id": "h1b",
+        "name": "美国劳工部 H-1B LCA 公开数据（经 h1bdata.info 整理）",
+        "region": "us",
+        "url": "https://h1bdata.info/",
+        "note": "H-1B 申报底薪（年薪/12），偏保守，不含奖金"
+      }
+    ]
+  },
+  "regions": [
+    {
+      "id": "cn",
+      "name": "中国一线",
+      "currency": "CNY",
+      "cities": [
+        "上海",
+        "北京",
+        "深圳"
+      ]
+    },
+    {
+      "id": "hk",
+      "name": "香港",
+      "currency": "HKD",
+      "cities": [
+        "香港"
+      ]
+    },
+    {
+      "id": "us",
+      "name": "美国",
+      "currency": "USD",
+      "cities": [
+        "New York",
+        "Chicago",
+        "San Francisco"
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "id": "qr",
+      "name": "量化研究员"
+    },
+    {
+      "id": "qdev",
+      "name": "量化开发"
+    },
+    {
+      "id": "trader",
+      "name": "交易员"
+    },
+    {
+      "id": "research",
+      "name": "行业研究员"
+    },
+    {
+      "id": "pm",
+      "name": "基金经理"
+    },
+    {
+      "id": "vc",
+      "name": "一级市场投资"
+    },
+    {
+      "id": "risk",
+      "name": "风控合规"
+    },
+    {
+      "id": "wealth",
+      "name": "财富顾问"
+    },
+    {
+      "id": "sales",
+      "name": "机构销售"
+    },
+    {
+      "id": "product",
+      "name": "产品与运营"
+    },
+    {
+      "id": "actuary",
+      "name": "精算师"
+    }
+  ],
+  "stats": {
+    "qr": {
+      "cn": {
+        "median_local": 39310,
+        "p25_local": 30879,
+        "p75_local": 47741,
+        "median_cny": 39310,
+        "salad": 39,
+        "n": 143,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 38604,
+            "n": 79
+          },
+          "北京": {
+            "median_local": 40440,
+            "n": 36
+          },
+          "深圳": {
+            "median_local": 39440,
+            "n": 28
+          }
+        },
+        "note": "岗位名合并：量化研究员/量化分析师。 口径：职友集「3–5 年经验」筛选页（n=143）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，均已用页面内的学历分区交叉验证还原。"
+      },
+      "hk": {
+        "median_local": 50975,
+        "p25_local": 42500,
+        "p75_local": 69974,
+        "median_cny": 43553,
+        "salad": 44,
+        "n": 19,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 50975,
+            "n": 19
+          }
+        },
+        "note": "JobsDB 关键词：quantitative researcher、quant researcher、quantitative analyst、quant analyst、quant；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 5 条薪资区间过宽/面议，已剔除。 样本较少（n=19），仅供参考。"
+      },
+      "us": {
+        "median_local": 15000,
+        "p25_local": 11583,
+        "p75_local": 18750,
+        "median_cny": 100575,
+        "salad": 101,
+        "n": 453,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 16667,
+            "n": 375
+          },
+          "Chicago": {
+            "median_local": 12500,
+            "n": 72
+          },
+          "San Francisco": {
+            "median_local": 10700,
+            "n": 6
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：QUANTITATIVE RESEARCHER、QUANTITATIVE ANALYST、QUANTITATIVE RESEARCH ANALYST、FINANCIAL QUANTITATIVE ANALYST、FINANCIAL QUANTITATIVE ANALYSTS；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    },
+    "qdev": {
+      "cn": {
+        "median_local": 38338,
+        "p25_local": 27757,
+        "p75_local": 48164,
+        "median_cny": 38338,
+        "salad": 38,
+        "n": 177,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 38125,
+            "n": 105
+          },
+          "北京": {
+            "median_local": 37477,
+            "n": 36
+          },
+          "深圳": {
+            "median_local": 39257,
+            "n": 36
+          }
+        },
+        "note": "岗位名合并：量化开发/量化开发工程师。 口径：职友集「3–5 年经验」筛选页（n=177）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，均已用页面内的学历分区交叉验证还原。"
+      },
+      "hk": {
+        "median_local": 34211,
+        "p25_local": 27105,
+        "p75_local": 46251,
+        "median_cny": 29230,
+        "salad": 29,
+        "n": 9,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 34211,
+            "n": 9
+          }
+        },
+        "note": "JobsDB 关键词：quantitative developer、quant developer、quantitative engineer、quant；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 样本较少（n=9），仅供参考。"
+      },
+      "us": {
+        "median_local": 16667,
+        "p25_local": 12210,
+        "p75_local": 18750,
+        "median_cny": 111750,
+        "salad": 112,
+        "n": 59,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 16667,
+            "n": 49
+          },
+          "Chicago": {
+            "median_local": 12688,
+            "n": 10
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：QUANTITATIVE DEVELOPER、QUANT DEVELOPER、QUANTITATIVE SOFTWARE ENGINEER；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    },
+    "trader": {
+      "cn": {
+        "median_local": 19252,
+        "p25_local": 14025,
+        "p75_local": 27965,
+        "median_cny": 19252,
+        "salad": 19,
+        "n": 537,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 19614,
+            "n": 272
+          },
+          "北京": {
+            "median_local": 18873,
+            "n": 165
+          },
+          "深圳": {
+            "median_local": 18405,
+            "n": 100
+          }
+        },
+        "note": "岗位名合并：交易员/证券交易员/期货交易员。 口径：职友集「3–5 年经验」筛选页（n=537）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，4 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥1,402）。"
+      },
+      "hk": {
+        "median_local": 41859,
+        "p25_local": 31112,
+        "p75_local": 54951,
+        "median_cny": 35764,
+        "salad": 36,
+        "n": 71,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 41859,
+            "n": 71
+          }
+        },
+        "note": "JobsDB 关键词：trader；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 6 条薪资区间过宽/面议，已剔除。"
+      },
+      "us": {
+        "median_local": 16667,
+        "p25_local": 12500,
+        "p75_local": 20833,
+        "median_cny": 111750,
+        "salad": 112,
+        "n": 151,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 18750,
+            "n": 90
+          },
+          "Chicago": {
+            "median_local": 12500,
+            "n": 61
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：TRADER、QUANTITATIVE TRADER、EQUITY TRADER、FIXED INCOME TRADER；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    },
+    "research": {
+      "cn": {
+        "median_local": 26411,
+        "p25_local": 19801,
+        "p75_local": 36962,
+        "median_cny": 26411,
+        "salad": 26,
+        "n": 102,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 26778,
+            "n": 35
+          },
+          "北京": {
+            "median_local": 24231,
+            "n": 29
+          },
+          "深圳": {
+            "median_local": 28346,
+            "n": 38
+          }
+        },
+        "note": "岗位名合并：证券分析师/基金研究员/股票分析师/宏观研究员/证券研究员/投资研究员。 口径：职友集「3–5 年经验」筛选页（n=102）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，2 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥24,453）。"
+      },
+      "hk": {
+        "median_local": 38864,
+        "p25_local": 27945,
+        "p75_local": 50740,
+        "median_cny": 33205,
+        "salad": 33,
+        "n": 49,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 38864,
+            "n": 49
+          }
+        },
+        "note": "JobsDB 关键词：equity research、research analyst、investment analyst；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 4 条薪资区间过宽/面议，已剔除。"
+      },
+      "us": {
+        "median_local": 12500,
+        "p25_local": 10417,
+        "p75_local": 15562,
+        "median_cny": 83812,
+        "salad": 84,
+        "n": 103,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 13333,
+            "n": 71
+          },
+          "Chicago": {
+            "median_local": 10323,
+            "n": 8
+          },
+          "San Francisco": {
+            "median_local": 11833,
+            "n": 24
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：RESEARCH ANALYST、EQUITY RESEARCH ASSOCIATE、EQUITY RESEARCH ANALYST、INVESTMENT ANALYST；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。 通用职位名（RESEARCH ANALYST）只保留金融类雇主。"
+      }
+    },
+    "pm": {
+      "cn": {
+        "median_local": 34507,
+        "p25_local": 21734,
+        "p75_local": 45993,
+        "median_cny": 34507,
+        "salad": 35,
+        "n": 276,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 34709,
+            "n": 114
+          },
+          "北京": {
+            "median_local": 32307,
+            "n": 87
+          },
+          "深圳": {
+            "median_local": 36304,
+            "n": 75
+          }
+        },
+        "note": "岗位名合并：基金经理/私募基金经理。 口径：职友集「3–5 年经验」筛选页（n=276）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，3 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥19,000）。"
+      },
+      "hk": {
+        "median_local": 67265,
+        "p25_local": 48938,
+        "p75_local": 93999,
+        "median_cny": 57471,
+        "salad": 57,
+        "n": 28,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 67265,
+            "n": 28
+          }
+        },
+        "note": "JobsDB 关键词：portfolio manager、fund manager；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 2 条薪资区间过宽/面议，已剔除。 样本较少（n=28），仅供参考。"
+      },
+      "us": {
+        "median_local": 16250,
+        "p25_local": 12695,
+        "p75_local": 18750,
+        "median_cny": 108956,
+        "salad": 109,
+        "n": 65,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 16250,
+            "n": 59
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：PORTFOLIO MANAGER、ASSOCIATE PORTFOLIO MANAGER；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    },
+    "vc": {
+      "cn": {
+        "median_local": 26887,
+        "p25_local": 20248,
+        "p75_local": 37681,
+        "median_cny": 26887,
+        "salad": 27,
+        "n": 1795,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 27633,
+            "n": 671
+          },
+          "北京": {
+            "median_local": 26434,
+            "n": 694
+          },
+          "深圳": {
+            "median_local": 26361,
+            "n": 430
+          }
+        },
+        "note": "岗位名合并：投资经理/股权投资经理/投资分析师。 口径：职友集「3–5 年经验」筛选页（n=1795）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，8 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥14,023）。"
+      },
+      "hk": {
+        "median_local": 49841,
+        "p25_local": 38333,
+        "p75_local": 68312,
+        "median_cny": 42584,
+        "salad": 43,
+        "n": 19,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 49841,
+            "n": 19
+          }
+        },
+        "note": "JobsDB 关键词：private equity、venture capital、investment associate、investment manager；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 3 条薪资区间过宽/面议，已剔除。 样本较少（n=19），仅供参考。"
+      },
+      "us": {
+        "median_local": 11667,
+        "p25_local": 10833,
+        "p75_local": 14479,
+        "median_cny": 78225,
+        "salad": 78,
+        "n": 74,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 12292,
+            "n": 56
+          },
+          "San Francisco": {
+            "median_local": 11667,
+            "n": 16
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：PRIVATE EQUITY ASSOCIATE、INVESTMENT ASSOCIATE、PRIVATE EQUITY ANALYST、VENTURE CAPITAL ASSOCIATE；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    },
+    "risk": {
+      "cn": {
+        "median_local": 22950,
+        "p25_local": 16121,
+        "p75_local": 29769,
+        "median_cny": 22950,
+        "salad": 23,
+        "n": 5037,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 22515,
+            "n": 1788
+          },
+          "北京": {
+            "median_local": 23621,
+            "n": 2017
+          },
+          "深圳": {
+            "median_local": 22379,
+            "n": 1232
+          }
+        },
+        "note": "岗位名合并：风控/合规/风险管理。 口径：职友集「3–5 年经验」筛选页（n=5037）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，9 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥5,896）。"
+      },
+      "hk": {
+        "median_local": 41732,
+        "p25_local": 31214,
+        "p75_local": 53694,
+        "median_cny": 35656,
+        "salad": 36,
+        "n": 156,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 41732,
+            "n": 156
+          }
+        },
+        "note": "JobsDB 关键词：risk analyst、risk manager、compliance officer、compliance manager；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 10 条薪资区间过宽/面议，已剔除。"
+      },
+      "us": {
+        "median_local": 12034,
+        "p25_local": 9583,
+        "p75_local": 14188,
+        "median_cny": 80687,
+        "salad": 81,
+        "n": 153,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 12320,
+            "n": 107
+          },
+          "Chicago": {
+            "median_local": 10120,
+            "n": 30
+          },
+          "San Francisco": {
+            "median_local": 11362,
+            "n": 16
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：RISK ANALYST、COMPLIANCE ANALYST、RISK MANAGER、FINANCIAL RISK SPECIALISTS、FINANCIAL RISK SPECIALIST；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。 通用职位名（RISK ANALYST、COMPLIANCE ANALYST、RISK MANAGER）只保留金融类雇主。"
+      }
+    },
+    "wealth": {
+      "cn": {
+        "median_local": 22998,
+        "p25_local": 15018,
+        "p75_local": 35495,
+        "median_cny": 22998,
+        "salad": 23,
+        "n": 865,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 24088,
+            "n": 366
+          },
+          "北京": {
+            "median_local": 23123,
+            "n": 275
+          },
+          "深圳": {
+            "median_local": 20444,
+            "n": 224
+          }
+        },
+        "note": "岗位名合并：财富顾问/理财经理/理财顾问。 口径：职友集「3–5 年经验」筛选页（n=865）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，9 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥4,179）。"
+      },
+      "hk": {
+        "median_local": 39096,
+        "p25_local": 28857,
+        "p75_local": 52961,
+        "median_cny": 33403,
+        "salad": 33,
+        "n": 312,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 39096,
+            "n": 312
+          }
+        },
+        "note": "JobsDB 关键词：relationship manager、wealth manager、financial planner、financial consultant、wealth management；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 9 条薪资区间过宽/面议，已剔除。"
+      },
+      "us": {
+        "median_local": null,
+        "p25_local": null,
+        "p75_local": null,
+        "median_cny": null,
+        "salad": null,
+        "n": 0,
+        "src": [
+          "h1b"
+        ],
+        "cities": {},
+        "note": "样本不足（匹配到 4 条，低于阈值 8），不出数。 H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：FINANCIAL ADVISOR、WEALTH MANAGEMENT ASSOCIATE、WEALTH ADVISOR、PRIVATE WEALTH ADVISOR、WEALTH MANAGEMENT ANALYST、FINANCIAL PLANNER、RELATIONSHIP MANAGER、PERSONAL FINANCIAL ADVISORS；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。 面向客户的财富顾问/机构销售岗位几乎不做 H-1B 担保，尝试了十余个职位名均无足够记录。"
+      }
+    },
+    "sales": {
+      "cn": {
+        "median_local": 22169,
+        "p25_local": 16398,
+        "p75_local": 28650,
+        "median_cny": 22169,
+        "salad": 22,
+        "n": 329,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 23761,
+            "n": 144
+          },
+          "北京": {
+            "median_local": 20244,
+            "n": 110
+          },
+          "深圳": {
+            "median_local": 21888,
+            "n": 75
+          }
+        },
+        "note": "岗位名合并：机构销售/机构销售经理/机构业务经理/机构客户经理。 口径：职友集「3–5 年经验」筛选页（n=329）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，7 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥7,520）。"
+      },
+      "hk": {
+        "median_local": 44889,
+        "p25_local": 34298,
+        "p75_local": 57224,
+        "median_cny": 38353,
+        "salad": 38,
+        "n": 31,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 44889,
+            "n": 31
+          }
+        },
+        "note": "JobsDB 关键词：institutional sales、sales trader、institutional business；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。"
+      },
+      "us": {
+        "median_local": null,
+        "p25_local": null,
+        "p75_local": null,
+        "median_cny": null,
+        "salad": null,
+        "n": 0,
+        "src": [
+          "h1b"
+        ],
+        "cities": {},
+        "note": "来源中没有可用样本。 H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：INSTITUTIONAL SALES、SALES TRADER、INSTITUTIONAL SALES ASSOCIATE、INSTITUTIONAL EQUITY SALES、EQUITY SALES、SALES AND TRADING ANALYST、SALES AND TRADING ASSOCIATE、FIXED INCOME SALES；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。 面向客户的财富顾问/机构销售岗位几乎不做 H-1B 担保，尝试了十余个职位名均无足够记录。"
+      }
+    },
+    "product": {
+      "cn": {
+        "median_local": 24740,
+        "p25_local": 16985,
+        "p75_local": 35318,
+        "median_cny": 24740,
+        "salad": 25,
+        "n": 413,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 23509,
+            "n": 109
+          },
+          "北京": {
+            "median_local": 24189,
+            "n": 175
+          },
+          "深圳": {
+            "median_local": 26548,
+            "n": 129
+          }
+        },
+        "note": "岗位名合并：金融产品经理/基金产品经理/基金运营/理财产品经理。 口径：职友集「3–5 年经验」筛选页（n=413）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，6 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥2,697）。"
+      },
+      "hk": {
+        "median_local": 43569,
+        "p25_local": 33839,
+        "p75_local": 52908,
+        "median_cny": 37226,
+        "salad": 37,
+        "n": 46,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 43569,
+            "n": 46
+          }
+        },
+        "note": "JobsDB 关键词：product manager、product specialist、investment product；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 4 条薪资区间过宽/面议，已剔除。"
+      },
+      "us": {
+        "median_local": 12752,
+        "p25_local": 10933,
+        "p75_local": 16223,
+        "median_cny": 85502,
+        "salad": 86,
+        "n": 84,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 12500,
+            "n": 51
+          },
+          "Chicago": {
+            "median_local": 11378,
+            "n": 12
+          },
+          "San Francisco": {
+            "median_local": 15450,
+            "n": 21
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：PRODUCT MANAGER、SENIOR PRODUCT MANAGER；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。 通用职位名（PRODUCT MANAGER、SENIOR PRODUCT MANAGER）只保留金融类雇主。"
+      }
+    },
+    "actuary": {
+      "cn": {
+        "median_local": 27643,
+        "p25_local": 18464,
+        "p75_local": 40826,
+        "median_cny": 27643,
+        "salad": 28,
+        "n": 68,
+        "src": [
+          "jobui"
+        ],
+        "cities": {
+          "上海": {
+            "median_local": 26000,
+            "n": 14
+          },
+          "北京": {
+            "median_local": 31229,
+            "n": 40
+          },
+          "深圳": {
+            "median_local": 22517,
+            "n": 14
+          }
+        },
+        "note": "岗位名合并：精算师。 3–5 年经验筛选页样本太少（n=23），改用全部经验的样本（n=68）。 样本为近一年公开招聘信息的薪资区间（在招薪资，非在职薪资）；分布按 10 个薪资档统计，档内线性插值。 页面最高两档被遮罩，2 个分页无法用学历分区完全确认，按密度插值规则分配（另一种分配下单页中位数最多相差约 ¥1,472）。"
+      },
+      "hk": {
+        "median_local": 46316,
+        "p25_local": 31923,
+        "p75_local": 76430,
+        "median_cny": 39572,
+        "salad": 40,
+        "n": 15,
+        "src": [
+          "jobsdb"
+        ],
+        "cities": {
+          "香港": {
+            "median_local": 46316,
+            "n": 15
+          }
+        },
+        "note": "JobsDB 关键词：actuarial、actuary；再按职位标题正则筛选，剔除实习/培训生。 JobsDB 没有经验筛选，为全部年资的在招职位（非在职薪资）；月薪按每 1 万港元一档扫描 1–20 万，一条职位的薪资区间跨多档时按档数均摊；档内线性插值。 另有 2 条薪资区间过宽/面议，已剔除。 样本较少（n=15），仅供参考。"
+      },
+      "us": {
+        "median_local": 10757,
+        "p25_local": 8333,
+        "p75_local": 16716,
+        "median_cny": 72127,
+        "salad": 72,
+        "n": 56,
+        "src": [
+          "h1b"
+        ],
+        "cities": {
+          "New York": {
+            "median_local": 10848,
+            "n": 33
+          },
+          "Chicago": {
+            "median_local": 11030,
+            "n": 17
+          },
+          "San Francisco": {
+            "median_local": 9667,
+            "n": 6
+          }
+        },
+        "note": "H-1B 申报底薪，偏保守，不含奖金；年薪/12。职位名（精确匹配）：ACTUARIAL ANALYST、ACTUARIES、ACTUARY、ACTUARIAL ASSOCIATE、ASSOCIATE ACTUARY；申报年份 2024/2025。 H-1B 数据没有工作年限，为该职位名下全部申报记录。"
+      }
+    }
+  }
+}

@@ -1,0 +1,1678 @@
+{
+  "source": "jobsdb",
+  "currency": "HKD",
+  "unit": "monthly",
+  "bands": [
+    "10000-20000",
+    "20000-30000",
+    "30000-40000",
+    "40000-50000",
+    "50000-60000",
+    "60000-70000",
+    "70000-80000",
+    "80000-90000",
+    "90000-100000",
+    "100000-110000",
+    "110000-120000",
+    "120000-130000",
+    "130000-140000",
+    "140000-150000",
+    "150000-160000",
+    "160000-170000",
+    "170000-180000",
+    "180000-190000",
+    "190000-200000",
+    "200000-"
+  ],
+  "roles": {
+    "qr": {
+      "n": 19,
+      "distinct_listings_before_title_filter": 99,
+      "dropped_salary_unspecified": 5,
+      "median": 50975.12195121952,
+      "median_flag": "",
+      "p25": 42499.735295674735,
+      "p25_flag": "",
+      "p75": 69973.99999999999,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.0
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 2.1667
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 1.1667
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 5.6667
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 5.125
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 0.125
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 0.125
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.125
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.125
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.125
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.125
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.5694
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.4444
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.4444
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.4444
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.4444
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.4444
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.4444
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.4444
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.4444
+        }
+      ],
+      "keywords": [
+        "\"quantitative researcher\"",
+        "\"quant researcher\"",
+        "\"quantitative analyst\"",
+        "\"quant analyst\"",
+        "\"quant\""
+      ],
+      "classification": null,
+      "title_re": "quant\\w*\\s+(research|analy|strateg)|quant\\w*\\s+(trading\\s+)?research",
+      "sample_titles": [
+        "Associate VP (Quant Analysis) - Optimis Search Limited",
+        "Crypto Quant Strategy Lead - Trend & CTA",
+        "Experienced MFT Quantitative Researcher",
+        "Hong Kong Based Quant Researcher/ $ High",
+        "Junior Quantitative Analyst, Hong Kong",
+        "QUANTITATIVE RESEARCHER",
+        "Quant Analyst - Eka Finance",
+        "Quant Research Specialist - Eka Finance",
+        "Quant Researcher - Anson McCade",
+        "Quant Researcher - Eka Finance",
+        "Quant Strategy Lead - Long/ Short strategy",
+        "Quantitative Researcher",
+        "Quantitative Researcher - Experienced (DV Equities)",
+        "Senior Quant Researcher - Anson McCade",
+        "Senior Quantitative Analyst",
+        "Senior Quantitative Researcher, PM Engagement",
+        "Senior Trading Quant Researcher - Eka Finance"
+      ]
+    },
+    "trader": {
+      "n": 71,
+      "distinct_listings_before_title_filter": 107,
+      "dropped_salary_unspecified": 6,
+      "median": 41858.758349422584,
+      "median_flag": "",
+      "p25": 31112.21660711144,
+      "p25_flag": "",
+      "p75": 54950.52089513278,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 3.1667
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 12.75
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 16.4833
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 16.6778
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 8.4278
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 4.8444
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 5.0111
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.5278
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.5278
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.5278
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.5278
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.6389
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.1111
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.1111
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.1111
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.1111
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.1111
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.1111
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.1111
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.1111
+        }
+      ],
+      "keywords": [
+        "\"trader\""
+      ],
+      "classification": "1203",
+      "title_re": "\\btrader\\b",
+      "sample_titles": [
+        "Analyst (Fixed Income Trader)",
+        "Analyst to Associate, Trader, Institutional Equities",
+        "Asset Management- Investment & Research – Execution Trader",
+        "Bond Trader",
+        "Commercial Trader Hong Kong",
+        "Derivatives Trader",
+        "Director, Structured Rates Trader (Hong Kong / Singapore)",
+        "ED, Interest Rates Trader, Global Financial Markets",
+        "Equity Execution trader",
+        "Equity Trader",
+        "Execution Trader (Macro / Equity Long-Short)",
+        "Execution Trader- Night shift",
+        "FX & Rates Execution Trader [A-SA]",
+        "FX / Rate Trader (Middle shift)",
+        "FX Proprietary Trader",
+        "FX Trader",
+        "FX Trader, Financial Markets",
+        "FX and Interest Rates Derivatives Trader",
+        "Fixed Income  Trader - Asset Management $35K-45K",
+        "Fixed Income & Rates Trader (Hong Kong Branch)",
+        "Fixed Income (Repo) Trader - Asset Management Firm",
+        "Fixed Income Trader",
+        "Fixed Income/Equity Trader",
+        "Global Markets-Derivatives Trader (衍生品交易岗)",
+        "Index Arbitrage Trader",
+        "Interest Rate Trader - Regional Bank",
+        "Junior Trader",
+        "Junior Trader (L/S Equities)",
+        "Junior Trader — Global Macro Hedge Fund (Hong Kong)",
+        "Multi-Strategy Trader",
+        "OTC Derivatives Trader (Structured Products & TRS)",
+        "Paper Trader (Precious Metals)",
+        "Physical Trader (Precious Metals)",
+        "Precious Metals Trader",
+        "Proprietary Trader (FICC)",
+        "Proprietary Trader, Macro Event Driven, Prediction Market, Global Hedge Fund",
+        "Quant Trader - Eka Finance",
+        "Quantative Trader",
+        "Quantitative Trader",
+        "Quantitative Trader (D1 Liquidity)"
+      ]
+    },
+    "qdev": {
+      "n": 9,
+      "distinct_listings_before_title_filter": 84,
+      "dropped_salary_unspecified": 0,
+      "median": 34210.69251902612,
+      "median_flag": "",
+      "p25": 27105.346259513055,
+      "p25_flag": "",
+      "p75": 46250.937453127335,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.0
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 3.1667
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 3.1667
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 0.6667
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 0.0
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 0.0
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 0.1667
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.1667
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.1667
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.1667
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.1667
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.2778
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.1111
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.1111
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.1111
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.1111
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.1111
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.1111
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.1111
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.1111
+        }
+      ],
+      "keywords": [
+        "\"quantitative developer\"",
+        "\"quant developer\"",
+        "\"quantitative engineer\"",
+        "\"quant\""
+      ],
+      "classification": null,
+      "title_re": "quant\\w*\\s+(develop|engineer|programm)|quant\\w*.*\\b(c\\+\\+|python|kdb)\\b.*develop",
+      "sample_titles": [
+        "Analyst, Quant Developer Trade Support",
+        "Associate, Quant Developer, Equity Derivatives",
+        "Global Markets - Equity Derivatives - Senior Algo Quant Developer",
+        "Quant Developer (C++) - Fast Growing Company (~HKD 1.2Mil)",
+        "Quant Developer - Eka Finance",
+        "Quantitative Developer",
+        "Quantitative Trading & Research - Quantitative Developer - Associate",
+        "Senior KDB+/q Quantitative Developer | Banking, $150k+/month"
+      ]
+    },
+    "research": {
+      "n": 49,
+      "distinct_listings_before_title_filter": 94,
+      "dropped_salary_unspecified": 4,
+      "median": 38863.545454545456,
+      "median_flag": "",
+      "p25": 27945.17001323284,
+      "p25_flag": "",
+      "p75": 50740.33333333334,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 2.5833
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 12.1667
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 11.0
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 10.6667
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 4.5
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 1.9167
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 2.25
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.5833
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.5833
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.5833
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.5833
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.6944
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.1111
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.1111
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.1111
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.1111
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.1111
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.1111
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.1111
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.1111
+        }
+      ],
+      "keywords": [
+        "\"equity research\"",
+        "\"research analyst\"",
+        "\"investment analyst\""
+      ],
+      "classification": "1203",
+      "title_re": "equity research|research analyst|investment analyst|sector analyst|(equity|credit|industry)\\s+analyst|analyst,?\\s+equity",
+      "sample_titles": [
+        "AI & Virtual Assets Investment Research Analyst",
+        "Analyst, Equity",
+        "Associate/Vice President, Asia Credit Research Analyst",
+        "Corporate Development & Investment Analyst",
+        "Emerging Markets Research Analyst",
+        "Equity Research",
+        "Equity Research Analyst",
+        "Equity Research Analyst (Chinese industrial/ healthcare /technology Sector)",
+        "Equity Research Analyst - Global Hard Tech focused",
+        "Equity Research Analyst, Industrials — Vice President or Executive Director",
+        "Equity Research Analyst/Manager (Buy Side)",
+        "Equity Research, China Industrials, Associate/ VP",
+        "Equity Research, China Strategist, Associate/ VP",
+        "Equity Research, Global Consumer / Hardware, Family Office",
+        "Equity Research, Healthcare / Biotech, Global Equity, Principal Investment",
+        "Equity Researcher - CICC",
+        "Hedge Fund Investment Analyst",
+        "Investment Analyst",
+        "Investment Analyst (Entry-Level)",
+        "Investment Analyst (Family Office)",
+        "Investment Analyst (Hong Kong)",
+        "Investment Analyst - Asset Management",
+        "Investment Analyst - The Profile Group (HK) Ltd (a Wilson Company)",
+        "Investment Analyst - Welkin Links Capital",
+        "Investment Analyst/Associate (Portfolio Management)",
+        "Junior Investment Analyst",
+        "Point72 Academy 2026 Investment Analyst Program for Experienced Professionals-HK",
+        "Research Analyst",
+        "Research Analyst (Investment)",
+        "Research Analyst (Multiple Openings)",
+        "Research Analyst, Equities (Healthcare)",
+        "Research Analyst, Vietnam Equities, Research",
+        "Senior Equity Analyst (VP level) - Asset Management",
+        "Senior Equity Research",
+        "Senior Investment Analyst",
+        "Senior Investment Analyst - Hedge Fund",
+        "Senior Research Analyst",
+        "Specialist, Equity Research (Technology)",
+        "TMT research analyst"
+      ]
+    },
+    "pm": {
+      "n": 28,
+      "distinct_listings_before_title_filter": 85,
+      "dropped_salary_unspecified": 2,
+      "median": 67264.71124540883,
+      "median_flag": "",
+      "p25": 48938.19888178914,
+      "p25_flag": "",
+      "p75": 93999.02800777594,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.0
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 2.3333
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 1.5333
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 3.5056
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 3.8389
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 3.8389
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 4.0056
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 1.3889
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 1.3889
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 1.3889
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 1.3889
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 1.6111
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.2222
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.2222
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.2222
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.2222
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.2222
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.2222
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.2222
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.2222
+        }
+      ],
+      "keywords": [
+        "\"portfolio manager\"",
+        "\"fund manager\""
+      ],
+      "classification": "1203",
+      "title_re": "portfolio manager|fund manager|投資經理|基金經理",
+      "sample_titles": [
+        "Asset Allocation Portfolio Manager - CICC",
+        "Client Portfolio Manager (FX Dealer)",
+        "Client Portfolio Manager / Investment Specialist - Asset Management",
+        "ETF Portfolio Manager - Olive Asset Management",
+        "ETF Portfolio Manager, Asset Management Department",
+        "FICC Portfolio Manager – Rates & Derivatives",
+        "Fixed Income - Portfolio Manager",
+        "Fixed Income Portfolio Manager (Asset Management, D level)",
+        "Investment Portfolio Manager / Director",
+        "Options Fund Manager",
+        "Portfolio Manager",
+        "Portfolio Manager (HK)",
+        "Portfolio Manager (KIP for ETF)",
+        "Portfolio Manager - Anson McCade",
+        "Portfolio Manager - Exchange Traded Funds (ETF投资组合经理)",
+        "Portfolio Manager - Generalist - Fundamental Long Short Equities (HK)",
+        "Portfolio Manager - Quant Fund",
+        "Portfolio Manager | Investment Partner",
+        "Senior Analyst / Portfolio Manager (US Equities)",
+        "Senior Fund Manager",
+        "Senior Multi Asset Portfolio Manager - Capital Access Limited",
+        "Senior Portfolio Manager, Multi-Asset",
+        "基金經理／交易員（槓桿及反向 ETF） Fund Manager / Trader (Leveraged & Inverse ETFs)"
+      ]
+    },
+    "vc": {
+      "n": 19,
+      "distinct_listings_before_title_filter": 195,
+      "dropped_salary_unspecified": 3,
+      "median": 49841.30952380953,
+      "median_flag": "",
+      "p25": 38333.31081081081,
+      "p25_flag": "",
+      "p75": 68311.96914205562,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.0
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 1.6667
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 3.7
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 4.2
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 3.6167
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 1.2833
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 1.45
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.4167
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.4167
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.4167
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.4167
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.5278
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.1111
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.1111
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.1111
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.1111
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.1111
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.1111
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.1111
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.1111
+        }
+      ],
+      "keywords": [
+        "\"private equity\"",
+        "\"venture capital\"",
+        "\"investment associate\"",
+        "\"investment manager\""
+      ],
+      "classification": "1203",
+      "title_re": "(private equity|venture capital|\\bpe\\b|\\bvc\\b|investment)\\s*.*\\b(analyst|associate|manager|professional|director|vp|vice president)\\b|\\b(analyst|associate|manager|vp)\\b.*(private equity|venture capital|\\bpe\\b|\\bvc\\b)",
+      "sample_titles": [
+        "Angel Seed Investment Manager (VC investment Hong Kong Based)",
+        "Associate Fund Investment Manager - PER, Private Equity Recruitment",
+        "Associate Investment Manager - Value Partners Limited",
+        "Healthcare Investment VP - Director",
+        "Investment Analyst",
+        "Investment Associate",
+        "Investment Director",
+        "Investment Director / Associate, AI Data Center, Global Private Equity",
+        "Investment Manager",
+        "Junior Investment Manager (Analyst or Associate)",
+        "Private Equity Investment Professional (Korean required)",
+        "Private Equity analyst/ associate - Korean Speaking, Global PE platform",
+        "Senior Investment Analyst",
+        "Senior Investment Manager, Global Energy & Infrastructure | 資深投資經理（全球能源與基礎設施）",
+        "Venture Capital Investment Vice President/Director"
+      ]
+    },
+    "risk": {
+      "n": 156,
+      "distinct_listings_before_title_filter": 254,
+      "dropped_salary_unspecified": 10,
+      "median": 41732.45885573227,
+      "median_flag": "",
+      "p25": 31213.613477714185,
+      "p25_flag": "",
+      "p75": 53693.68375629103,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 7.0524
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 27.469
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 36.9024
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 37.9579
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 20.6246
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 7.4413
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 7.9413
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 1.7222
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 1.7222
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 1.7222
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 1.7222
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 1.9444
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.2222
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.2222
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.2222
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.2222
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.2222
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.2222
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.2222
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.2222
+        }
+      ],
+      "keywords": [
+        "\"risk analyst\"",
+        "\"risk manager\"",
+        "\"compliance officer\"",
+        "\"compliance manager\""
+      ],
+      "classification": "1203",
+      "title_re": "\\brisk\\b|compliance",
+      "sample_titles": [
+        "(Assistant - Senior) Business Compliance Manager (Corporate Business Compliance)",
+        "(Assistant - Senior) Business Compliance Manager (Corporate Business)",
+        "(Assistant - Senior) Credit Risk Manager (Credit Approval / Credit Analyst)",
+        "(Assistant - Senior) Operational Risk Manager",
+        "(Assistant / Deputy) Credit Risk Manager / Senior Credit Risk Manager",
+        "(Assistant) Retail Credit Risk Manager | Banking",
+        "(Assistant-Senior) Business Financial Crime/ AML Compliance Manager",
+        "(Assistant/Deputy) Credit Risk Manager (Credit Approval / Credit Analyst)",
+        "(Senior) Credit Risk Manager (Corporate Credit)",
+        "(Senior) Credit Risk Manager (Credit Planning and Policy)",
+        "(Senior) Credit Risk Manager (Portfolio Management and Limit Monitoring)",
+        "(Senior) Credit Risk Manager (Southeast Asian Entities)",
+        "AML Compliance Manager, STR Investigation & Reporting",
+        "APAC Compliance Officer",
+        "Assistant / Deputy / Credit Risk Manager",
+        "Assistant / Deputy / Credit Risk Manager (Credit Monitoring)",
+        "Assistant Compliance Manager / Compliance Manager (General Compliance)",
+        "Assistant Manager, Life Insurance (Compliance & Business Development)",
+        "Assistant Manager/ Manager, AML Compliance (Project & System Management)",
+        "Assistant Operational Risk Manager [Ref no: AORM-ALAI]",
+        "Assistant Risk Manager, Credit Risk Management, Fubon Credit",
+        "Assistant Vice President, Regulatory Compliance",
+        "Assistant Vice President, Risk Management",
+        "Assistant/ Deputy Compliance Manager (Transaction Monitoring)",
+        "Associate, Multi Asset Arb Risk",
+        "Business Compliance and Operational Risk Manager",
+        "Business Compliance and Operational Risk Manager (BRCM)",
+        "Business Compliance and Operational Risk Manager (RMB Clearing Center)",
+        "Business Compliance and Operational Risk Manager / Deputy",
+        "Business Compliance and Operational Risk Manager / Deputy Business Compliance",
+        "Client Risk Analyst I",
+        "Compliance Manager",
+        "Compliance Manager (6 months contract)",
+        "Compliance Manager (Overseas Digital Asset)",
+        "Compliance Manager (SFC Licensed Corp)",
+        "Compliance Manager - Legal and Compliance Department",
+        "Compliance Manager - Regulatory Compliance",
+        "Compliance Manager / Operational Risk Manager (Southeast Asian Mgmnt Div.)",
+        "Compliance Manager / Operational Risk Mgr (Southeast Asian Management Division)",
+        "Compliance Manager / Operational Risk Mgr. (Southeast Asian Management Division)"
+      ]
+    },
+    "wealth": {
+      "n": 312,
+      "distinct_listings_before_title_filter": 992,
+      "dropped_salary_unspecified": 9,
+      "median": 39095.79158212843,
+      "median_flag": "",
+      "p25": 28857.47855404352,
+      "p25_flag": "",
+      "p75": 52961.397737470994,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 17.9167
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 67.8333
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 77.2333
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 61.15
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 33.3167
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 17.0667
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 17.2333
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 3.25
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 3.25
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 3.25
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 3.25
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 3.6944
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.4444
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.4444
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.4444
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.4444
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.4444
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.4444
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.4444
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.4444
+        }
+      ],
+      "keywords": [
+        "\"relationship manager\"",
+        "\"wealth manager\"",
+        "\"financial planner\"",
+        "\"financial consultant\"",
+        "\"wealth management\""
+      ],
+      "classification": "1203",
+      "title_re": "relationship manager|wealth (manager|advis|consult|planner|management)|financial (planner|advis|consult)|private bank|client advis|investment consultant|\\brm\\b",
+      "sample_titles": [
+        "(Senior) Personal Financial Consultant (Account Opening + I&I Sales)",
+        "(Senior) Relationship Manager - Private Banking Department",
+        "(Senior) Relationship Manager, Consumer Branch",
+        "(Senior) Relationship Manager, Retail Channel Management",
+        "ARM, European Private Bank",
+        "ARM-RM, VP | HK Corp/Blue-chip/MNC | Foreign Bank | HKD 35-75k",
+        "AVP/VP, Investment Consultant (Retail Banking)",
+        "Analyst to AVP,  Assistant Relationship Manager, Treasures Private Client, Priva",
+        "Analyst to VP, Treasures Relationship Manager, Treasures & Distribution, CBG...",
+        "Assistant / Deputy Investment Consultant, Private Banking",
+        "Assistant Manager (Family Office)(25K–34K+B)(Support Relationship Manager)",
+        "Assistant Personal Banking Manager/RM Assistant/IS($22k-$55k/mth)",
+        "Assistant Private Banker (AVP/VP)",
+        "Assistant Relationship Manager",
+        "Assistant Relationship Manager (PB & WM)",
+        "Assistant Relationship Manager (Private Bank)",
+        "Assistant Relationship Manager (Private Banking & Wealth Management Department)",
+        "Assistant Relationship Manager (RM Assistant)",
+        "Assistant Relationship Manager - Private Banking",
+        "Assistant Relationship Manager - Standard Chartered",
+        "Assistant Relationship Manager - Wealth Management Department",
+        "Assistant Relationship Manager / Relationship Manager",
+        "Assistant Relationship Manager Analyst",
+        "Assistant Relationship Manager Floater, Private Banking",
+        "Assistant Relationship Manager – Private Wealth Management",
+        "Assistant Relationship Manager, Customer Contact Centre (Retail Banking)",
+        "Assistant Relationship Manager, Global Private Bank (Multiple openings)",
+        "Assistant Relationship Manager, Mortgage Sales",
+        "Assistant Relationship Manager, Private Banking",
+        "Assistant Relationship Manager, Private Banking (many posts)",
+        "Assistant Relationship Manager, Wealth Management",
+        "Assistant Wealth Relationship Manager - CMB Wing Lung Bank",
+        "Associate Investor Relationship Manager - PER, Private Equity Recruitment",
+        "Associate Relationship Manager",
+        "Associate to SVP, Specialist, Know Your Customer, Private Banking",
+        "Associate, Treasures RM, Consumer Banking Group",
+        "Associate, Treasures Relationship Manager, Consumer Banking Group",
+        "Associate/AVP, Client Services, Wealth Management",
+        "Audit Manager (Personal Banking and Wealth Management)",
+        "Bank Investment Consultant （Cross Border Team）"
+      ]
+    },
+    "sales": {
+      "n": 31,
+      "distinct_listings_before_title_filter": 86,
+      "dropped_salary_unspecified": 0,
+      "median": 44889.0974029905,
+      "median_flag": "",
+      "p25": 34297.75712420309,
+      "p25_flag": "",
+      "p75": 57224.22970621353,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.6429
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 4.3095
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 6.5095
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 8.2595
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 4.8845
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 2.3845
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 2.5512
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.2917
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.2917
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.2917
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.2917
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.2917
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.0
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.0
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.0
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.0
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.0
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.0
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.0
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.0
+        }
+      ],
+      "keywords": [
+        "\"institutional sales\"",
+        "\"sales trader\"",
+        "\"institutional business\""
+      ],
+      "classification": "1203",
+      "title_re": "institutional (sales|business|client)|sales trad|(equit|fixed income|ficc|fx|derivative|structured|bond|prime)\\w*\\s+sales|sales,?\\s+(equit|fixed income|ficc|fx|institution)",
+      "sample_titles": [
+        "(Senior) Manager - Institutional Sales & Relationship Mgt | HK Investment Firm",
+        "(Senior) Relationship Manager, Institutional Business (FI/Bank)",
+        "AD/D - Institutional sales/ CPM/ Investment Specialist",
+        "Analyst / Associate - Institutional Sales (Mandarin Speaking)",
+        "Analyst, Institutional Sales & Trading",
+        "Associate / Senior Associate – Institutional Sales Department",
+        "Binance Accelerator Program - Institutional Business Development",
+        "Customer Service Officer (Institutional Business)",
+        "Derivatives Sales Manager",
+        "Fixed Income Division - Analyst, Taiwan Institutional Sales (Hong Kong)",
+        "Institutional Client Manager",
+        "Institutional Sales",
+        "Institutional Sales (Private Funds)",
+        "Institutional Sales - Derivatives Trading Department",
+        "Institutional Sales Analyst",
+        "Institutional Sales Associate/VP",
+        "Institutional Sales and Trading (DV Equities)",
+        "Institutional Sales, China Market",
+        "Institutional Sales, Equity, Institutional Sales and Trading Department",
+        "Manager, Institutional Sales - FX/Rate",
+        "OTC Sales Trader",
+        "Sales Trader, Equities Institutional Business",
+        "Senior Institutional Sales (Co-Head)",
+        "Senior Institutional Sales - Global Markets",
+        "VP, Equity Sales Trader, Global Financial Markets",
+        "Vice President, Institutional Sales (Offshore Markets)",
+        "Vice President, Institutional Sales Department"
+      ]
+    },
+    "product": {
+      "n": 46,
+      "distinct_listings_before_title_filter": 141,
+      "dropped_salary_unspecified": 4,
+      "median": 43569.23046444208,
+      "median_flag": "",
+      "p25": 33838.788424021266,
+      "p25_flag": "",
+      "p75": 52907.871936628435,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 0.1429
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 7.5595
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 9.8929
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 15.1429
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 6.0595
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 2.4762
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 2.6429
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.4167
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.4167
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.4167
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.4167
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.4167
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.0
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.0
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.0
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.0
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.0
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.0
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.0
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.0
+        }
+      ],
+      "keywords": [
+        "\"product manager\"",
+        "\"product specialist\"",
+        "\"investment product\""
+      ],
+      "classification": "1203",
+      "title_re": "product (manager|specialist|development|officer|lead|owner)|investment product",
+      "sample_titles": [
+        "(Deputy / Senior) Product Manager, Transaction Banking (Business Strategy)",
+        "(Senior) Product Manager (Product Sales), Transaction Banking",
+        "AVP - VP, Investment Product & Distribution",
+        "Assistant Vice President / Vice President, Custody Product Manager",
+        "Business & Product Manager, PWM Investment Platform",
+        "Cash Management Product Manager (Corporate Banking Department",
+        "Corporate Banking Cash Management Product Manager",
+        "Corporate Banking Product Manager",
+        "Custody Product Specialist",
+        "Deputy Manager (Digital Asset & Investment Product Focused), Asset Custody Dept.",
+        "Digital Product Manager (E-banking/FX / Wealth/ investment)",
+        "Digital Product Manager I Investment Products (Up to 40K)",
+        "FX Product Manager, Retail Banking(A233295)",
+        "Global / Direct Custody Product Manager",
+        "Investment Product Manager",
+        "Investment Product Manager / AM (Treasury Products)",
+        "Investment Product Specialist [Ref no: IPS-ALAI]",
+        "Investment Product Specialist, Contact Centre",
+        "Investment Products & Distribution Partnerships Manager",
+        "Junior Investment Product Specialist / 初級投資產品專員 (5-Day Work)",
+        "Manager/AVP , Product Development (Commodity Product), Wealth Product Department",
+        "OTC Derivatives Clearing Product Manager - Margin Rules, Repo",
+        "OTC Derivatives Clearing Product Manager - Margin Rules, Repo, Securities",
+        "Officer/Product Manager- Corporate Banking",
+        "Product Compliance Manager - Investment Products",
+        "Product Manager - CMB Wing Lung Bank",
+        "Product Manager - Corporate Cards",
+        "Product Manager / Business Analyst (Middle Office, Treasury Markets, Int'l Bank)",
+        "Product Manager / VP - Private Banking / Wealth Management",
+        "Product Manager, Fiat & FCM",
+        "Product Manager, Liquidity Management - Global Transaction Services (AVP/VP)",
+        "Product Specialist – Investment Products",
+        "Product specialist",
+        "Senior Associate, Private Wealth, product specialist (PE)",
+        "Senior Executive, Fixed Income (Product Development)",
+        "Senior Product Manager (Investments)",
+        "Senior Product Manager, Global Corporate Banking",
+        "Senior Wealth Management Product Manager (Structured Products)",
+        "Treasury Marketing Sales - Product Specialist",
+        "VP, Investment Product & Distribution"
+      ]
+    },
+    "actuary": {
+      "n": 15,
+      "distinct_listings_before_title_filter": 117,
+      "dropped_salary_unspecified": 2,
+      "median": 46316.03877853917,
+      "median_flag": "",
+      "p25": 31923.431947200814,
+      "p25_flag": "",
+      "p75": 76429.67343790177,
+      "p75_flag": "",
+      "hist": [
+        {
+          "lo": 10000,
+          "hi": 20000,
+          "w": 1.0
+        },
+        {
+          "lo": 20000,
+          "hi": 30000,
+          "w": 2.3333
+        },
+        {
+          "lo": 30000,
+          "hi": 40000,
+          "w": 2.1667
+        },
+        {
+          "lo": 40000,
+          "hi": 50000,
+          "w": 3.1667
+        },
+        {
+          "lo": 50000,
+          "hi": 60000,
+          "w": 1.3333
+        },
+        {
+          "lo": 60000,
+          "hi": 70000,
+          "w": 0.5
+        },
+        {
+          "lo": 70000,
+          "hi": 80000,
+          "w": 1.1667
+        },
+        {
+          "lo": 80000,
+          "hi": 90000,
+          "w": 0.6667
+        },
+        {
+          "lo": 90000,
+          "hi": 100000,
+          "w": 0.6667
+        },
+        {
+          "lo": 100000,
+          "hi": 110000,
+          "w": 0.6667
+        },
+        {
+          "lo": 110000,
+          "hi": 120000,
+          "w": 0.6667
+        },
+        {
+          "lo": 120000,
+          "hi": 130000,
+          "w": 0.6667
+        },
+        {
+          "lo": 130000,
+          "hi": 140000,
+          "w": 0.0
+        },
+        {
+          "lo": 140000,
+          "hi": 150000,
+          "w": 0.0
+        },
+        {
+          "lo": 150000,
+          "hi": 160000,
+          "w": 0.0
+        },
+        {
+          "lo": 160000,
+          "hi": 170000,
+          "w": 0.0
+        },
+        {
+          "lo": 170000,
+          "hi": 180000,
+          "w": 0.0
+        },
+        {
+          "lo": 180000,
+          "hi": 190000,
+          "w": 0.0
+        },
+        {
+          "lo": 190000,
+          "hi": 200000,
+          "w": 0.0
+        },
+        {
+          "lo": 200000,
+          "hi": null,
+          "w": 0.0
+        }
+      ],
+      "keywords": [
+        "\"actuarial\"",
+        "\"actuary\""
+      ],
+      "classification": null,
+      "title_re": "actuar",
+      "sample_titles": [
+        "ACTUARIAL ASSISTANT (1 YEAR CONTRACT)",
+        "Actuarial Analyst",
+        "Actuarial Analyst / Senior Actuarial Analyst",
+        "Assistant -Actuarial Dept",
+        "Assistant Actuarial Manager (GI Pricing)",
+        "Assistant Actuarial Manager - Valuation",
+        "Assistant Actuarial Manager / Actuarial Analyst (Non-Life Reinsurance)",
+        "Financial Risk Manager （Actuarial Working Experiences）--Risk Management Dept",
+        "Lead Business Analyst (Domain Lead) - Finance & Actuarial Accounting",
+        "Manager (Long Term Business) (Actuarial) (3-year Contract)",
+        "Senior Actuarial Analyst - Pricing",
+        "Senior Actuarial Associate",
+        "Senior Manager, Asset Liability Management, Actuarial",
+        "Senior Pricing Actuarial Manager",
+        "Senior Pricing Actuarial Manager (Life Insurance)"
+      ]
+    }
+  }
+}
