@@ -172,6 +172,15 @@ details.rv summary::-webkit-details-marker{display:none}
 .sal-who img{width:40px;height:40px}
 .sal-who small{display:block;font-size:11.5px;color:var(--mut);font-weight:700}
 .sal-who b{font-size:16px}
+.sal-v.na{color:var(--mut);font-weight:700;font-size:12px}
+.mine{border:1.5px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--s1))}
+.mine .role-n{font-size:13px}
+.mine .role-h b{text-wrap:balance}
+.mine-row{grid-template-columns:58px minmax(0,1fr) auto;row-gap:2px}
+.mine-row .sal-v{font-size:19px}
+.mine-row .sal-v img{width:22px;height:22px}
+.mine-row small{grid-column:2/-1;font-size:11.5px;color:var(--mut);font-family:var(--f-num);line-height:1.4}
+.mine .more{justify-self:start;font-size:13px;font-weight:900;color:var(--gold-d);text-decoration:none;border-bottom:1.5px solid var(--gold);padding-bottom:1px}
 .back-me{margin-left:auto;border:1.5px solid var(--gold);background:var(--s1);color:var(--fg);font:inherit;font-size:12.5px;font-weight:900;border-radius:999px;padding:4px 10px;cursor:pointer;flex:none}
 #salBody{display:grid;gap:10px}
 .peek{display:grid;gap:8px;margin-top:4px}
@@ -401,14 +410,18 @@ const ROLES={
  actuary:{name:'精算师',orgs:'保险公司 · 再保险',skills:['概率与精算数学','精算考试','保险产品定价'],step:'先弄清精算师考试体系，从一门基础科目考起。'},
 };
 // 薪资沙拉：月薪中位数，单位“份沙拉”，1 份 = ¥1k；三地统一折成人民币。
-// 当前为估算版（2026-10）。爬虫数据进来后替换 SALARY，并把 SALARY_META.src 改成“由小梨团队爬虫抓取整理”、填上样本数 n。
+// 两个标记之间的常量由 tools/salad/bake.py 从 assets/salad/data.json 生成，不要手改；某地拿不到数据时为 null。
+// SALARY_X 是同口径的 p25/p75（沙拉）与样本数 n。
+// ==== SALAD_BAKE_START ====
 const SALARY_DEMO=false;
-const SALARY_META={level:'3–5 年经验',date:'2026 年 10 月',n:0,src:'参考主流招聘网站公开岗位与猎头薪酬报告估算',fx:'港币、美元按当月汇率折算'};
+const SALARY_META={level:'3–5 年经验',date:'2026 年 10 月',n:0,src:'参考主流招聘网站公开岗位与猎头薪酬报告估算',fx:'港币、美元按当月汇率折算',updated:''};
 const SALARY={
  qr:{cn:40,hk:80,us:125},qdev:{cn:35,hk:65,us:110},trader:{cn:30,hk:65,us:95},research:{cn:25,hk:55,us:85},
  pm:{cn:50,hk:100,us:150},vc:{cn:30,hk:60,us:100},risk:{cn:20,hk:42,us:70},wealth:{cn:20,hk:55,us:70},
  sales:{cn:20,hk:65,us:75},product:{cn:18,hk:40,us:60},actuary:{cn:22,hk:50,us:75},
 };
+const SALARY_X={};
+// ==== SALAD_BAKE_END ====
 const REGIONS=[['cn','中国一线'],['hk','香港'],['us','美国']];
 // 登级：越冒险越短线越“小登”，越稳越长线越“老登”
 const LEVELS={
@@ -675,13 +688,38 @@ function unlock(d){
   k.classList.add('on');k.classList.remove('pop');void k.offsetWidth;k.classList.add('pop');
   const t=$('toast');t.innerHTML=`<img class="px" src="${icon('key','#E3A33B')}" alt=""><span>${d.name} · ${p.win.label}</span>`;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');
 }
-const SAL_MAX=Math.max(...Object.values(SALARY).flatMap(o=>Object.values(o)));
+const SAL_VALS=Object.values(SALARY).flatMap(o=>Object.values(o)).filter(v=>typeof v==='number'&&v>0);
+const SAL_MAX=SAL_VALS.length?Math.max(...SAL_VALS):1;
+const salOf=(r,g)=>{const v=(SALARY[r]||{})[g];return typeof v==='number'&&v>0?v:null};
+const salBar=v=>`<div class="sal-bar"><i style="width:${v==null?0:Math.max(8,v/SAL_MAX*100)}%"></i></div>`;
+const salVal=(v,salad)=>v==null?'<span class="sal-v na">暂无</span>':`<span class="sal-v"><img class="px" src="${salad}" alt="沙拉">×${v}</span>`;
 function salHTML(k,mine,who){
   const t=TYPES[k],salad=icon('salad'),self=k===mine;
   const head=`<div class="sal-who${self?'':' other'}"><img class="px" src="${persona(k)}" alt=""><div><small>${self?`${who}自己`:'正在看'}</small><b>${t.name}</b></div>${self?'':`<button type="button" class="back-me" data-k="${mine}">回到${who}</button>`}</div>`;
   return head+t.roles.map((r,i)=>{const R=ROLES[r];
-    const rows=REGIONS.map(([g,lab])=>{const v=SALARY[r][g];return `<div class="sal-row"><span class="sal-reg">${lab}</span><div class="sal-bar"><i style="width:${Math.max(8,v/SAL_MAX*100)}%"></i></div><span class="sal-v"><img class="px" src="${salad}" alt="沙拉">×${v}</span></div>`}).join('');
+    const rows=REGIONS.map(([g,lab])=>{const v=salOf(r,g);return `<div class="sal-row"><span class="sal-reg">${lab}</span>${salBar(v)}${salVal(v,salad)}</div>`}).join('');
     return `<div class="role"><div class="role-h"><span class="role-n">${i+1}</span><div><b>${R.name}</b><small>${R.orgs}</small></div></div>${rows}<div class="skills"><span>想拿这份沙拉，要会</span>${R.skills.map(x=>`<i>${x}</i>`).join('')}</div><p class="step"><b>入行第一步</b>${cl(R.step)}</p></div>`}).join('');
+}
+// 「你的岗位三地沙拉」：第一推荐岗位的三地中位数 + p25–p75 + 样本数 + 一句话倍数结论
+const fmtN=n=>Number(n).toLocaleString('en-US');
+function mineLine(R,S){
+  const x=(a,b)=>(a/b).toFixed(1),has=g=>S[g]!=null,lab=g=>REGIONS.find(z=>z[0]===g)[1];
+  const got=REGIONS.map(z=>z[0]).filter(has);
+  if(got.length<2)return got.length?`${R.name}目前只有${lab(got[0])}有数据，另外两地待补。`:`${R.name}三地数据还在整理中。`;
+  const p=[];
+  if(has('cn')){if(has('hk'))p.push(`香港中位数是内地的 ${x(S.hk,S.cn)} 倍`);if(has('us'))p.push(has('hk')?`美国是 ${x(S.us,S.cn)} 倍`:`美国中位数是内地的 ${x(S.us,S.cn)} 倍`)}
+  else p.push(`美国中位数是香港的 ${x(S.us,S.hk)} 倍`);
+  return `同样做${R.name}，${p.join('，')}。`;
+}
+function mineHTML(t,who){
+  const r=t.roles[0],R=ROLES[r],salad=icon('salad'),X=SALARY_X[r]||{};
+  const S={};REGIONS.forEach(([g])=>S[g]=salOf(r,g));
+  const rows=REGIONS.map(([g,lab])=>{const v=S[g],x=X[g]||{};
+    const rng=v!=null&&typeof x.p25==='number'&&typeof x.p75==='number'?`P25–P75 ${x.p25}–${x.p75} 份`:'';
+    const n=v!=null&&x.n>0?`样本 ${fmtN(x.n)} 条`:'';
+    const sub=v==null?'<small>这一地暂无可用数据</small>':(rng||n?`<small>${[rng,n].filter(Boolean).join(' · ')}</small>`:'');
+    return `<div class="sal-row mine-row"><span class="sal-reg">${lab}</span>${salBar(v)}${salVal(v,salad)}${sub}</div>`}).join('');
+  return `<div class="role mine" id="mineCard"><div class="role-h"><span class="role-n">★</span><div><b>${who}的岗位三地沙拉：${R.name}</b><small>月薪中位数 · 1 份沙拉 = ¥1k</small></div></div>${rows}<p class="step"><b>一句话</b>${cl(mineLine(R,S))}</p><a class="more" href="/salad/?role=${encodeURIComponent(r)}&amp;from=game">查全部 ${Object.keys(ROLES).length} 个岗位的三地沙拉 →</a></div>`;
 }
 
 /* ===================== 你俩合盘 ===================== */
@@ -763,7 +801,7 @@ async function posterOne(code,him){
   x.fillStyle='#3E3833';x.font=`900 28px ${FONT}`;x.fillText(t.roles.map(r=>ROLES[r].name).join(' · '),100,868,520);
   const r0=t.roles[0],sal=await loadImg(icon('salad'));
   x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(`${ROLES[r0].name}月薪 · 1 份沙拉 = ¥1k`,100,916);
-  REGIONS.forEach(([g,lab],i)=>{const X=100+i*184;x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(lab,X,952);if(sal)x.drawImage(sal,X,978,26,26);x.fillStyle='#3E3833';x.font=`800 26px ui-monospace,Menlo,Consolas,monospace`;x.fillText('×'+SALARY[r0][g],X+30,978)});
+  REGIONS.forEach(([g,lab],i)=>{const X=100+i*184;x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(lab,X,952);if(sal)x.drawImage(sal,X,978,26,26);x.fillStyle='#3E3833';x.font=`800 26px ui-monospace,Menlo,Consolas,monospace`;x.fillText('×'+(salOf(r0,g)??'—'),X+30,978)});
   await posterFoot(x,him?'金融里，你是什么登？':'金融里，你是什么登？');
   return c.toDataURL('image/png');
 }
@@ -817,10 +855,11 @@ function showResult(){
     <div class="sect" id="salSec"><h2>${who}这种人，在哪拿多少沙拉</h2>
       <p class="sub"><img class="px inl" src="${salad}" alt="">1 份沙拉 = 月薪 ¥1k<br>${SALARY_META.level} · 三地统一折成人民币</p>
       ${SALARY_DEMO?'<div class="demo">示例数字，仅供看效果 · 待替换为真实招聘数据</div>':''}
+      ${mineHTML(t,who)}
       <div id="salBody">${salHTML(code,code,who)}</div>
       <div class="peek"><b>其他人格拿多少？点一个看看</b><div class="peek-row" id="peekRow">${CODES.map(k=>`<button type="button" data-k="${k}" class="${k===code?'on':''}"><img class="px" src="${persona(k)}" alt=""><span>${TYPES[k].name}</span></button>`).join('')}</div></div>
       <p class="follow">想知道这些岗位怎么入行？关注 @小梨🍐 有价值的财商分享，职业路线一期一期讲。</p>
-      <div class="src"><p><b>数据来源</b>${SALARY_META.src}${SALARY_META.n?`（${SALARY_META.date}，样本 ${SALARY_META.n} 条）`:`（${SALARY_META.date}）`}。取月薪中位数，不含年终奖；${SALARY_META.fx}。</p>
+      <div class="src"><p><b>数据来源</b>${SALARY_META.src}（${[SALARY_META.date,SALARY_META.n?`样本 ${fmtN(SALARY_META.n)} 条`:'',SALARY_META.updated?`更新于 ${String(SALARY_META.updated).slice(0,10)}`:''].filter(Boolean).join('，')}）。取月薪中位数，不含年终奖；${SALARY_META.fx}。</p>
         <p><b>免责声明</b>纯科普娱乐，仅供参考。不代表任何具体机构或个人的真实薪酬，实际收入因机构、业绩和个人差异很大，也不构成求职或投资建议。</p></div></div>
     <div class="sect"><h2>${who}的登级：${lv}</h2><div class="lvls">${Object.keys(LEVELS).map(k=>`<div class="${k===lv?'on':''}"><b>${k}</b><span>${LEVELS[k]}</span></div>`).join('')}</div></div>
     ${him?`<div class="sect advice"><h2>相处小提示</h2><p class="tipline">${cl(t.tip)}</p><p class="disc">纯属玩梗，请勿对号入座。</p></div>`
