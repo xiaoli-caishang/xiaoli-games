@@ -88,8 +88,10 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
 #yest button{border:1px solid var(--hair);border-radius:99px;padding:4px 10px;margin:0 4px}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-left:4px;vertical-align:middle}
 .gold{color:var(--gold)}
-#a2hs{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:25;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:10px 12px;text-align:center}
-#a2hs button{border:1px solid var(--hair);border-radius:99px;padding:4px 12px;margin-top:6px}
+#a2hs{padding:4px 12px 6px;text-align:center;border-top:1px solid var(--hair);letter-spacing:0}
+#a2hs p{margin:0;line-height:1.4}
+#a2hs button{border:1px solid var(--hair);border-radius:99px;padding:2px 8px;margin-left:6px}
+.rbody .go.block,.rbody .choice{display:block;width:100%;margin:8px 0}
 #sheet img{width:100%;height:auto;-webkit-touch-callout:default;user-select:auto}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cell{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mute);border-radius:8px}
@@ -146,6 +148,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
       <button type="button" id="inc" class="incbtn">+收入</button>
       <button type="button" id="ok" class="go">记下</button>
     </div>
+    <div id="a2hs" hidden><p>把小梨放到桌面，一秒打开<button type="button" data-act="dismissA2hs">知道了</button></p><p class="sub">iPhone 点分享，安卓点菜单，再点「添加到主屏幕」</p></div>
     <nav>
       <button type="button" data-nav="orchard">梨园</button>
       <button type="button" data-nav="jar">梨罐</button>
@@ -156,7 +159,6 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
 </div>
 <div id="mask" hidden><div id="sheet" role="dialog" aria-modal="true"></div></div>
 <div id="ritual" hidden></div>
-<div id="a2hs" hidden><p>把小梨放到桌面，一秒打开</p><p class="sub">iPhone：点分享，再点「添加到主屏幕」。安卓：点浏览器菜单，再点「添加到主屏幕」。</p><button type="button" data-act="dismissA2hs">知道了</button></div>
 <div id="pearbox" class="pearbox" hidden>
   <button type="button" id="undo" class="undo" hidden>撤销</button>
   <svg id="pearSvg" viewBox="0 0 160 206" aria-hidden="true">
@@ -297,10 +299,10 @@ const PRESET=['房租','房贷','话费网费','交通卡','会员订阅','保�
 const qd=new URLSearchParams(location.search).get('d');
 const TODAY=(()=>{if(qd&&/^\d{4}-\d{2}-\d{2}$/.test(qd))return parse(qd);const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())})();
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const YT=74,YB=190,PEAR_W=140;
+const YT=74,YB=200,PEAR_W=140;
 let seq=0;const uid=()=>Date.now()*10+(seq++%10);
 const fmt=n=>{const r=Math.round(n*100)/100;if(Math.abs(r-Math.round(r))<1e-9)return Math.round(r).toLocaleString('zh-CN');return r.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})};
-const ym=n=>(n<0?'-':'')+'¥'+fmt(Math.abs(n));
+const ym=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('zh-CN');
 function pick(arr,salt){const s=keyOf(TODAY)+'|'+salt;let h=0;for(let i=0;i<s.length;i++)h=(h*33+s.charCodeAt(i))>>>0;return arr[h%arr.length]}
 function fillCopy(t,map){return t.replace(/\{(\w+)\}/g,(_,k)=>map[k]??'')}
 const COPY={
@@ -363,7 +365,7 @@ function loop(now){
 function startLoop(){if(reduced){draw();return}if(running)return;running=true;lastT=0;raf=requestAnimationFrame(loop)}
 document.addEventListener('visibilitychange',()=>{if(document.hidden){running=false;cancelAnimationFrame(raf)}else startLoop()});
 function placePear(slot){const p=$('#pearbox');p.hidden=false;slot.appendChild(p)}
-function padHTML(){const keys=['1','2','3','4','5','6','7','8','9','.','0','bs'];return `<div class="pad">${keys.map(k=>`<button type="button" data-k="${k}" ${k==='bs'?'aria-label="删除"':''}>${k==='bs'?'⌫':k}</button>`).join('')}</div>`}
+function padHTML(){const del='<svg viewBox="0 0 24 18" width="22" height="16" aria-hidden="true"><path d="M7 1h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7L1 9z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M11 6l6 6M17 6l-6 6" stroke="currentColor" stroke-width="1.5"/></svg>';const keys=['1','2','3','4','5','6','7','8','9','.','0','bs'];return `<div class="pad">${keys.map(k=>`<button type="button" data-k="${k}" ${k==='bs'?'aria-label="删除"':''}>${k==='bs'?del:k}</button>`).join('')}</div>`}
 function sentenceHTML(withAlready){
   return `<p class="say">我每月 <button type="button" data-field="payday"></button> 号发工资，到手 <button type="button" data-field="income"></button>，</p>
   <p class="say">固定要付 <button type="button" data-field="fixed"></button>，想先存 <button type="button" data-field="pct"></button>。</p>
@@ -506,12 +508,12 @@ function render(){
     $('#sub').textContent=R.remain<-0.009?`${tom} · 本期超了 ${ym(-R.remain)}`:`${tom} · 本期还剩 ${ym(R.remain)}`;
     const run=streak(D,TODAY);
     let cap='';
-    if(R.todayLeft<-0.009)cap=fillCopy(pick(COPY.over,'over'),{n:fmt(-R.todayLeft)});
+    if(R.todayLeft<-0.009)cap=fillCopy(pick(COPY.over,'over'),{n:String(Math.round(-R.todayLeft))});
     else if(R.spentToday>0&&R.todayLeft<=0.009)cap=pick(COPY.even,'even');
-    else if(R.pace&&R.pace.short)cap=fillCopy(pick(COPY.pace,'pace'),{date:(R.pace.last.getMonth()+1)+'月'+R.pace.last.getDate()+'日',n:fmt(R.allowance)});
+    else if(R.pace&&R.pace.short)cap=fillCopy(pick(COPY.pace,'pace'),{date:(R.pace.last.getMonth()+1)+'月'+R.pace.last.getDate()+'日',n:String(Math.round(R.allowance))});
     else if(run===3||run===7||run===14)cap=fillCopy(pick(COPY.streak,'streak'),{n:String(run)});
-    else if(R.spentToday>0)cap=fillCopy(pick(COPY.left,'left'),{n:fmt(R.todayLeft)});
-    else cap=fillCopy(pick(COPY.morning,'morning'),{n:fmt(R.allowance)});
+    else if(R.spentToday>0)cap=fillCopy(pick(COPY.left,'left'),{n:String(Math.round(R.todayLeft))});
+    else cap=fillCopy(pick(COPY.morning,'morning'),{n:String(Math.round(R.allowance))});
     const goal=3*Math.max(0,D.setup.income-D.setup.save);
     if(goal>0&&D.savedTotal+0.5>=goal&&R.todayLeft>=-0.009&&!(R.pace&&R.pace.short))cap=pick(COPY.full,'full');
     $('#cap').textContent=cap;
@@ -717,7 +719,7 @@ function openOrchard(){
   const cells=Array(lead).fill('<i></i>').concat(days.map(d=>{
     const k=keyOf(d);const st=k>R.tk?'future':dayStatus(D,k,TODAY);
     if(st==='kept'){keptN++;run++;if(run>longest)longest=run}else if(k<R.tk)run=0;
-    const sub=st==='future'?fmt(proj):String(d.getDate());
+    const sub=st==='future'?String(Math.round(proj)):String(d.getDate());
     return `<button type="button" class="cell${k===R.tk?' today':''}" data-day="${k}">${miniPear(st)}<span>${sub}</span></button>`;
   })).join('');
   const avg=R.elapsed?R.spentCycle/R.elapsed:0;
