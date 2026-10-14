@@ -414,13 +414,33 @@ const ROLES={
 // SALARY_X 是同口径的 p25/p75（沙拉）与样本数 n。
 // ==== SALAD_BAKE_START ====
 const SALARY_DEMO=false;
-const SALARY_META={level:'3–5 年经验',date:'2026 年 10 月',n:0,src:'参考主流招聘网站公开岗位与猎头薪酬报告估算',fx:'港币、美元按当月汇率折算',updated:''};
+const SALARY_META={level:"3–5 年经验",date:"2026 年 10 月",n:11695,src:"内地取自职友集，香港取自 JobsDB，美国取自美国劳工部 H-1B LCA 公开数据（经 h1bdata.info 整理）",fx:"港币、美元按 2026-10-14 汇率折算（1 HKD=0.85 CNY，1 USD=6.71 CNY）",updated:"2026-10-14T18:44:21Z"};
 const SALARY={
- qr:{cn:40,hk:80,us:125},qdev:{cn:35,hk:65,us:110},trader:{cn:30,hk:65,us:95},research:{cn:25,hk:55,us:85},
- pm:{cn:50,hk:100,us:150},vc:{cn:30,hk:60,us:100},risk:{cn:20,hk:42,us:70},wealth:{cn:20,hk:55,us:70},
- sales:{cn:20,hk:65,us:75},product:{cn:18,hk:40,us:60},actuary:{cn:22,hk:50,us:75},
+ qr:{cn:39,hk:44,us:101},
+ qdev:{cn:38,hk:29,us:112},
+ trader:{cn:19,hk:36,us:112},
+ research:{cn:26,hk:33,us:84},
+ pm:{cn:35,hk:57,us:109},
+ vc:{cn:27,hk:43,us:78},
+ risk:{cn:23,hk:36,us:81},
+ wealth:{cn:23,hk:33,us:null},
+ sales:{cn:22,hk:38,us:null},
+ product:{cn:25,hk:37,us:86},
+ actuary:{cn:28,hk:40,us:72},
 };
-const SALARY_X={};
+const SALARY_X={
+ qr:{cn:{p25:31,p75:48,n:143},hk:{p25:36,p75:60,n:19},us:{p25:78,p75:126,n:453}},
+ qdev:{cn:{p25:28,p75:48,n:177},hk:{p25:23,p75:40,n:9},us:{p25:82,p75:126,n:59}},
+ trader:{cn:{p25:14,p75:28,n:537},hk:{p25:27,p75:47,n:71},us:{p25:84,p75:140,n:151}},
+ research:{cn:{p25:20,p75:37,n:102},hk:{p25:24,p75:43,n:49},us:{p25:70,p75:104,n:103}},
+ pm:{cn:{p25:22,p75:46,n:276},hk:{p25:42,p75:80,n:28},us:{p25:85,p75:126,n:65}},
+ vc:{cn:{p25:20,p75:38,n:1795},hk:{p25:33,p75:58,n:19},us:{p25:73,p75:97,n:74}},
+ risk:{cn:{p25:16,p75:30,n:5037},hk:{p25:27,p75:46,n:156},us:{p25:64,p75:95,n:153}},
+ wealth:{cn:{p25:15,p75:35,n:865},hk:{p25:25,p75:45,n:312},us:null},
+ sales:{cn:{p25:16,p75:29,n:329},hk:{p25:29,p75:49,n:31},us:null},
+ product:{cn:{p25:17,p75:35,n:413},hk:{p25:29,p75:45,n:46},us:{p25:73,p75:109,n:84}},
+ actuary:{cn:{p25:18,p75:41,n:68},hk:{p25:27,p75:65,n:15},us:{p25:56,p75:112,n:56}},
+};
 // ==== SALAD_BAKE_END ====
 const REGIONS=[['cn','中国一线'],['hk','香港'],['us','美国']];
 // 登级：越冒险越短线越“小登”，越稳越长线越“老登”
