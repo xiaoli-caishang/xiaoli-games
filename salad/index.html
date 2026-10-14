@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>薪资沙拉：同一个金融岗位，在内地、香港、美国值几份沙拉？ · 小梨知识王国</title>
+<meta name="description" content="1 份沙拉 = 月薪 ¥1,000。量化研究员、交易员、基金经理、风控合规、精算师等 11 个金融岗位，3–5 年经验的月薪中位数在中国一线、香港、美国分别值几份沙拉？数据来自公开招聘信息与 H-1B 申报，三地统一折人民币，附样本数与方法说明。只讲工资，不讲投资。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="同一个金融岗位，在三地值几份沙拉？ · 小梨薪资沙拉">
+<meta property="og:description" content="1 份沙拉 = 月薪 ¥1,000。11 个金融岗位，中国一线 / 香港 / 美国 月薪中位数对比，公开数据、附样本数与来源。">
+<meta property="og:url" content="https://xiaolipearl.com/salad/">
+<meta property="og:site_name" content="小梨知识王国">
+<meta name="theme-color" content="#F6EFE4">
+<link rel="canonical" href="https://xiaolipearl.com/salad/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' shape-rendering='crispEdges'%3E%3Crect x='4' y='2' width='2' height='1' fill='%234F9A70'/%3E%3Crect x='7' y='2' width='1' height='1' fill='%234F9A70'/%3E%3Crect x='3' y='3' width='6' height='1' fill='%234F9A70'/%3E%3Crect x='6' y='3' width='1' height='1' fill='%23D9695A'/%3E%3Crect x='2' y='4' width='8' height='1' fill='%234F9A70'/%3E%3Crect x='3' y='4' width='1' height='1' fill='%23D9695A'/%3E%3Crect x='1' y='5' width='10' height='1' fill='%233E3833'/%3E%3Crect x='1' y='6' width='10' height='1' fill='%233E3833'/%3E%3Crect x='2' y='6' width='8' height='1' fill='%23fff'/%3E%3Crect x='2' y='7' width='8' height='1' fill='%233E3833'/%3E%3Crect x='3' y='7' width='6' height='1' fill='%23fff'/%3E%3Crect x='3' y='8' width='6' height='1' fill='%233E3833'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#F6EFE4; --s1:#FFFBF4; --s2:#F3EADB; --line:#E8DCC8; --fg:#3E3833;
+  --mut:#958A7C; --gold:#E3A33B; --gold-d:#C98A2A; --ink:#3E3833; --gain:#4F9A70; --loss:#D9695A;
+  --pear:#B8CC6E; --sky:#6F98CF; --paper:#FFF6E6; --board:#FFF8E6;
+  --c-cn:#E3A33B; --c-hk:#D9695A; --c-us:#6F98CF;
+  --f:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  --num:"DIN Alternate","Bahnschrift",ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f);line-height:1.65;-webkit-text-size-adjust:100%}
+body{background-image:radial-gradient(circle at 8% 12%,#FBE3D6 0,transparent 28%),radial-gradient(circle at 92% 30%,#E6EFD8 0,transparent 26%);overflow-x:hidden}
+a{color:#8A5A10}
+img,svg{max-width:100%}
+.wrap{max-width:980px;margin:0 auto;padding:26px 16px 72px}
+.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--gold);font-weight:700}
+h1{font-size:clamp(26px,6vw,42px);line-height:1.22;margin:.2em 0 .45em;letter-spacing:.01em}
+h2{font-size:21px;margin:2em 0 .5em;line-height:1.3}
+h3{font-size:17px;margin:0;line-height:1.3}
+.sub{color:var(--mut);font-size:14px}
+.sub b{color:var(--fg)}
+.card{background:var(--s1);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:10px 0;box-shadow:0 8px 22px rgba(160,125,80,.08)}
+.k{font-size:12px;color:var(--mut);font-weight:700}
+.mono,.num{font-family:var(--num);font-variant-numeric:tabular-nums}
+.px{image-rendering:pixelated;image-rendering:crisp-edges;display:inline-block;vertical-align:-3px;width:16px;height:16px;flex:0 0 auto}
+.hide{display:none!important}
+.srlabel{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* 像素木牌 */
+.board{display:inline-flex;align-items:center;gap:8px;background:var(--board);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:6px 12px;font-weight:800;font-size:14px;border-radius:4px}
+.board .px{width:18px;height:18px}
+.head{display:flex;flex-direction:column;gap:10px}
+.head .lead{font-size:15.5px;background:var(--paper);border:1.5px dashed #E2CFA9;border-radius:14px;padding:12px 14px;margin:6px 0 0}
+.head .lead .sep{color:#D9C5A0;margin:0 6px}
+
+/* 筛选条 */
+.filters{z-index:6;background:rgba(246,239,228,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:18px 0 12px;display:flex;flex-direction:column;gap:8px;box-shadow:0 6px 18px rgba(160,125,80,.08)}
+.frow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.frow .k{flex:0 0 auto;width:34px}
+.chips{display:flex;gap:6px;overflow-x:auto;flex:1 1 auto;padding:2px 2px 4px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.chip{flex:0 0 auto;border:1.5px solid var(--line);background:var(--s1);color:var(--fg);border-radius:999px;padding:4px 11px;font:inherit;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;line-height:1.4}
+.chip:hover{border-color:#D9C5A0}
+.chip.on{background:var(--gold);border-color:var(--gold-d);color:var(--ink);box-shadow:0 2px 0 var(--gold-d)}
+.chip.reg.on{color:#fff}
+.chip.reg.cn.on{background:var(--c-cn);border-color:var(--c-cn);color:var(--ink)}
+.chip.reg.hk.on{background:var(--c-hk);border-color:var(--c-hk)}
+.chip.reg.us.on{background:var(--c-us);border-color:var(--c-us)}
+select{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:var(--s1);border:1.5px solid var(--line);border-radius:999px;padding:4px 10px;max-width:100%}
+.frow.split{justify-content:space-between}
+.frow .right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+/* 岗位卡 */
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:700px){.filters{position:sticky;top:0}}
+.role{margin:0;position:relative;transition:box-shadow .25s,transform .25s}
+.role.hl{border:2px solid var(--gold);box-shadow:0 0 0 4px rgba(227,163,59,.22),0 10px 26px rgba(160,125,80,.14)}
+.role.hl::after{content:"你的岗位";position:absolute;top:-10px;right:14px;background:var(--gold);color:var(--ink);font-size:11px;font-weight:800;padding:1px 8px;border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink);border-radius:3px}
+.role header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.role .ratios{font-size:12px;color:var(--mut);display:flex;gap:10px;flex-wrap:wrap}
+.role .ratios b{color:var(--fg);font-family:var(--num);font-size:13px}
+.rows{display:flex;flex-direction:column;gap:9px}
+.row{display:grid;grid-template-columns:70px minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:10px;row-gap:2px;align-items:center}
+.row .reg{grid-row:1/3;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px;line-height:1.25}
+.row .reg i{width:9px;height:9px;border:1.5px solid var(--ink);flex:0 0 auto}
+.row.cn .reg i{background:var(--c-cn)}.row.hk .reg i{background:var(--c-hk)}.row.us .reg i{background:var(--c-us)}
+.bar{height:14px;background:var(--s2);border:2px solid var(--ink);box-shadow:2px 2px 0 rgba(62,56,51,.35);position:relative;overflow:hidden}
+.bar i{display:block;height:100%;min-width:4px;background:repeating-linear-gradient(90deg,var(--bc) 0 7px,var(--bc2) 7px 9px);transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.row.cn .bar i{--bc:var(--c-cn);--bc2:#C98A2A}
+.row.hk .bar i{--bc:var(--c-hk);--bc2:#B9503F}
+.row.us .bar i{--bc:var(--c-us);--bc2:#4F78AE}
+.bar.empty{background:repeating-linear-gradient(45deg,var(--s2) 0 6px,#EDE2CF 6px 12px);border-style:dashed;box-shadow:none}
+.row .big{font-family:var(--num);font-weight:800;font-size:20px;line-height:1;white-space:nowrap;display:flex;align-items:center;gap:4px;justify-content:flex-end;min-width:64px}
+.row .big .px{width:18px;height:18px}
+.row .big small{font-family:var(--f);font-size:11px;color:var(--mut);font-weight:600}
+.row .big.na{font-size:13px;color:var(--mut);font-family:var(--f);font-weight:700}
+.row .meta{grid-column:2/4;font-size:11.5px;color:var(--mut);line-height:1.45;word-break:break-word}
+.row .meta b{color:var(--fg);font-weight:600}
+.row .meta .note{color:#B5822A}
+.empty-all{text-align:center;color:var(--mut);padding:30px 10px}
+
+/* 表 */
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mut);font-weight:600;white-space:nowrap;background:var(--s2);position:sticky;top:0}
+td:first-child{white-space:nowrap}
+td .m{font-family:var(--num);font-weight:800;font-size:15px}
+td .r{font-size:11.5px;color:var(--mut);white-space:nowrap}
+tr.hl td{background:#FFF3DA}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px;align-items:center}
+.go,.ghost{border-radius:999px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;display:inline-block;line-height:1.3}
+.go{border:0;background:var(--gold);color:var(--ink);box-shadow:0 4px 0 var(--gold-d)}
+.go:active{transform:translateY(2px);box-shadow:0 2px 0 var(--gold-d)}
+.ghost{border:1px solid var(--line);background:var(--s2);color:var(--fg)}
+.sm{padding:7px 13px;font-size:13px}
+
+/* 发现 */
+.finds{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:700px){.finds{grid-template-columns:1fr 1fr 1fr}}
+.find{margin:0;border-left:3px solid var(--gold)}
+.find .k{margin-bottom:4px}
+.find p{margin:.25em 0;font-size:14.5px}
+.find .na{color:var(--mut);font-size:13.5px}
+.find b{color:#8A5A10;font-family:var(--num);font-size:16px}
+.find .role-n{color:var(--fg);font-family:var(--f);font-size:inherit}
+
+/* CTA */
+.cta{background:linear-gradient(135deg,#FFF6E6,#FBE3D6);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);border-radius:14px;padding:20px 18px;margin:30px 0 10px;text-align:center}
+.cta h2{margin:0 0 6px;font-size:22px}
+.cta p{margin:0 0 12px;color:#6B6157;font-size:14px}
+
+/* 方法 */
+.src li{margin:.35em 0;font-size:14px}
+.src .tag{display:inline-block;font-size:10.5px;font-weight:800;padding:0 6px;border:1.5px solid var(--ink);border-radius:3px;margin-right:6px;vertical-align:1px;color:var(--ink)}
+.src .tag.cn{background:var(--c-cn)}.src .tag.hk{background:var(--c-hk);color:#fff}.src .tag.us{background:var(--c-us);color:#fff}
+.src .note{color:var(--mut);font-size:12.5px}
+.method p{margin:.5em 0;font-size:14.5px}
+.method ul{margin:.3em 0 .6em;padding-left:1.3em;font-size:14px}
+.method li{margin:.25em 0}
+.disc{font-weight:800;border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+footer{margin-top:40px;color:var(--mut);font-size:13px;text-align:center}
+footer a{color:var(--mut);text-decoration:none}
+
+/* 状态 */
+.state{text-align:center;padding:36px 14px}
+.state .px{width:40px;height:40px;display:block;margin:0 auto 10px}
+.state.err{border-left:3px solid var(--loss);background:#F8E8E4;text-align:left}
+.state.err b{display:block;font-size:16px;margin-bottom:4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:20;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%)}
+@media(max-width:420px){
+  .wrap{padding:20px 12px 60px}
+  .row{grid-template-columns:66px minmax(0,1fr) auto}
+  .row .big{font-size:18px;min-width:56px}
+  .filters{padding:8px 10px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="head" id="top">
+    <div class="eyebrow">小梨 · 薪资沙拉</div>
+    <h1>同一个金融岗位，<br>在三地值几份沙拉？</h1>
+    <div><span class="board" id="unit"><span id="saladIcon1"></span>1 份沙拉 = 月薪 ¥1,000</span></div>
+    <p class="lead sub" id="subline">正在端上沙拉…</p>
+  </header>
+
+  <div id="loading" class="card state"><span id="saladIcon0"></span><span class="sub">正在加载数据 <span class="mono">/assets/salad/data.json</span> …</span></div>
+  <div id="error" class="card state err hide"></div>
+
+  <main id="app" class="hide">
+    <div class="filters" id="filters" aria-label="筛选">
+      <div class="frow">
+        <span class="k">岗位</span>
+        <div class="chips" id="roleChips" role="tablist"></div>
+      </div>
+      <div class="frow split">
+        <div class="frow" style="gap:8px"><span class="k">地区</span><div class="chips" id="regChips"></div></div>
+        <div class="right">
+          <label class="k" for="sortSel">排序</label>
+          <select id="sortSel">
+            <option value="hk">按香港中位数</option>
+            <option value="us">按美国中位数</option>
+            <option value="cn">按内地中位数</option>
+            <option value="hkcn">按 香港 ÷ 内地 倍数</option>
+            <option value="uscn">按 美国 ÷ 内地 倍数</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <section aria-label="岗位卡片">
+      <div class="grid" id="cards"></div>
+    </section>
+
+    <section id="tableSec">
+      <h2 style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">汇总表
+        <span style="display:flex;gap:8px"><button class="ghost sm" type="button" id="toggleTable">展开表格</button><button class="ghost sm hide" type="button" id="copyTsv">复制为 TSV</button></span>
+      </h2>
+      <p class="sub" style="margin-top:0">岗位 × 地区：沙拉数（中位数）、当地币种中位数、p25–p75、样本 n。</p>
+      <div class="card hide" id="tableCard" style="padding:0;overflow:hidden"><div class="tablewrap"><table id="tbl"></table></div></div>
+    </section>
+
+    <section id="findSec">
+      <h2>反直觉的三个发现</h2>
+      <p class="sub" style="margin-top:0">以下由当前数据自动计算，换一个月的数据结论可能就变。</p>
+      <div class="finds" id="finds"></div>
+    </section>
+
+    <section class="cta" id="cta">
+      <h2>你的岗位值几份沙拉，先测测你是哪一登</h2>
+      <p>12 道生活小题，测出你的金融人格与登级，顺便查你岗位的三地沙拉数。</p>
+      <a class="go" id="ctaBtn" href="https://xiaolipearl.com/games/finance-persona/?from=salad">测测你是哪一登，顺便查你的岗位沙拉</a>
+    </section>
+
+    <section id="methodSec">
+      <h2>方法与来源</h2>
+      <div class="card src">
+        <div class="k">数据来源</div>
+        <ul id="sources" style="margin:.4em 0 0;padding-left:1.2em"></ul>
+      </div>
+      <div class="card method" id="method"></div>
+      <p class="sub">更长的说明（抓取方式、职称映射表、每月变更记录）见 <a href="/assets/salad/methods.md">/assets/salad/methods.md</a>；原始数据文件 <a href="/assets/salad/data.json" class="mono">data.json</a>。</p>
+    </section>
+  </main>
+
+  <footer>© 小梨知识王国 · <a href="https://xiaolipearl.com">xiaolipearl.com</a></footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>(n==null||isNaN(n))?'—':Math.round(n).toLocaleString('en-US');
+const CUR={CNY:'¥',HKD:'HK$',USD:'$'};
+const DATA_URL='/assets/salad/data.json';
+
+/* 像素沙拉（与游戏同一张 12×12 图） */
+const SALAD_MAP=["............","............","....GG.G....","...GGGRGG...","..GRGGGGGG..",".OOOOOOOOOO.",".OWWWWWWWWO.","..OWWWWWWO..","...OOOOOO...","............","............","............"];
+const PAL={O:'#3E3833',W:'#FFFFFF',G:'#4F9A70',R:'#D9695A'};
+const SALAD_SVG=(()=>{let r='';SALAD_MAP.forEach((row,y)=>{for(let x=0;x<12;x++){const c=PAL[row[x]];if(c)r+=`<rect x="${x}" y="${y}" width="1" height="1" fill="${c}"/>`}});return `<svg class="px" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true" focusable="false">${r}</svg>`})();
+$('#saladIcon0').innerHTML=SALAD_SVG.replace('class="px"','class="px" style="width:40px;height:40px"');
+$('#saladIcon1').innerHTML=SALAD_SVG;
+
+/* 状态 */
+const params=new URLSearchParams(location.search);
+const state={role:null,regions:new Set(),sort:'hk',firstPaint:true,tableOpen:false};
+let D=null,ROLES=[],REGS=[],MAXSALAD=1,SALAD_CNY=1000;
+
+/* CTA from 透传 */
+(function(){
+  const f=(params.get('from')||'').replace(/[^\w.-]/g,'').slice(0,40);
+  $('#ctaBtn').href='https://xiaolipearl.com/games/finance-persona/?from='+encodeURIComponent(f?'salad-'+f:'salad');
+})();
+
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1600)}
+function monthText(d){const m=/^(\d{4})-(\d{1,2})/.exec(d||'');return m?`${m[1]} 年 ${+m[2]} 月`:(d||'—')}
+
+/* 取格 */
+function cell(r,g){const c=D.stats&&D.stats[r]&&D.stats[r][g];return c&&typeof c==='object'?c:null}
+function ok(c){return !!(c&&c.median_cny!=null&&isFinite(c.median_cny)&&(c.n||0)>0)}
+function salad(c){if(!ok(c))return null;return c.salad!=null?c.salad:Math.round(c.median_cny/SALAD_CNY)}
+function ratio(r,g){const a=cell(r,g),b=cell(r,'cn');if(!ok(a)||!ok(b)||!b.median_cny)return null;return a.median_cny/b.median_cny}
+function regOf(id){return REGS.find(x=>x.id===id)||{id,name:id,currency:'CNY'}}
+function roleName(id){const r=ROLES.find(x=>x.id===id);return r?r.name:id}
+function money(reg,v){if(v==null)return '—';return (CUR[reg.currency]||reg.currency+' ')+fmt(v)}
+function range(reg,c){if(!ok(c)||c.p25_local==null||c.p75_local==null)return null;return money(reg,c.p25_local)+'–'+fmt(c.p75_local)}
+
+/* 加载 */
+async function load(){
+  try{
+    const res=await fetch(DATA_URL,{cache:'no-cache'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const j=await res.json();
+    if(!j||!j.meta||!Array.isArray(j.roles)||!Array.isArray(j.regions)||!j.stats||typeof j.stats!=='object')throw new Error('数据格式不对：缺少 meta / roles / regions / stats');
+    D=j;init();
+  }catch(e){
+    $('#loading').classList.add('hide');
+    const el=$('#error');el.classList.remove('hide');
+    el.innerHTML=`<b>沙拉还没端上来</b><div class="sub">数据文件 <span class="mono">${esc(DATA_URL)}</span> 暂时读不到（${esc(e.message||e)}）。可能是这个月的数据还在生成，或者网络不太好。</div><div class="btns"><button class="go sm" type="button" id="retry">再试一次</button><a class="ghost sm" href="https://xiaolipearl.com/games/finance-persona/?from=salad-err">先去测测你是哪一登</a></div>`;
+    $('#retry').onclick=()=>{el.classList.add('hide');$('#loading').classList.remove('hide');load()};
+    console.warn('[salad] load failed',e);
+  }
+}
+
+function init(){
+  ROLES=D.roles.filter(r=>r&&r.id);REGS=D.regions.filter(r=>r&&r.id);
+  SALAD_CNY=+D.meta.salad_cny>0?+D.meta.salad_cny:1000;
+  REGS.forEach(g=>state.regions.add(g.id));
+  let max=0,total=0,cells=0,okc=0;
+  ROLES.forEach(r=>REGS.forEach(g=>{const c=cell(r.id,g.id);cells++;if(ok(c)){okc++;max=Math.max(max,salad(c)||0);total+=(+c.n||0)}}));
+  MAXSALAD=max||1;
+  const pr=params.get('role');if(pr&&ROLES.some(r=>r.id===pr))state.role=pr;
+  const ps=params.get('sort');if(ps&&$('#sortSel').querySelector(`option[value="${ps}"]`))state.sort=ps;
+  $('#sortSel').value=state.sort;
+
+  /* 头部副标 */
+  $('#unit').innerHTML=SALAD_SVG+`1 份沙拉 = 月薪 ¥${fmt(SALAD_CNY)}`;
+  const sep='<span class="sep">·</span>';
+  $('#subline').innerHTML=[`数据月份 <b>${esc(monthText(D.meta.date))}</b>`,`<b>${esc(D.meta.level||'3–5 年经验')}</b>`,'月薪中位数','不含年终奖',`${REGS.map(g=>esc(g.name)).join(' / ')} 统一折人民币`,`共 <b class="num">${fmt(total)}</b> 条样本`,`${okc}/${cells} 格有数`].join(sep);
+  document.title=`薪资沙拉（${monthText(D.meta.date)}）：同一个金融岗位，在三地值几份沙拉？ · 小梨知识王国`;
+
+  /* 筛选 */
+  $('#roleChips').innerHTML=`<button class="chip" data-role="" type="button">全部</button>`+ROLES.map(r=>`<button class="chip" data-role="${esc(r.id)}" type="button">${esc(r.name)}</button>`).join('');
+  $('#roleChips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;state.role=b.dataset.role||null;syncUrl();render(true)};
+  $('#regChips').innerHTML=REGS.map(g=>`<button class="chip reg ${esc(g.id)}" data-reg="${esc(g.id)}" type="button" aria-pressed="true">${esc(g.name)}</button>`).join('');
+  $('#regChips').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const id=b.dataset.reg;if(state.regions.has(id)){if(state.regions.size===1){toast('至少留一个地区');return}state.regions.delete(id)}else state.regions.add(id);render()};
+  $('#sortSel').onchange=e=>{state.sort=e.target.value;syncUrl();render()};
+  $('#toggleTable').onclick=()=>{state.tableOpen=!state.tableOpen;$('#tableCard').classList.toggle('hide',!state.tableOpen);$('#copyTsv').classList.toggle('hide',!state.tableOpen);$('#toggleTable').textContent=state.tableOpen?'收起表格':'展开表格';if(state.tableOpen)renderTable()};
+  $('#copyTsv').onclick=copyTsv;
+
+  renderSources();renderMethod();renderFindings();
+  $('#loading').classList.add('hide');$('#app').classList.remove('hide');
+  render(true);
+}
+
+function syncUrl(){
+  const p=new URLSearchParams(location.search);
+  if(state.role)p.set('role',state.role);else p.delete('role');
+  if(state.sort&&state.sort!=='hk')p.set('sort',state.sort);else p.delete('sort');
+  const q=p.toString();history.replaceState(null,'',location.pathname+(q?'?'+q:'')+location.hash);
+}
+
+function sortedRoles(){
+  const key=state.sort;
+  const val=r=>{
+    if(key==='hkcn')return ratio(r.id,'hk');
+    if(key==='uscn')return ratio(r.id,'us');
+    return salad(cell(r.id,key));
+  };
+  const arr=ROLES.map((r,i)=>({r,i,v:val(r)}));
+  arr.sort((a,b)=>{
+    if(state.role){if(a.r.id===state.role)return -1;if(b.r.id===state.role)return 1}
+    const av=a.v==null?-Infinity:a.v,bv=b.v==null?-Infinity:b.v;
+    return bv-av||a.i-b.i;
+  });
+  return arr.map(x=>x.r);
+}
+
+function render(scrollTo){
+  document.querySelectorAll('#roleChips .chip').forEach(b=>b.classList.toggle('on',(b.dataset.role||null)===state.role));
+  document.querySelectorAll('#regChips .chip').forEach(b=>{const on=state.regions.has(b.dataset.reg);b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+  const regs=REGS.filter(g=>state.regions.has(g.id));
+  const list=sortedRoles();
+  $('#cards').innerHTML=list.map(r=>cardHtml(r,regs)).join('')||`<div class="card empty-all">暂无数据</div>`;
+  if(state.tableOpen)renderTable();
+  if(scrollTo&&state.role){
+    const el=document.querySelector(`.role[data-role="${CSS.escape(state.role)}"]`);
+    if(el&&!state.firstPaint){el.scrollIntoView({behavior:'smooth',block:'start'})}
+  }
+  requestAnimationFrame(()=>document.querySelectorAll('.bar i[data-w]').forEach(i=>{i.style.width=i.dataset.w+'%'}));
+  if(state.firstPaint){state.firstPaint=false;if(state.role){const chip=document.querySelector(`#roleChips .chip.on`);chip&&chip.scrollIntoView({inline:'center',block:'nearest'})}}
+}
+
+function cardHtml(r,regs){
+  const rows=regs.map(g=>{
+    const c=cell(r.id,g.id),s=salad(c);
+    if(!ok(c)){
+      const note=c&&c.note?c.note:(c?'样本为 0，本月不出数':'数据文件中没有这一格');
+      return `<div class="row ${esc(g.id)}"><span class="reg"><i></i>${esc(g.name)}</span><div class="bar empty" aria-label="暂无数据"></div><span class="big na">暂无数据</span><div class="meta"><span class="note">${esc(note)}</span> · n=${fmt(c?c.n:0)}</div></div>`;
+    }
+    const w=Math.max(1.5,Math.min(100,s/MAXSALAD*100)).toFixed(1);
+    const rg=range(g,c);
+    const note=c.note?` · <span class="note">${esc(c.note)}</span>`:'';
+    return `<div class="row ${esc(g.id)}"><span class="reg"><i></i>${esc(g.name)}</span><div class="bar" role="img" aria-label="${esc(g.name)} ${s} 份沙拉"><i data-w="${w}" style="width:0"></i></div><span class="big">${SALAD_SVG}×${fmt(s)}</span><div class="meta">中位 <b>${money(g,c.median_local)}</b>${g.currency!=='CNY'?` ≈ ¥${fmt(c.median_cny)}`:''}${rg?` · p25–p75 ${rg}`:''} · n=<b class="num">${fmt(c.n)}</b>${note}</div></div>`;
+  }).join('');
+  const rat=['hk','us'].filter(g=>state.regions.has(g)&&state.regions.has('cn')).map(g=>{const k=ratio(r.id,g);return `<span>${esc(regOf(g).name)} ÷ ${esc(regOf('cn').name)} <b>${k==null?'—':k.toFixed(1)+'×'}</b></span>`}).join('');
+  return `<article class="card role${r.id===state.role?' hl':''}" data-role="${esc(r.id)}"><header><h3>${esc(r.name)}</h3><div class="ratios">${rat}</div></header><div class="rows">${rows}</div></article>`;
+}
+
+/* 汇总表 */
+function renderTable(){
+  const regs=REGS.filter(g=>state.regions.has(g.id));
+  const list=sortedRoles();
+  const th=`<tr><th>岗位</th>${regs.map(g=>`<th>${esc(g.name)}<br><span style="font-weight:400">沙拉 · 中位 · p25–p75 · n</span></th>`).join('')}${regs.length>1&&state.regions.has('cn')?'<th>倍数（÷内地）</th>':''}</tr>`;
+  const tr=list.map(r=>{
+    const tds=regs.map(g=>{const c=cell(r.id,g.id);if(!ok(c))return `<td><span class="r">暂无数据${c&&c.note?'：'+esc(c.note):''}</span></td>`;const rg=range(g,c);return `<td><span class="m">${SALAD_SVG}×${fmt(salad(c))}</span><br><span class="r">${money(g,c.median_local)}${rg?' · '+rg:''} · n=${fmt(c.n)}</span></td>`}).join('');
+    const rt=regs.length>1&&state.regions.has('cn')?`<td class="r">${['hk','us'].filter(g=>state.regions.has(g)).map(g=>{const k=ratio(r.id,g);return `${esc(regOf(g).name)} ${k==null?'—':k.toFixed(1)+'×'}`}).join('<br>')}</td>`:'';
+    return `<tr${r.id===state.role?' class="hl"':''}><td><b>${esc(r.name)}</b></td>${tds}${rt}</tr>`;
+  }).join('');
+  $('#tbl').innerHTML=th+tr;
+}
+function tsv(){
+  const regs=REGS.filter(g=>state.regions.has(g.id));
+  const head=['岗位',...regs.flatMap(g=>[`${g.name} 沙拉`,`${g.name} 中位(${g.currency})`,`${g.name} 中位(CNY)`,`${g.name} p25(${g.currency})`,`${g.name} p75(${g.currency})`,`${g.name} n`]),'香港÷内地','美国÷内地'];
+  const rows=sortedRoles().map(r=>{
+    const cells=regs.flatMap(g=>{const c=cell(r.id,g.id);if(!ok(c))return ['','','','','',c?c.n||0:0];return [salad(c),c.median_local,c.median_cny,c.p25_local??'',c.p75_local??'',c.n]});
+    const k1=ratio(r.id,'hk'),k2=ratio(r.id,'us');
+    return [r.name,...cells,k1==null?'':k1.toFixed(2),k2==null?'':k2.toFixed(2)].join('\t');
+  });
+  const meta=`# 小梨薪资沙拉 ${D.meta.date} · ${D.meta.level} · 月薪中位数，不含年终奖 · 1 份沙拉 = ¥${SALAD_CNY} · https://xiaolipearl.com/salad/`;
+  return [meta,head.join('\t'),...rows].join('\n');
+}
+async function copyTsv(){
+  const t=tsv();
+  try{await navigator.clipboard.writeText(t);toast('已复制 TSV，可直接粘到表格软件')}
+  catch(e){
+    const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();
+    let done=false;try{done=document.execCommand('copy')}catch(_){}
+    document.body.removeChild(ta);toast(done?'已复制 TSV':'复制失败，请手动选择表格');
+  }
+}
+
+/* 三个发现 */
+function renderFindings(){
+  const cn=regOf('cn');
+  const out=[];
+  /* 1 倍数最大 / 最小 */
+  const pairs=[];
+  ROLES.forEach(r=>['hk','us'].forEach(g=>{const k=ratio(r.id,g);if(k!=null)pairs.push({r,g,k})}));
+  if(pairs.length>=2){
+    const mx=pairs.reduce((a,b)=>b.k>a.k?b:a),mn=pairs.reduce((a,b)=>b.k<a.k?b:a);
+    const s=(p,g)=>fmt(salad(cell(p.r.id,g)));
+    out.push({t:'换个地方，差几倍',h:`<p>差得最狠的是 <span class="role-n">${esc(mx.r.name)}</span>：${esc(regOf(mx.g).name)} ${s(mx,mx.g)} 份，${esc(cn.name)} ${s(mx,'cn')} 份，<b>${mx.k.toFixed(1)}×</b>。</p><p>差得最少的是 <span class="role-n">${esc(mn.r.name)}</span>：${esc(regOf(mn.g).name)} ${s(mn,mn.g)} 份 vs ${esc(cn.name)} ${s(mn,'cn')} 份，只有 <b>${mn.k.toFixed(1)}×</b>。</p><p class="sub">同样是出海，最大倍数是最小倍数的 ${(mx.k/mn.k).toFixed(1)} 倍；岗位比地点更决定「海外溢价」。</p>`});
+  }else out.push({t:'换个地方，差几倍',na:'暂无数据：至少需要两个岗位同时有内地和海外的中位数，才能比倍数。'});
+  /* 2 三地差距最小 */
+  const spreads=ROLES.map(r=>{const vs=REGS.map(g=>({g,c:cell(r.id,g.id)})).filter(x=>ok(x.c));if(vs.length<REGS.length||vs.length<2)return null;const hi=vs.reduce((a,b)=>b.c.median_cny>a.c.median_cny?b:a),lo=vs.reduce((a,b)=>b.c.median_cny<a.c.median_cny?b:a);return {r,hi,lo,k:hi.c.median_cny/lo.c.median_cny}}).filter(Boolean);
+  if(spreads.length){
+    const m=spreads.reduce((a,b)=>b.k<a.k?b:a),big=spreads.reduce((a,b)=>b.k>a.k?b:a);
+    out.push({t:'最不挑地方的岗位',h:`<p><span class="role-n">${esc(m.r.name)}</span> 在 ${REGS.length} 地最均匀：最高 ${esc(m.hi.g.name)} ${fmt(salad(m.hi.c))} 份，最低 ${esc(m.lo.g.name)} ${fmt(salad(m.lo.c))} 份，顶端只有底端的 <b>${m.k.toFixed(1)}×</b>。</p><p class="sub">对照：最挑地方的是 ${esc(big.r.name)}，${big.k.toFixed(1)}×。想换城市又不想重来的，看这类岗。</p>`});
+  }else out.push({t:'最不挑地方的岗位',na:`暂无数据：没有一个岗位 ${REGS.length} 地都齐，算不出三地差距。`});
+  /* 3 内地城市差距 */
+  const cityGaps=ROLES.map(r=>{const c=cell(r.id,'cn');if(!ok(c)||!c.cities||typeof c.cities!=='object')return null;const cs=Object.entries(c.cities).filter(([,v])=>v&&v.median_local!=null&&isFinite(v.median_local)&&(v.n||0)>0);if(cs.length<2)return null;const hi=cs.reduce((a,b)=>b[1].median_local>a[1].median_local?b:a),lo=cs.reduce((a,b)=>b[1].median_local<a[1].median_local?b:a);return {r,hi,lo,k:hi[1].median_local/lo[1].median_local,cnt:cs.length}}).filter(Boolean);
+  if(cityGaps.length){
+    const m=cityGaps.reduce((a,b)=>b.k>a.k?b:a);
+    const sal=v=>fmt(Math.round(v/SALAD_CNY));
+    out.push({t:`${esc(cn.name)}内部也不平`,h:`<p>同在${esc(cn.name)}，<span class="role-n">${esc(m.r.name)}</span> 城市间差距最大：${esc(m.hi[0])} 中位 ¥${fmt(m.hi[1].median_local)}（${sal(m.hi[1].median_local)} 份），${esc(m.lo[0])} ¥${fmt(m.lo[1].median_local)}（${sal(m.lo[1].median_local)} 份），<b>${m.k.toFixed(1)}×</b>。</p><p class="sub">样本 ${esc(m.hi[0])} n=${fmt(m.hi[1].n)}、${esc(m.lo[0])} n=${fmt(m.lo[1].n)}；共 ${cityGaps.length} 个岗位有城市拆分。</p>`});
+  }else out.push({t:`${esc(cn.name)}内部也不平`,na:'暂无数据：本月数据没有按城市拆分（cities 为空），算不出城市差距。'});
+  $('#finds').innerHTML=out.map(f=>`<div class="card find"><div class="k">${f.t}</div>${f.h||`<p class="na">${esc(f.na)}</p>`}</div>`).join('');
+}
+
+/* 来源与方法 */
+function renderSources(){
+  const list=Array.isArray(D.meta.sources)?D.meta.sources:[];
+  $('#sources').innerHTML=list.length?list.map(s=>{
+    const reg=s.region?regOf(s.region):null;
+    const name=s.url?`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.name||s.id)}</a>`:esc(s.name||s.id);
+    return `<li>${reg?`<span class="tag ${esc(reg.id)}">${esc(reg.name)}</span>`:''}${name}${s.note?`<br><span class="note">${esc(s.note)}</span>`:''}</li>`;
+  }).join(''):`<li class="note">暂无数据：数据文件里没有 meta.sources。</li>`;
+}
+function renderMethod(){
+  const fx=D.meta.fx||{};
+  const fxParts=REGS.filter(g=>g.currency&&g.currency!=='CNY').map(g=>{const k=g.currency+'_CNY';return fx[k]!=null?`1 ${g.currency} = ¥${fx[k]}`:`${g.currency} 汇率未提供`});
+  const fxText=fxParts.length?`${fxParts.join('、')}${fx.as_of?`（${esc(fx.as_of)}`:''}${fx.src?`${fx.as_of?'，':'（'}来源 ${esc(fx.src)}`:''}${(fx.as_of||fx.src)?'）':''}`:'未提供汇率信息';
+  const gen=D.meta.generated_at?new Date(D.meta.generated_at):null;
+  const genText=gen&&!isNaN(gen)?gen.toLocaleString('zh-CN',{hour12:false}):(D.meta.generated_at||'—');
+  $('#method').innerHTML=`
+    <div class="k">怎么算的</div>
+    <p><b>口径：</b>${esc(D.meta.level||'3–5 年经验')}、月薪中位数（p50），同时给 p25–p75 区间；所有数字都是月薪，不含年终奖、股权与签约奖金；按年薪公布的来源除以 12。</p>
+    <p><b>换算：</b>先把各地中位数折成人民币，再除以 ¥${fmt(SALAD_CNY)} 得到沙拉数，四舍五入到整数。汇率：${fxText}。</p>
+    <p><b>倍数：</b>卡片上的「香港 ÷ 内地」「美国 ÷ 内地」都是折人民币后的中位数之比，不是沙拉整数之比，所以可能和你心算的略有出入。</p>
+    <p><b>局限，请一定看：</b></p>
+    <ul>
+      <li>招聘网站给的是<b>在招岗位的开价</b>，不是在职人员实际到手；开价通常偏乐观，且区间上限常被当作中位数误读。</li>
+      <li>美国数据来自 H-1B LCA 申报底薪，雇主只需报不低于当地现行工资，<b>整体偏保守</b>，也只覆盖需要工作签证的岗位。</li>
+      <li>三地职称不一致，「量化研究员」「交易员」等靠关键词模糊匹配，会混进相邻岗位；n 越小越要打折看。</li>
+      <li>任何一格样本不足就标「暂无数据」，不用估算数顶上；本页数据生成于 ${esc(genText)}，每月重跑，结论可能变。</li>
+      <li>没有做购买力、税负、房租调整。沙拉是个换算单位，不是生活成本指数。</li>
+    </ul>
+    <p class="disc">只讲工资，不讲投资；数据仅供参考，不构成任何建议。</p>`;
+}
+
+load();
+})();
+</script>
+</body>
+</html>
