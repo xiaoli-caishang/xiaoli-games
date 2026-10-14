@@ -22,6 +22,7 @@ functions/api/                 后端接口（EdgeOne Pages 边缘函数，数�
   admin/                       工作台读写：资产 / 任务 / 花期（需要口令）
 admin/index.html               小梨工作台（统一后台，需要口令）
 admin/quant/index.html         量化基金生存录详细看板
+tools/daily/index.html         小梨工具坊 · 今天还能花多少（每日额度，数据只存在用户本机；?d=YYYY-MM-DD 可模拟日期测试）
 tools/tax/index.html           小梨工具坊 · 个税计算器（单页，数据只存在用户本机）
 tools/analyze.py               下载数据并生成 Excel 分析报告
 .github/workflows/deploy.yml   自动部署

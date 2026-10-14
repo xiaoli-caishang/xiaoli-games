@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="小梨工具坊 · 今天还能花多少：发工资时设一次，之后每天打开就知道今天还能花多少。">
+<meta name="theme-color" content="#F5F5F1">
+<title>今天还能花多少 · 小梨工具坊</title>
+<style>
+:root{--bg:#F5F5F1;--card:#FFFFFF;--sub:#F7F7F4;--ink:#2B2D2A;--ink2:#555852;--mut:#8C8F87;--line:#E4E5DF;--acc:#3F7A5C;--acc-d:#2F6048;--acc-l:#E6F0EA;--amber:#B7791F;--amber-l:#FBF1DF;--warn:#C2462E;--warn-l:#FBEDE9;--brand:#E3A33B;
+--f:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;--num:"DIN Alternate","Bahnschrift","SF Pro Display",-apple-system,"Segoe UI",Roboto,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--f)}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;touch-action:manipulation}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+a{color:inherit}
+.n{font-family:var(--num);font-variant-numeric:tabular-nums}
+.hidden{display:none!important}
+.wrap{max-width:480px;margin:auto;padding:0 14px calc(40px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:9px;padding:14px 2px 10px}
+.pear{width:22px;height:26px;image-rendering:pixelated}
+.brand{font-weight:700;font-size:15px;text-decoration:none;line-height:1.25}
+.brand small{display:block;font-size:10.5px;letter-spacing:1.5px;color:var(--mut);font-weight:500}
+.local{margin-left:auto;font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--card)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:10px 0}
+.ttl{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink2);margin:0 0 10px}
+.ttl span{font-weight:400;color:var(--mut);font-size:12px}
+h1{font-size:22px;margin:4px 0 4px}
+.lead{font-size:13.5px;color:var(--mut);margin:0 0 6px}
+
+/* form */
+.row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.row>.l{flex:1;min-width:0;font-size:14.5px}
+.row>.l small{display:block;font-size:12px;color:var(--mut);line-height:1.45}
+.inp{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--sub);padding:0 8px;height:38px}
+.inp em{font-style:normal;color:var(--mut);font-size:14px;margin-right:2px}
+.inp input,.inp select{width:100%;min-width:0;border:0;background:transparent;outline:none;font-family:var(--num);font-size:17px;font-weight:600;text-align:right;padding:0}
+.inp select{text-align-last:right;appearance:none;-webkit-appearance:none}
+.inp.w{width:140px}.inp.s{width:104px}
+.fx{display:flex;align-items:center;gap:8px;padding:6px 0}
+.fx .name{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;background:var(--sub);height:36px;padding:0 10px;font-size:14px}
+.fx .del{border:0;background:none;color:var(--mut);font-size:18px;width:30px;height:36px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 2px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 10px;font-size:12.5px;color:var(--ink2)}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.preview{margin-top:14px;border-radius:10px;background:var(--acc-l);color:var(--acc-d);padding:12px 14px;font-size:13.5px}
+.preview b{font-size:22px}
+.preview.bad{background:var(--warn-l);color:var(--warn)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:46px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:15px;font-weight:600;text-decoration:none;margin-top:12px}
+.btn.acc{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn:disabled{opacity:.45}
+.textbtn{border:0;background:none;padding:0;color:var(--acc);font-size:13px;font-weight:600}
+.danger{color:var(--warn)}
+
+/* hero */
+.hero{border-top:3px solid var(--acc);padding-bottom:14px}
+.hero.over{border-top-color:var(--warn)}
+.hero.tight{border-top-color:var(--amber)}
+.hlabel{font-size:13px;color:var(--ink2);display:flex;justify-content:space-between}
+.big{font-size:46px;font-weight:700;line-height:1.1;margin:6px 0 4px;letter-spacing:-.5px}
+.over .big{color:var(--warn)}
+.meter{height:8px;border-radius:8px;background:var(--sub);overflow:hidden;margin:10px 0 6px;border:1px solid var(--line)}
+.meter i{display:block;height:100%;background:var(--acc);border-radius:8px;transition:width .3s}
+.tight .meter i{background:var(--amber)}
+.over .meter i{background:var(--warn)}
+.kv{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mut)}
+.kv b{color:var(--ink);font-weight:600}
+.msg{margin-top:10px;font-size:13px;border-radius:8px;padding:9px 11px;background:var(--sub);color:var(--ink2)}
+.msg.warn{background:var(--warn-l);color:#8C3A28}
+.msg.good{background:var(--acc-l);color:var(--acc-d)}
+.msg.amber{background:var(--amber-l);color:#7A5214}
+
+/* add */
+.add .inp{height:52px}
+.add .inp input{font-size:26px;text-align:left}
+.add .inp em{font-size:20px}
+.cats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.addrow{display:flex;gap:8px;margin-top:12px}
+.addrow .btn{margin:0}
+.addrow .btn.inc{flex:0 0 96px;font-size:13px}
+
+/* list */
+.list{margin:0;padding:0;list-style:none}
+.list li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.list li:last-child{border-bottom:0}
+.list .c{font-size:11.5px;color:var(--ink2);background:var(--sub);border:1px solid var(--line);border-radius:6px;padding:1px 7px}
+.list .t{font-size:12px;color:var(--mut)}
+.list .a{margin-left:auto;font-weight:600}
+.list .a.in{color:var(--acc)}
+.list button{border:0;background:none;color:var(--mut);font-size:17px;width:28px}
+.empty{font-size:13px;color:var(--mut);padding:4px 0}
+
+/* cycle */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat small{display:block;font-size:11.5px;color:var(--mut)}
+.stat b{font-size:19px;font-weight:600}
+.pace{margin-top:12px}
+.pace div{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--mut);margin:5px 0}
+.pace div span:first-child{width:52px}
+.pace .track{flex:1;height:6px;border-radius:6px;background:var(--sub);border:1px solid var(--line);overflow:hidden}
+.pace .track i{display:block;height:100%;border-radius:6px}
+.pace div span:last-child{width:36px;text-align:right}
+.week{display:flex;align-items:flex-end;gap:6px;height:70px;margin-top:14px;position:relative;border-bottom:1px solid var(--line)}
+.week .ref{position:absolute;left:0;right:0;border-top:1px dashed var(--mut);opacity:.6}
+.week div{flex:1;display:flex;align-items:flex-end;height:100%}
+.week i{display:block;width:100%;border-radius:3px 3px 0 0;background:#CFE0D5;min-height:2px}
+.week i.hi{background:#E9B7A9}
+.week i.td{background:var(--acc)}
+.wlab{display:flex;gap:6px;font-size:10.5px;color:var(--mut);text-align:center;margin-top:3px}
+.wlab span{flex:1}
+.streak{font-size:12.5px;color:var(--ink2);margin-top:8px}
+
+.savebox{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--sub)}
+.savebox .l{flex:1;font-size:13.5px}
+.savebox .l small{display:block;color:var(--mut);font-size:12px}
+.savebox .btn{width:auto;min-height:36px;margin:0;padding:0 14px;font-size:13px}
+.done{color:var(--acc);font-weight:600;font-size:13px}
+.goal{margin-top:12px;font-size:12.5px;color:var(--ink2)}
+.goal .meter{height:6px;margin:6px 0 2px}
+.hist{margin:10px 0 0;padding:0;list-style:none;font-size:12.5px;color:var(--ink2)}
+.hist li{display:flex;justify-content:space-between;padding:5px 0;border-top:1px dashed var(--line)}
+.banner{border:1px solid #CFE0D5;background:var(--acc-l);border-radius:12px;padding:14px;margin:10px 0}
+.banner.neg{border-color:#F0C9BE;background:var(--warn-l)}
+.banner b{font-size:15px}
+.banner p{margin:4px 0 0;font-size:13px;color:var(--ink2)}
+.banner .two{margin-top:10px}
+.banner .btn{margin:0;min-height:40px;font-size:14px}
+
+details.card summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink2)}
+details.card summary::-webkit-details-marker{display:none}
+details.card summary span{font-weight:400;color:var(--acc)}
+.tips{margin:0;padding:0;list-style:none}
+.tips li{position:relative;padding:7px 0 7px 14px;font-size:13px;color:var(--ink2);border-bottom:1px solid var(--line)}
+.tips li:last-child{border-bottom:0}
+.tips li:before{content:"";position:absolute;left:0;top:15px;width:5px;height:5px;border-radius:50%;background:var(--brand)}
+.foot{font-size:11px;color:var(--mut);line-height:1.7;margin:16px 2px 0}
+.foot a{color:var(--acc)}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:var(--ink);color:#fff;padding:9px 14px;border-radius:8px;font-size:13px;z-index:30;opacity:0;transition:.2s;pointer-events:none;max-width:92vw;text-align:center;display:flex;gap:12px;align-items:center}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{border:0;background:none;color:#9FD3B5;font-weight:700;padding:0}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="pear" viewBox="0 0 12 14"><path fill="#94744c" d="M6 0h1v3H6z"/><path fill="#8bae6d" d="M7 1h3v1H7z"/><path fill="#c8d98b" d="M5 2h2v1h1v2h1v1h1v1h1v2h1v3h-1v1H9v1H3v-1H1v-1H0V9h1V7h1V6h1V5h1V3h1z"/><path fill="#3e3b2f" d="M3 7h1v1H3zM8 7h1v1H8z"/><path fill="#e9ab90" d="M2 8h1v1H2zM9 8h1v1H9z"/><path fill="#bc7460" d="M5 9h3v1H5z"/></symbol></svg>
+
+<div class="wrap">
+<header>
+  <svg class="pear"><use href="#pear"/></svg>
+  <a class="brand" href="https://xiaolipearl.com/?from=daily">小梨工具坊<small>今天还能花多少</small></a>
+  <span class="local">数据只存在本机</span>
+</header>
+
+<section id="setupView" class="hidden">
+  <div class="card">
+    <h1>发工资时设一次，<br>之后每天看一眼就行</h1>
+    <p class="lead">先把要交的、要存的放一边，剩下的钱平均到每一天。花多了，后面几天自动少一点。</p>
+    <div id="setupForm"></div>
+  </div>
+</section>
+
+<section id="mainView" class="hidden">
+  <div id="banner"></div>
+
+  <div class="card hero" id="hero">
+    <div class="hlabel"><span id="todayName"></span><span id="daysLeft"></span></div>
+    <div class="big n" id="todayLeft"></div>
+    <div class="meter"><i id="todayBar"></i></div>
+    <div class="kv"><span>今日额度 <b class="n" id="allow"></b></span><span>今天已花 <b class="n" id="spentToday"></b></span></div>
+    <div id="heroMsg"></div>
+  </div>
+
+  <div class="card add">
+    <div class="ttl">记一笔<span>只填金额也行</span></div>
+    <div class="inp"><em>¥</em><input id="amt" inputmode="decimal" placeholder="花了多少" autocomplete="off"></div>
+    <div class="cats" id="cats"></div>
+    <div class="addrow"><button class="btn inc" id="addInc">+ 收入</button><button class="btn acc" id="addExp">记一笔</button></div>
+  </div>
+
+  <div class="card">
+    <div class="ttl">今天的记录<span id="todayCount"></span></div>
+    <ul class="list" id="todayList"></ul>
+  </div>
+
+  <div class="card">
+    <div class="ttl">这个周期<span id="cycleRange"></span></div>
+    <div class="two">
+      <div class="stat"><small>还能花</small><b class="n" id="remain"></b></div>
+      <div class="stat"><small>已经花了</small><b class="n" id="spentCycle"></b></div>
+    </div>
+    <div class="pace">
+      <div><span>时间过了</span><span class="track"><i id="tBar" style="background:#B9BCB4"></i></span><span class="n" id="tPct"></span></div>
+      <div><span>钱花了</span><span class="track"><i id="mBar"></i></span><span class="n" id="mPct"></span></div>
+    </div>
+    <div id="paceMsg"></div>
+    <div class="week" id="week"></div>
+    <div class="wlab" id="wlab"></div>
+    <div class="streak" id="streak"></div>
+  </div>
+
+  <div class="card">
+    <div class="ttl">先存后花</div>
+    <div id="saveBox"></div>
+    <div class="goal" id="goal"></div>
+    <ul class="hist" id="hist"></ul>
+  </div>
+
+  <div class="card">
+    <div class="ttl">小梨提醒</div>
+    <ul class="tips" id="tips"></ul>
+  </div>
+
+  <details class="card" id="settings">
+    <summary>工资、固定支出和存钱计划<span>调整</span></summary>
+    <div id="settingsForm" style="margin-top:6px"></div>
+    <button class="textbtn danger" id="reset" style="margin-top:14px">清空所有数据，重新开始</button>
+  </details>
+
+  <p class="foot">所有数据只保存在这台手机的浏览器里，不会上传；换手机或清除浏览器数据后会丢失。<br><a href="https://xiaolipearl.com/?from=daily">← 回到小梨知识王国</a> · <a href="../tax/">个税计算器</a></p>
+</section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/*core*/
+const DAY=86400000;
+const dim=(y,m)=>new Date(y,m+1,0).getDate();
+const payDate=(y,m,pd)=>new Date(y,m,Math.min(pd,dim(y,m)));
+const keyOf=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const parse=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const diff=(a,b)=>Math.round((b-a)/DAY);
+function cycleOf(today,pd){
+  let s=payDate(today.getFullYear(),today.getMonth(),pd);
+  if(s>today)s=payDate(today.getFullYear(),today.getMonth()-1,pd);
+  const e=payDate(s.getFullYear(),s.getMonth()+1,pd);
+  return{start:s,end:e};
+}
+const sum=a=>a.reduce((x,y)=>x+y,0);
+const fixedOf=st=>sum(st.fixed.map(f=>+f.a||0));
+const availOf=st=>st.income-fixedOf(st)-st.save;
+function compute(D,today){
+  const st=D.setup,c=cycleOf(today,st.payday),sk=keyOf(c.start),ek=keyOf(c.end),tk=keyOf(today);
+  const inCycle=D.entries.filter(e=>e.d>=sk&&e.d<ek);
+  const out=inCycle.filter(e=>e.a>0),income=-sum(inCycle.filter(e=>e.a<0).map(e=>e.a));
+  const spentCycle=sum(out.map(e=>e.a));
+  const spentToday=sum(out.filter(e=>e.d===tk).map(e=>e.a));
+  const avail=availOf(st)+income;
+  const daysLeft=Math.max(1,diff(today,c.end));
+  const cycleDays=diff(c.start,c.end);
+  const elapsed=cycleDays-daysLeft+1;
+  const remainStart=avail-(spentCycle-spentToday);
+  const allowance=Math.max(0,remainStart/daysLeft);
+  const todayLeft=allowance-spentToday;
+  const remain=avail-spentCycle;
+  const tomorrow=daysLeft>1?Math.max(0,remain/(daysLeft-1)):null;
+  const usingSince=D.since&&D.since>sk?D.since:sk;
+  const usedDays=Math.max(1,diff(parse(usingSince),today)+1);
+  const avg=sum(out.filter(e=>e.c!=='之前').map(e=>e.a))/usedDays;
+  let pace=null;
+  if(usedDays>=3&&avg>0&&remain>0){
+    const proj=remain-avg*(daysLeft-1);
+    if(proj<0){const last=new Date(today.getTime()+Math.floor(remain/avg)*DAY);pace={short:true,avg,last,early:diff(last,c.end)}}
+    else pace={short:false,avg,extra:proj};
+  }
+  return{c,sk,ek,tk,avail,spentCycle,spentToday,daysLeft,cycleDays,elapsed,allowance,todayLeft,remain,tomorrow,pace,ref:availOf(st)/cycleDays,income,inCycle};
+}
+function rollover(D,today){
+  const c=cycleOf(today,D.setup.payday),sk=keyOf(c.start);
+  if(D.cycle.start===sk)return null;
+  let ended=null;
+  if(D.cycle.start&&D.cycle.start<sk){
+    const prevStart=D.cycle.start;
+    const spent=sum(D.entries.filter(e=>e.d>=prevStart&&e.d<sk).map(e=>e.a));
+    const avail=D.cycle.avail??availOf(D.setup);
+    ended={start:prevStart,end:sk,avail,spent,left:Math.round((avail-spent)*100)/100,saved:D.cycle.saved?D.cycle.planSave:0};
+    D.history.unshift(ended);D.history=D.history.slice(0,12);
+  }
+  D.cycle={start:sk,saved:false,avail:availOf(D.setup),planSave:D.setup.save};
+  const cut=keyOf(new Date(today.getTime()-120*DAY));
+  D.entries=D.entries.filter(e=>e.d>=cut);
+  return ended;
+}
+/*end*/
+
+const $=s=>document.querySelector(s);
+const fmt=n=>{const r=Math.round(n);return(r<0?'-':'')+Math.abs(r).toLocaleString('zh-CN')};
+const money=n=>'¥'+fmt(n);
+const exact=n=>'¥'+n.toLocaleString('zh-CN',{maximumFractionDigits:2});
+const KEY='xl_daily_v1';
+const qd=new URLSearchParams(location.search).get('d');
+const TODAY=(()=>{if(qd&&/^\d{4}-\d{2}-\d{2}$/.test(qd))return parse(qd);const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())})();
+const CATS=['吃饭','交通','购物','娱乐','生活','其他'];
+const FIXED_PRESET=['房租','房贷','话费网费','交通卡','会员订阅','保险','给家里','还信用卡'];
+let D;try{D=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+if(!D)D={setup:null,entries:[],savedTotal:0,history:[],cycle:{start:null},ended:null,since:null};
+const store=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+let cat=null;
+
+function toast(t,undo){
+  const el=$('#toast');el.innerHTML='';el.append(Object.assign(document.createElement('span'),{textContent:t}));
+  if(undo){const b=document.createElement('button');b.textContent='撤销';b.onclick=()=>{undo();el.classList.remove('show')};el.append(b)}
+  el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),undo?4000:2200);
+}
+
+/* ---------- setup form (first run + settings) ---------- */
+function formHTML(st,first){
+  const days=Array.from({length:31},(_,i)=>`<option value="${i+1}"${st.payday===i+1?' selected':''}>${i+1} 号</option>`).join('');
+  return `<div class="row"><div class="l">每月几号发工资</div><div class="inp s"><select data-f="payday">${days}</select></div></div>
+  <div class="row"><div class="l">每月到手工资<small>实际打到卡上的钱</small></div><div class="inp w"><em>¥</em><input data-f="income" inputmode="numeric" value="${st.income||''}" placeholder="0"></div></div>
+  <div class="row" style="display:block;border:0;padding-bottom:0"><div class="l">每月固定要花的<small>房租、房贷、话费这些，到时间就得付</small></div></div>
+  <div data-fixed>${st.fixed.map((f,i)=>`<div class="fx"><input class="name" data-fn="${i}" value="${f.n}" aria-label="名称"><div class="inp s"><em>¥</em><input data-fa="${i}" inputmode="numeric" value="${f.a||''}" placeholder="0"></div><button class="del" data-fd="${i}" aria-label="删除">×</button></div>`).join('')}</div>
+  <div class="chips">${FIXED_PRESET.filter(p=>!st.fixed.some(f=>f.n===p)).map(p=>`<button class="chip" data-fp="${p}">+ ${p}</button>`).join('')}<button class="chip" data-fp="">+ 其他</button></div>
+  <div class="row" style="border-top:1px solid var(--line);margin-top:10px"><div class="l">每月先存下<small>发工资当天就转走，剩下的才拿来花</small></div><div class="inp w"><em>¥</em><input data-f="save" inputmode="numeric" value="${st.save||''}" placeholder="0"></div></div>
+  <div class="chips" data-savechips>${[10,20,30].map(p=>`<button class="chip" data-sp="${p}">工资的 ${p}%</button>`).join('')}</div>
+  ${first?`<div class="row" style="border-bottom:0"><div class="l">这次发工资后，已经花了多少<small>不算上面的固定支出，从今天开始用就填 0</small></div><div class="inp w"><em>¥</em><input data-f="already" inputmode="numeric" value="${st.already||''}" placeholder="0"></div></div>`:''}
+  <div class="preview" data-preview></div>
+  <button class="btn acc" data-submit>${first?'就这样，开始用':'保存'}</button>`;
+}
+function mountForm(box,st,first,onSubmit){
+  const draw=()=>{box.innerHTML=formHTML(st,first);bind()};
+  const preview=()=>{
+    const p=box.querySelector('[data-preview]'),av=availOf(st);
+    const fake={setup:st,entries:first&&st.already?[{d:keyOf(cycleOf(TODAY,st.payday).start),a:+st.already}]:[],cycle:{}};
+    if(!st.income){p.className='preview';p.innerHTML='先填每月到手工资。';box.querySelector('[data-submit]').disabled=true;return}
+    if(av<=0){p.className='preview bad';p.innerHTML=`固定支出加存钱已经超过工资 ${money(-av)}，调低一点再开始。`;box.querySelector('[data-submit]').disabled=true;return}
+    const R=compute(first?fake:Object.assign({},D,{setup:st}),TODAY);
+    p.className='preview'+(R.allowance<=0?' bad':'');
+    p.innerHTML=`每月能自由花 <b class="n">${money(av)}</b><br>今天起每天大约能花 <b class="n">${money(R.allowance)}</b>（离下次发工资还有 ${R.daysLeft} 天）`;
+    box.querySelector('[data-submit]').disabled=false;
+    box.querySelectorAll('[data-sp]').forEach(b=>b.classList.toggle('on',st.income>0&&st.save===Math.round(st.income*b.dataset.sp/100)));
+  };
+  const num=v=>+String(v).replace(/[^\d]/g,'')||0;
+  function bind(){
+    box.querySelectorAll('[data-f]').forEach(el=>el.oninput=el.onchange=()=>{const k=el.dataset.f;if(k==='payday')st.payday=+el.value;else{st[k]=num(el.value);el.value=st[k]||''}preview()});
+    box.querySelectorAll('[data-fn]').forEach(el=>el.oninput=()=>{st.fixed[+el.dataset.fn].n=el.value.slice(0,12)});
+    box.querySelectorAll('[data-fa]').forEach(el=>el.oninput=()=>{st.fixed[+el.dataset.fa].a=num(el.value);el.value=st.fixed[+el.dataset.fa].a||'';preview()});
+    box.querySelectorAll('[data-fd]').forEach(el=>el.onclick=()=>{st.fixed.splice(+el.dataset.fd,1);draw()});
+    box.querySelectorAll('[data-fp]').forEach(el=>el.onclick=()=>{st.fixed.push({n:el.dataset.fp||'其他',a:0});draw();const ins=box.querySelectorAll('[data-fa]');ins[ins.length-1].focus()});
+    box.querySelectorAll('[data-sp]').forEach(el=>el.onclick=()=>{st.save=Math.round(st.income*el.dataset.sp/100/10)*10;box.querySelector('[data-f="save"]').value=st.save||'';preview()});
+    box.querySelector('[data-submit]').onclick=()=>{st.fixed=st.fixed.filter(f=>f.a>0||f.n.trim());onSubmit(st)};
+    preview();
+  }
+  draw();
+}
+
+function startSetup(){
+  $('#setupView').classList.remove('hidden');$('#mainView').classList.add('hidden');
+  const st={payday:10,income:0,fixed:[{n:'房租',a:0}],save:0,already:0};
+  mountForm($('#setupForm'),st,true,s=>{
+    const already=s.already||0;delete s.already;
+    D.setup=s;D.since=keyOf(TODAY);D.cycle={start:null};rollover(D,TODAY);
+    if(already)D.entries.push({id:Date.now(),d:D.cycle.start,a:already,c:'之前'});
+    store();toast('设置好了，每天打开看一眼就行');openMain();
+  });
+}
+
+function openMain(){
+  $('#setupView').classList.add('hidden');$('#mainView').classList.remove('hidden');
+  const ended=rollover(D,TODAY);if(ended)D.ended=ended;store();
+  const st=JSON.parse(JSON.stringify(D.setup));
+  mountForm($('#settingsForm'),st,false,s=>{
+    const moved=s.payday!==D.setup.payday;D.setup=s;
+    if(moved)D.cycle.start=keyOf(cycleOf(TODAY,s.payday).start);
+    if(D.cycle.saved&&D.cycle.planSave!==s.save){D.savedTotal+=s.save-D.cycle.planSave}
+    D.cycle.avail=availOf(s);D.cycle.planSave=s.save;
+    store();$('#settings').open=false;toast('已更新，额度重新算好了');render();window.scrollTo(0,0);
+  });
+  $('#cats').innerHTML=CATS.map(c=>`<button class="chip" data-c="${c}">${c}</button>`).join('');
+  $('#cats').querySelectorAll('.chip').forEach(b=>b.onclick=()=>{cat=cat===b.dataset.c?null:b.dataset.c;$('#cats').querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x.dataset.c===cat))});
+  render();
+}
+
+function add(sign){
+  const el=$('#amt'),v=Math.round(parseFloat(el.value)*100)/100;
+  if(!(v>0)){el.focus();toast('先输入金额');return}
+  const e={id:Date.now(),d:keyOf(TODAY),a:sign*v,c:sign<0?'收入':cat};
+  D.entries.push(e);store();el.value='';cat=null;$('#cats').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  render();
+  const R=compute(D,TODAY);
+  toast(sign<0?`收入 ${exact(v)} 已摊进后面每天的额度`:R.todayLeft>=0?`记好了，今天还能花 ${money(R.todayLeft)}`:`今天超了 ${money(-R.todayLeft)}`,()=>{D.entries=D.entries.filter(x=>x.id!==e.id);store();render()});
+}
+$('#addExp').onclick=()=>add(1);
+$('#addInc').onclick=()=>add(-1);
+$('#amt').onkeydown=e=>{if(e.key==='Enter')add(1)};
+
+function render(){
+  const R=compute(D,TODAY),st=D.setup;
+  const wd='日一二三四五六'[TODAY.getDay()];
+  $('#todayName').textContent=`今天 ${TODAY.getMonth()+1}月${TODAY.getDate()}日 周${wd} · ${R.todayLeft<0?'已经超了':'还能花'}`;
+  $('#daysLeft').textContent=R.daysLeft===1?'明天发工资':`还有 ${R.daysLeft} 天发工资`;
+  $('#todayLeft').textContent=money(Math.abs(R.todayLeft));
+  $('#allow').textContent=money(R.allowance);
+  $('#spentToday').textContent=money(R.spentToday);
+  const ratio=R.allowance>0?Math.max(0,Math.min(1,R.todayLeft/R.allowance)):0;
+  $('#todayBar').style.width=(ratio*100)+'%';
+  const hero=$('#hero');hero.classList.toggle('over',R.todayLeft<0||R.remain<0);hero.classList.toggle('tight',R.todayLeft>=0&&R.remain>=0&&(ratio<.25||R.pace?.short));
+  let m='';
+  if(R.remain<0)m=`<div class="msg warn">这个周期已经超支 <b class="n">${money(-R.remain)}</b>。先停掉不必要的花销；如果每个月都这样，打开下面的「调整」，看看固定支出能不能砍，或者把存钱计划调低一点。</div>`;
+  else if(R.todayLeft<0)m=`<div class="msg warn">今天超了 <b class="n">${money(-R.todayLeft)}</b>，没关系，已经摊到后面了：之后每天额度从 ${money(R.allowance)} 变成 <b class="n">${money(R.tomorrow??0)}</b>。</div>`;
+  else if(R.spentToday===0)m=`<div class="msg">今天还没花钱。花了就在下面记一笔，几秒钟的事。</div>`;
+  else if(R.daysLeft>1)m=`<div class="msg good">今天省下的会自动加到后面：如果今天就花到这，明天额度会是 <b class="n">${money(R.tomorrow)}</b>。</div>`;
+  $('#heroMsg').innerHTML=m;
+
+  const todays=D.entries.filter(e=>e.d===R.tk).sort((a,b)=>b.id-a.id);
+  $('#todayCount').textContent=todays.length?`${todays.length} 笔`:'';
+  $('#todayList').innerHTML=todays.length?todays.map(e=>{const t=new Date(e.id);return`<li>${e.c?`<span class="c">${e.c}</span>`:''}<span class="t">${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}</span><span class="a n${e.a<0?' in':''}">${e.a<0?'+':''}${exact(Math.abs(e.a))}</span><button data-del="${e.id}" aria-label="删除">×</button></li>`}).join(''):'<li class="empty">今天还没有记录</li>';
+  $('#todayList').querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{const id=+b.dataset.del,e=D.entries.find(x=>x.id===id);D.entries=D.entries.filter(x=>x.id!==id);store();render();toast('删掉了',()=>{D.entries.push(e);store();render()})});
+
+  const endShow=new Date(R.c.end.getTime()-DAY);
+  $('#cycleRange').textContent=`${R.c.start.getMonth()+1}/${R.c.start.getDate()} – ${endShow.getMonth()+1}/${endShow.getDate()}`;
+  $('#remain').textContent=money(R.remain);$('#remain').style.color=R.remain<0?'var(--warn)':'';
+  $('#spentCycle').textContent=money(R.spentCycle);
+  const tp=R.elapsed/R.cycleDays,mp=R.avail>0?R.spentCycle/R.avail:0;
+  $('#tBar').style.width=Math.min(100,tp*100)+'%';$('#tPct').textContent=Math.round(tp*100)+'%';
+  $('#mBar').style.width=Math.min(100,Math.max(0,mp)*100)+'%';$('#mPct').textContent=Math.round(mp*100)+'%';
+  $('#mBar').style.background=mp>tp+.1?'var(--warn)':mp>tp?'var(--amber)':'var(--acc)';
+  let pm='';
+  if(R.pace?.short)pm=`<div class="msg amber">照最近每天平均 <b class="n">${money(R.pace.avg)}</b> 的速度，钱会在 <b>${R.pace.last.getMonth()+1}月${R.pace.last.getDate()}日</b>左右花完，比发工资早 ${R.pace.early} 天。每天控制在 <b class="n">${money(R.allowance)}</b> 以内就能撑到。</div>`;
+  else if(R.pace&&R.pace.extra>=1)pm=`<div class="msg good">照现在的节奏，到发工资还能多出约 <b class="n">${money(R.pace.extra)}</b>，到时可以一键存起来。</div>`;
+  $('#paceMsg').innerHTML=pm;
+
+  const days=[];for(let i=6;i>=0;i--){const d=new Date(TODAY.getTime()-i*DAY);const k=keyOf(d);days.push({d,k,s:sum(D.entries.filter(e=>e.d===k&&e.a>0&&e.c!=='之前').map(e=>e.a))})}
+  const mx=Math.max(R.ref*1.6,...days.map(x=>x.s),1);
+  $('#week').innerHTML=`<span class="ref" style="bottom:${R.ref/mx*100}%"></span>`+days.map(x=>`<div><i class="${x.k===R.tk?'td':x.s>R.ref?'hi':''}" style="height:${Math.max(0,x.s)/mx*100}%"></i></div>`).join('');
+  $('#wlab').innerHTML=days.map(x=>`<span>${x.k===R.tk?'今天':'日一二三四五六'[x.d.getDay()]}</span>`).join('');
+  let streak=0;
+  for(let i=1;i<60;i++){const d=new Date(TODAY.getTime()-i*DAY),k=keyOf(d);if(D.since&&k<D.since)break;const s=sum(D.entries.filter(e=>e.d===k&&e.a>0&&e.c!=='之前').map(e=>e.a));if(s<=R.ref)streak++;else break}
+  $('#streak').innerHTML=`虚线是平均每天能花的 <b class="n">${money(R.ref)}</b>。${streak>=2?`已经连续 <b>${streak}</b> 天没超，继续保持。`:''}`;
+
+  $('#saveBox').innerHTML=st.save>0
+    ?(D.cycle.saved?`<div class="savebox"><div class="l">这个月的 <b class="n">${money(st.save)}</b> 已经存好了<small>剩下的才是能花的钱</small></div><span class="done">✓ 已存</span></div>`
+      :`<div class="savebox"><div class="l">发工资了，先把 <b class="n">${money(st.save)}</b> 转进存款账户<small>转好了点一下，帮你记着</small></div><button class="btn acc" id="didSave">我已转好</button></div>`)
+    :`<div class="savebox"><div class="l">还没有设存钱计划<small>哪怕每月先存工资的 10%，一年就是一个多月的工资</small></div><button class="btn" id="setSave">去设置</button></div>`;
+  const ds=$('#didSave');if(ds)ds.onclick=()=>{D.cycle.saved=true;D.savedTotal+=st.save;store();render();toast(`已记下，累计存了 ${money(D.savedTotal)}`)};
+  const ss=$('#setSave');if(ss)ss.onclick=()=>{$('#settings').open=true;$('#settings').scrollIntoView({behavior:'smooth'})};
+  const monthly=st.income-st.save,target=monthly*3,gp=target>0?Math.min(1,D.savedTotal/target):0;
+  $('#goal').innerHTML=`累计已存 <b class="n">${money(D.savedTotal)}</b>　·　应急金目标 ${money(target)}（3 个月生活费）<div class="meter"><i style="width:${gp*100}%"></i></div>${gp>=1?'应急金已经够 3 个月了，可以开始想想更长期的打算。':`还差 ${money(target-D.savedTotal)}，按现在每月存 ${money(st.save)}，${st.save>0?`大约 ${Math.ceil((target-D.savedTotal)/st.save)} 个月能存够。`:'设个存钱计划吧。'}`}`;
+  $('#hist').innerHTML=D.history.slice(0,3).map(h=>{const s=parse(h.start);return`<li><span>${s.getMonth()+1}月${s.getDate()}日起的那一期</span><span class="n" style="color:${h.left>=0?'var(--acc)':'var(--warn)'}">${h.left>=0?'多出 '+money(h.left):'超支 '+money(-h.left)}</span></li>`}).join('');
+
+  renderBanner();
+  renderTips(R);
+}
+
+function renderBanner(){
+  const e=D.ended,box=$('#banner');
+  if(!e){box.innerHTML='';return}
+  const s=parse(e.start);
+  box.innerHTML=e.left>=0
+    ?`<div class="banner"><b>上一期结束了：多出 <span class="n">${money(e.left)}</span></b><p>${s.getMonth()+1}月${s.getDate()}日起那一期可花 ${money(e.avail)}，实际花了 ${money(e.spent)}。多出来的钱，要不要也存起来？</p><div class="two"><button class="btn" id="bNo">先不了</button><button class="btn acc" id="bYes">存起来</button></div></div>`
+    :`<div class="banner neg"><b>上一期超支了 <span class="n">${money(-e.left)}</span></b><p>可花 ${money(e.avail)}，实际花了 ${money(e.spent)}。这一期的额度已经重新算好，不会把超的部分带过来。如果经常超，去下面「调整」看看固定支出。</p><div class="two" style="grid-template-columns:1fr"><button class="btn" id="bNo">知道了</button></div></div>`;
+  $('#bNo').onclick=()=>{D.ended=null;store();render()};
+  const y=$('#bYes');if(y)y.onclick=()=>{D.savedTotal+=e.left;D.ended=null;store();render();toast(`存进 ${money(e.left)}，累计 ${money(D.savedTotal)}`)};
+}
+
+function renderTips(R){
+  const st=D.setup,t=[],fx=fixedOf(st);
+  const rent=sum(st.fixed.filter(f=>/房租|房贷/.test(f.n)).map(f=>+f.a||0));
+  if(st.income&&rent/st.income>.4)t.push(`房租或房贷占了工资的 ${Math.round(rent/st.income*100)}%，超过 30% 到 40% 会比较吃紧，下次换房可以把这个当成上限。`);
+  if(st.income&&fx/st.income>.6)t.push(`固定支出占了工资的 ${Math.round(fx/st.income*100)}%，能自由支配的钱很少。逐项看看，有没有用不上的会员、可以换便宜套餐的话费。`);
+  if(st.fixed.some(f=>/信用卡|花呗|分期/.test(f.n)))t.push('每月都在还信用卡或分期？分期手续费换算成年化往往在 13% 以上，能一次还清的尽量别分期。');
+  if(!st.save)t.push('先存后花比月底剩多少存多少更容易坚持。发工资当天就转走，眼不见心不烦。');
+  if(R.spentToday===0&&R.daysLeft>3)t.push('每天只花额度的一部分，省下的会自动摊到后面几天，周末可以花得宽松一点。');
+  t.push('应急金最好放在自己名下、随时能取的账户里，不管单身还是有家庭，都值得有一笔只属于自己的钱。');
+  t.push('有报销、红包、兼职收入，点「+ 收入」加进来，额度会跟着变多。');
+  $('#tips').innerHTML=t.slice(0,3).map(x=>`<li>${x}</li>`).join('');
+}
+
+$('#reset').onclick=()=>{if(confirm('确定清空所有记录和设置吗？清空后不能恢复。')){localStorage.removeItem(KEY);location.reload()}};
+if(D.setup)openMain();else startSetup();
+</script>
+</body>
+</html>
