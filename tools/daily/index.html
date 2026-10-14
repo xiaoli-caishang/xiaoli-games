@@ -77,6 +77,34 @@ nav button{flex:1;color:var(--ink-2)}
 .chips button{border:1px solid var(--hair);border-radius:99px;padding:6px 10px;color:var(--ink-2)}
 textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:transparent;border-radius:8px;padding:8px;resize:none;user-select:text;-webkit-user-select:text;letter-spacing:0}
 .err{color:var(--bite)}
+#yest{text-align:center;padding:2px 12px;color:var(--ink-2)}
+#yest button{border:1px solid var(--hair);border-radius:99px;padding:4px 10px;margin:0 4px}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-left:4px;vertical-align:middle}
+.gold{color:var(--gold)}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cell{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mute);border-radius:8px}
+.cell svg{width:26px;height:34px}
+.cell.today{outline:1px solid var(--ink)}
+.choice{display:block;width:100%;text-align:left;min-height:52px;border-bottom:1px solid var(--hair);padding:8px 0}
+.choice b{font-weight:600}
+#ritual{position:fixed;inset:0;z-index:60;background:var(--paper);color:var(--ink);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.rbody{flex:1;overflow:auto;padding:8px 20px 24px}
+#jarTrack{position:relative;height:200px;width:36px;margin:18px auto;border:1px solid var(--gold);border-radius:18px;touch-action:none}
+#handle{position:absolute;left:50%;width:44px;height:44px;border-radius:50%;background:var(--gold);transform:translate(-50%,50%)}
+.fxrow{padding:8px 0;border-bottom:1px solid var(--hair);color:var(--ink-2)}
+.split{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:16px 0}
+.split i{width:16px;height:22px;border:1px solid var(--ink);border-radius:0 0 9px 9px;background:linear-gradient(#B5D38A,#4E8A62)}
+.jarwrap{display:flex;justify-content:center;margin:8px 0}
+@media(prefers-reduced-motion:no-preference){
+  .cell.today{animation:breath 2.4s ease-in-out infinite}
+  .fxrow{animation:slide .35s ease both}
+  .split i{animation:fall .2s cubic-bezier(.2,.8,.2,1) both}
+  .droping{animation:drop .42s cubic-bezier(.2,.8,.2,1.2)}
+}
+@keyframes breath{50%{outline-color:transparent}}
+@keyframes slide{from{transform:translateX(12px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fall{from{transform:translateY(-18px);opacity:0}to{transform:none;opacity:1}}
+@keyframes drop{from{transform:translateY(-36vh)}to{transform:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(prefers-reduced-motion:no-preference){.cats{transition:opacity .2s}}
 </style>
@@ -117,6 +145,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
 </div>
 </div>
 <div id="mask" hidden><div id="sheet" role="dialog" aria-modal="true"></div></div>
+<div id="ritual" hidden></div>
 <div id="pearbox" class="pearbox" hidden>
   <button type="button" id="undo" class="undo" hidden>撤销</button>
   <svg id="pearSvg" viewBox="0 0 160 206" aria-hidden="true">
@@ -203,6 +232,35 @@ function preview(D,today,amount,isIncome){
   const R=compute(C,today);
   return{todayLeft:R.todayLeft,tomorrow:R.tomorrow,level:R.allowance>0?R.todayLeft/R.allowance:0};
 }
+function daySpent(D,k){
+  return sum((D.entries||[]).filter(e=>e.d===k&&e.a>0&&e.src!=='save'&&e.c!=='之前').map(e=>e.a));
+}
+function dayStatus(D,k,today){
+  const tk=today?(today instanceof Date?keyOf(today):String(today)):null;
+  if(tk&&k>tk)return 'future';
+  const rec=(D.days&&D.days[k])||{};
+  const spent=daySpent(D,k);
+  const has=spent>0.0000001;
+  if(!has&&!rec.zero)return 'blank';
+  if(rec.zero&&!has)return 'kept';
+  if(typeof rec.allow!=='number')return has?'kept':'blank';
+  if(Math.round(spent*100+1e-6)>Math.round(rec.allow*100+1e-6))return 'over';
+  return 'kept';
+}
+function streak(D,today){
+  let n=0;
+  for(let i=1;i<400;i++){
+    const k=keyOf(new Date(today.getTime()-i*DAY));
+    if(dayStatus(D,k,today)==='kept')n++;
+    else break;
+  }
+  return n;
+}
+function carryOver(D,amount){
+  if(!D.entries)D.entries=[];
+  D.entries.push({d:D.cycle&&D.cycle.start,a:-Math.abs(+amount),c:'结转'});
+  return D;
+}
 function ensure(D){
   if(!D||typeof D!=='object')return D;
   if(!Array.isArray(D.entries))D.entries=[];
@@ -238,11 +296,15 @@ const COPY={
   morning:['早，今天这颗梨 ¥{n}。','新的一颗，¥{n}。','今天的份到了：¥{n}。'],
   left:['稳，还剩 ¥{n}。','还剩 ¥{n}，节奏刚好。','记下了，还剩 ¥{n}。'],
   even:['今天刚好吃完，正好。','正好花完今天的份。','今天这颗梨吃完了。'],
-  over:['咬多了一口，明天小一点就好。','超了 ¥{n}，已经摊到后面了。','明天的梨小一点，就补上了。']
+  over:['咬多了一口，明天小一点就好。','超了 ¥{n}，已经摊到后面了。','明天的梨小一点，就补上了。'],
+  streak:['连续 {n} 天守住了。','{n} 天了，都守住了。','连续守住 {n} 天。'],
+  pace:['照这几天的速度，{date}会见底，每天控制在 ¥{n} 就能撑到。','按这个速度，{date}前会花完。每天 ¥{n} 可以撑到发工资。','{date}会见底。把每天收在 ¥{n}，就能接到下一期。'],
+  full:['梨罐满了 3 个月，你比大多数人都稳。','应急金够 3 个月了。','梨罐已经够 3 个月的份。']
 };
 let D=null,setupMode=true,buf='',incMode=false,cat=null,field='income',raw='';
 let payday=10,income=0,savePct=10,already=0,fixed=[];
 let sheetName=null,sheetFrom=null,clearArmed=false,undoTimer=0,lastR=null,biteOn=false,booted=false;
+let backfill=false,ritualOn=false,ritualStep='pay',ritualPct=10,largeV=0,openDay=null,undoRefund=0;
 let target=0,level=0,vel=0,amp=3,phase=0,raf=0,running=false,lastT=0,started=false,previewY=null;
 const wave=$('#wave'),dash=$('#dash'),bite=$('#bite');
 function yOf(L){const c=Math.max(0,Math.min(1,L));return YB-(YB-YT)*c}
@@ -421,15 +483,43 @@ function render(){
     setHero(ym(Math.max(0,R.todayLeft)),R.todayLeft<-0.009?'今天还能花':'今天还能花');
     const tom=R.tomorrow==null?'明天发工资':`明天 ${ym(R.tomorrow)}`;
     $('#sub').textContent=R.remain<-0.009?`${tom} · 本期超了 ${ym(-R.remain)}`:`${tom} · 本期还剩 ${ym(R.remain)}`;
+    const run=streak(D,TODAY);
     let cap='';
     if(R.todayLeft<-0.009)cap=fillCopy(pick(COPY.over,'over'),{n:fmt(-R.todayLeft)});
     else if(R.spentToday>0&&R.todayLeft<=0.009)cap=pick(COPY.even,'even');
+    else if(R.pace&&R.pace.short)cap=fillCopy(pick(COPY.pace,'pace'),{date:(R.pace.last.getMonth()+1)+'月'+R.pace.last.getDate()+'日',n:fmt(R.allowance)});
+    else if(run===3||run===7||run===14)cap=fillCopy(pick(COPY.streak,'streak'),{n:String(run)});
     else if(R.spentToday>0)cap=fillCopy(pick(COPY.left,'left'),{n:fmt(R.todayLeft)});
     else cap=fillCopy(pick(COPY.morning,'morning'),{n:fmt(R.allowance)});
+    const goal=3*Math.max(0,D.setup.income-D.setup.save);
+    if(goal>0&&D.savedTotal+0.5>=goal&&R.todayLeft>=-0.009&&!(R.pace&&R.pace.short))cap=pick(COPY.full,'full');
     $('#cap').textContent=cap;
   }
   updateBite(R);
+  if(!ritualOn)snapToday(R);
+  paintYest();paintNav();
   if(!booted)booted=true;
+}
+function snapToday(R){
+  if(!D.days[R.tk])D.days[R.tk]={};
+  if(D.days[R.tk].allow!==R.allowance){D.days[R.tk].allow=R.allowance;store()}
+}
+function paintNav(){
+  const b=document.querySelector('[data-nav="jar"]');if(!b)return;
+  let dot=b.querySelector('.dot');
+  if(D.cycle&&D.cycle.remind){if(!dot){dot=document.createElement('i');dot.className='dot';b.appendChild(dot)}}
+  else if(dot)dot.remove();
+}
+function paintYest(){
+  const el=$('#yest');if(!el)return;
+  if(ritualOn||setupMode){el.hidden=true;return}
+  if(backfill){el.hidden=false;el.textContent='这笔记到昨天';return}
+  const k=keyOf(new Date(TODAY.getTime()-DAY));
+  if((D.since&&k<D.since)||(D.cycle.start&&k<D.cycle.start)){el.hidden=true;return}
+  const rec=D.days[k]||{};
+  if(rec.zero||daySpent(D,k)>0){el.hidden=true;return}
+  el.hidden=false;
+  el.innerHTML='昨天花钱了吗？ <button type="button" data-act="noSpend">没花</button> <button type="button" data-act="fillYest">补一笔</button>';
 }
 function paintSetup(){
   paintSentences();
@@ -444,19 +534,45 @@ function paintSetup(){
 function store(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
 function commit(){
   const v=amt();if(!(v>0)||!D)return;
-  const e={id:uid(),d:keyOf(TODAY),a:incMode?-v:v};
-  if(incMode)e.c='收入';else if(cat)e.c=cat;
+  if(!incMode&&lastR&&v>=Math.max(3*lastR.allowance,500)){openLarge(v);return}
+  doCommit(v,incMode?'in':'spend');
+}
+function doCommit(v,mode){
+  const day=backfill?keyOf(new Date(TODAY.getTime()-DAY)):keyOf(TODAY);
+  if(backfill&&!(D.days[day]&&typeof D.days[day].allow==='number')){if(!D.days[day])D.days[day]={};D.days[day].allow=lastR?lastR.allowance:0}
+  const e={id:uid(),d:day,a:mode==='in'?-v:v};
+  let refund=0;
+  if(mode==='in')e.c='收入';
+  else if(mode==='save'){e.src='save';e.c=cat||'梨罐';D.savedTotal=Math.round((D.savedTotal-v)*100)/100;refund=v}
+  else if(cat)e.c=cat;
+  backfill=false;
   D.entries.push(e);buf='';incMode=false;cat=null;store();
   if(e.a<0){const c=$('#rip');c.classList.remove('go');void c.getBoundingClientRect();c.classList.add('go')}
   try{if(navigator.vibrate)navigator.vibrate(12)}catch(err){}
-  armUndo(e);
+  armUndo(e,refund);
   const R=compute(D,TODAY);
   setTarget(levelOf(R),true);
   render();
 }
-function armUndo(e){
-  const b=$('#undo');b.hidden=false;b.onclick=ev=>{ev.stopPropagation();D.entries=D.entries.filter(x=>x.id!==e.id);store();b.hidden=true;const R=compute(D,TODAY);setTarget(levelOf(R),true);render()};
+function armUndo(e,refund){
+  const b=$('#undo');b.hidden=false;undoRefund=refund||0;
+  b.onclick=ev=>{ev.stopPropagation();D.entries=D.entries.filter(x=>x.id!==e.id);if(undoRefund)D.savedTotal=Math.round((D.savedTotal+undoRefund)*100)/100;store();b.hidden=true;const R=compute(D,TODAY);setTarget(levelOf(R),true);render()};
   clearTimeout(undoTimer);undoTimer=setTimeout(()=>{b.hidden=true},4000);
+}
+function openLarge(v){
+  largeV=v;sheetName='large';sheetFrom=null;
+  const before=compute(D,TODAY),pv=preview(D,TODAY,v,false);
+  const days=before.daysLeft;
+  const less=before.tomorrow!=null&&pv.tomorrow!=null?before.tomorrow-pv.tomorrow:v/Math.max(1,days);
+  const tom=pv.tomorrow==null?'发工资':ym(pv.tomorrow);
+  const same=`今天剩 ${ym(pv.todayLeft)}，明天 ${tom}`;
+  $('#mask').hidden=false;
+  $('#sheet').innerHTML=`<div class="shead"><span>这笔有点大</span><button type="button" data-close>取消</button></div>
+  <div class="sbody">
+  <button type="button" class="choice" data-act="large" data-mode="spread"><b>摊到剩下 ${days} 天</b><br>每天少 ${ym(less)}。${same}</button>
+  <button type="button" class="choice" data-act="large" data-mode="save"><b>从梨罐里出</b><br>梨罐 ${ym(D.savedTotal)} 会变成 ${ym(D.savedTotal-v)}。今天还能花 ${ym(before.todayLeft)}</button>
+  <button type="button" class="choice" data-act="large" data-mode="today"><b>就算今天的</b><br>${same}</button>
+  </div>`;
 }
 function showSetup(){
   setupMode=true;field='income';raw='';payday=10;income=0;savePct=10;already=0;fixed=[];
@@ -466,10 +582,154 @@ function showSetup(){
 function showHome(){
   setupMode=false;ensure(D);
   const ended=rollover(D,TODAY);if(ended)D.ended=ended;
-  loadFieldsFromD();store();
+  loadFieldsFromD();
+  const first=D.ui.lastOpen!==keyOf(TODAY);
   $('#setup').hidden=true;$('#home').hidden=false;placePear($('#stage'));
   $('#cats').innerHTML=CATS.map(c=>`<button type="button" data-cat="${c}">${c}</button>`).join('');
   render();startLoop();
+  if(needRitual())openRitual();
+  else if(first)dropPear();
+  D.ui.lastOpen=keyOf(TODAY);store();
+}
+function needRitual(){
+  if(!D||!D.cycle||D.cycle.ritualDone)return false;
+  return !!D.ended;
+}
+function dropPear(){
+  if(reduced)return;
+  const box=$('#pearbox');box.classList.remove('droping');void box.offsetWidth;box.classList.add('droping');
+  const done=ev=>{if(ev.target!==box)return;box.classList.remove('droping');amp=10;box.removeEventListener('animationend',done)};
+  box.addEventListener('animationend',done);
+}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function carryDelta(amount){
+  const before=compute(D,TODAY).allowance;
+  const C=JSON.parse(JSON.stringify(D));
+  carryOver(C,amount);
+  return compute(C,TODAY).allowance-before;
+}
+function countKept(start,end){
+  let n=0,total=0;
+  for(let t=parse(start).getTime(),z=parse(end).getTime();t<z;t+=DAY){total++;if(dayStatus(D,keyOf(new Date(t)),TODAY)==='kept')n++}
+  return{n,total};
+}
+function openRitual(){
+  ritualOn=true;$('#ritual').hidden=false;
+  ritualPct=D.setup.income?Math.max(0,Math.min(100,Math.round(D.setup.save/D.setup.income*100))):0;
+  ritualStep='settle';paintRitual();
+}
+function finishRitual(){
+  ritualOn=false;D.cycle.ritualDone=true;$('#ritual').hidden=true;store();render();
+}
+function paintRitual(){
+  const e=D.ended;let body='';
+  if(ritualStep==='settle'&&e){
+    const kc=countKept(e.start,e.end);
+    if(e.left>0.5){
+      body=`<p class="lbl">上一期守住 ${kc.n}/${kc.total} 天，多出</p><div class="hero">${ym(e.left)}</div>
+      <button type="button" class="go block" data-act="toJar">存进梨罐 ${ym(e.left)}</button>
+      <button type="button" class="choice" data-act="toMonth">滚到这个月，每天多 ${ym(carryDelta(e.left))}</button>`;
+    }else if(e.left<-0.5){
+      body=`<p class="lbl">上一期超了 ${ym(-e.left)}</p><p>这一期已经重新开始</p><button type="button" class="go block" data-act="knew">知道了</button>`;
+    }else{
+      body=`<p>上一期正好花完</p><button type="button" class="go block" data-act="knew">知道了</button>`;
+    }
+  }else if(ritualStep==='pay'||(ritualStep==='settle'&&!e)){
+    ritualStep='pay';
+    body=`<p class="lbl">发工资啦</p><div class="hero">${ym(D.setup.income)}</div>`+
+      D.setup.fixed.map((f,i)=>`<div class="fxrow" style="animation-delay:${i*50}ms">${esc(f.n)} ${ym(+f.a||0)}</div>`).join('')+
+      `<button type="button" class="go block" data-act="toSave">继续</button>`;
+  }else if(ritualStep==='save'){
+    body=`<p class="lbl">先喂饱未来的自己</p><div id="jarTrack"><i id="handle"></i></div><p id="saveNow" class="sub"></p>
+      <div class="actions"><button type="button" class="go" data-act="didSave">我已转好</button><button type="button" class="incbtn" data-act="later">稍后提醒</button></div>`;
+  }else{
+    const R=compute(D,TODAY),n=R.cycleDays,step=Math.min(36,1000/Math.max(1,n));
+    let pears='';for(let i=0;i<n;i++)pears+=`<i style="animation-delay:${(i*step).toFixed(0)}ms"></i>`;
+    body=`<p class="lbl">${ym(R.avail)} → ${n} 颗梨</p><div class="hero">${ym(R.allowance)}</div><div class="split">${pears}</div><button type="button" class="go block" data-act="finishRitual">开始用</button>`;
+  }
+  $('#ritual').innerHTML=`<div class="shead"><span>发工资</span><button type="button" data-act="skipRitual">跳过</button></div><div class="rbody">${body}</div>`;
+  if(ritualStep==='save'){paintSaveReadout();bindTrack()}
+}
+function snaps(){
+  const plan=D.setup.income?Math.round(D.setup.save/D.setup.income*100):0;
+  return [...new Set([0,10,20,30,plan])].filter(x=>x>=0&&x<=100).sort((a,b)=>a-b);
+}
+function nearestPct(p){const pts=snaps();return pts.reduce((b,x)=>Math.abs(x-p)<Math.abs(b-p)?x:b,pts[0])}
+function paintSaveReadout(){
+  const save=Math.round(D.setup.income*ritualPct/100);
+  const line=$('#saveNow');if(line)line.textContent=`每月 ${ym(save)}，一年 ${ym(save*12)}`;
+  const h=$('#handle');if(h)h.style.bottom=ritualPct+'%';
+}
+function bindTrack(){
+  const track=$('#jarTrack');if(!track)return;
+  track.onpointerdown=ev=>{
+    ev.preventDefault();
+    const rect=track.getBoundingClientRect();
+    const move=e=>{const y=(e.clientY==null?ev.clientY:e.clientY);ritualPct=Math.max(0,Math.min(100,Math.round((rect.bottom-y)/rect.height*100)));paintSaveReadout()};
+    const up=()=>{ritualPct=nearestPct(ritualPct);paintSaveReadout();window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)};
+    window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);move(ev);
+  };
+}
+function applyRitualSave(mark){
+  savePct=Math.max(0,Math.min(100,Math.round(ritualPct)));
+  const save=Math.round(D.setup.income*savePct/100);
+  D.setup.save=save;D.cycle.planSave=save;D.cycle.avail=availOf(D.setup);
+  if(mark){if(!D.cycle.saved)D.savedTotal=Math.round((D.savedTotal+save)*100)/100;D.cycle.saved=true;D.cycle.remind=false}
+  else D.cycle.remind=true;
+  store();
+}
+function miniPear(kind){
+  const fill=kind==='kept'||kind==='over'?'#4E8A62':'none';
+  const dash=kind==='blank'||kind==='future'?'stroke-dasharray="2 2"':'';
+  const bite=kind==='over'?'<circle cx="17" cy="11" r="4.5" fill="var(--paper)"/>':'';
+  return `<svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 6c2 0 3 2 3.2 4 2 .8 4.8 3 4.8 6.5C20 21 16.5 24 12 24.5 7.5 24 4 21 4 16.5 4 13 6.8 10.8 8.8 10 9 8 10 6 12 6z" fill="${fill}" stroke="currentColor" ${dash}/>${bite}<path d="M12 6c.2-2 1.2-3.2 2.4-4" fill="none" stroke="currentColor"/></svg>`;
+}
+function openOrchard(){
+  sheetName='orchard';sheetFrom=null;const R=compute(D,TODAY);
+  const days=[];for(let t=R.c.start.getTime();t<R.c.end.getTime();t+=DAY)days.push(new Date(t));
+  const lead=(days[0].getDay()+6)%7;
+  let keptN=0,longest=0,run=0;
+  const proj=R.daysLeft?Math.max(0,R.remain)/R.daysLeft:0;
+  const cells=Array(lead).fill('<i></i>').concat(days.map(d=>{
+    const k=keyOf(d);const st=k>R.tk?'future':dayStatus(D,k,TODAY);
+    if(st==='kept'){keptN++;run++;if(run>longest)longest=run}else if(k<R.tk)run=0;
+    const sub=st==='future'?fmt(proj):String(d.getDate());
+    return `<button type="button" class="cell${k===R.tk?' today':''}" data-day="${k}">${miniPear(st)}<span>${sub}</span></button>`;
+  })).join('');
+  const avg=R.elapsed?R.spentCycle/R.elapsed:0;
+  let detail='';
+  if(openDay){
+    const list=D.entries.filter(e=>e.d===openDay);
+    detail=`<p>${openDay}</p>`+(list.length?list.map(e=>`<div class="fx"><span>${esc(e.c||(e.a<0?'收入':'支出'))} ${e.a<0?'+':''}${ym(Math.abs(e.a))}</span><button type="button" data-act="drop" data-id="${e.id}">删除</button></div>`).join(''):'<p class="sub" style="text-align:left">这一天没有记录</p>');
+  }
+  $('#mask').hidden=false;
+  $('#sheet').innerHTML=`<div class="shead"><span class="gold">本月</span><button type="button" data-close>完成</button></div>
+  <div class="sbody"><p>守住 ${keptN} 天 · 最长 ${longest} 天 · 平均每天 ${ym(avg)}</p>
+  <div class="grid">${cells}</div>${detail}</div>`;
+}
+function openJar(){
+  sheetName='jar';sheetFrom=null;
+  const target=3*Math.max(0,D.setup.income-D.setup.save);
+  const p=target>0?Math.min(1,D.savedTotal/target):0;
+  const months=D.setup.save>0&&target>D.savedTotal?Math.ceil((target-D.savedTotal)/D.setup.save):0;
+  const c=2*Math.PI*46,dash=(p*c).toFixed(1);
+  const note=p>=1?pick(COPY.full,'full'):(months?`再存 ${months} 个月就够`: '先定一个每月要存的数');
+  let pend='';
+  if(D.ended&&D.ended.left>0.5)pend=`<button type="button" class="choice" data-act="toJar">上一期多出的 ${ym(D.ended.left)} 存进梨罐</button><button type="button" class="choice" data-act="toMonth">滚到这个月，每天多 ${ym(carryDelta(D.ended.left))}</button>`;
+  else if(D.ended&&D.ended.left<-0.5)pend=`<p>上一期超了 ${ym(-D.ended.left)}，这一期已经重新开始</p><button type="button" class="choice" data-act="knew">知道了</button>`;
+  const hist=D.history.slice(0,6).map(h=>{const s=parse(h.start);return `<div class="fx"><span>${s.getMonth()+1}月${s.getDate()}日起</span><span>${h.left>=0?'多出 '+ym(h.left):'超了 '+ym(-h.left)}</span></div>`}).join('')||'<p class="sub" style="text-align:left">还没有上一期</p>';
+  const remind=D.cycle&&D.cycle.remind&&!D.cycle.saved?`<button type="button" class="go block" data-act="markSaved">我已转好 ${ym(D.setup.save)}</button>`:'';
+  $('#mask').hidden=false;
+  $('#sheet').innerHTML=`<div class="shead"><span>梨罐</span><button type="button" data-close>完成</button></div>
+  <div class="sbody"><div class="jarwrap"><svg viewBox="0 0 120 140" width="150" height="175" aria-hidden="true">
+    <defs><clipPath id="jarClip"><path d="M40 30h40v8c16 4 22 16 22 34v30c0 16-14 26-28 28H46c-14-2-28-12-28-28V72c0-18 6-30 22-34V30z"/></clipPath></defs>
+    <g clip-path="url(#jarClip)"><rect x="18" y="${108-(p*70)}" width="84" height="${p*78}" fill="#E3A33B"/></g>
+    <path d="M40 30h40v8c16 4 22 16 22 34v30c0 16-14 26-28 28H46c-14-2-28-12-28-28V72c0-18 6-30 22-34V30z" fill="none" stroke="#E3A33B" stroke-width="2"/>
+    <path d="M46 22h28v8H46z" fill="none" stroke="#E3A33B" stroke-width="2"/>
+  </svg></div>
+  <div class="hero" style="text-align:center">${ym(D.savedTotal)}</div>
+  <div class="jarwrap"><svg viewBox="0 0 120 120" width="120" height="120" aria-hidden="true"><circle cx="60" cy="60" r="46" fill="none" stroke="var(--hair)" stroke-width="6"/><circle cx="60" cy="60" r="46" fill="none" stroke="#E3A33B" stroke-width="6" stroke-linecap="round" stroke-dasharray="${dash} ${c.toFixed(1)}" transform="rotate(-90 60 60)"/></svg></div>
+  <p class="sub">${note} · 目标 ${ym(target)}</p>${remind}${pend}<p>最近几期</p>${hist}</div>`;
 }
 function plant(){
   const d=draftResult();if(!(d.st.income>0)||d.av<=0||!(payday>=1&&payday<=31))return;
@@ -532,16 +792,12 @@ function doImport(){
   const box=$('#impErr');if(box)box.textContent=err;if(err)return;
   D=ensure(o);store();closeMask();showHome();
 }
-function openSoon(title){
-  sheetName=title;sheetFrom=null;
-  $('#mask').hidden=false;
-  $('#sheet').innerHTML=`<div class="shead"><span>${title}</span><button type="button" data-close>完成</button></div><div class="sbody"><p class="sub" style="text-align:left">先把今天记下来。</p></div>`;
-}
 document.body.addEventListener('click',ev=>{
   const k=ev.target.closest('[data-k]');if(k){press(k.dataset.k);return}
   const f=ev.target.closest('[data-field]');if(f){focusField(f.dataset.field);return}
   const catBtn=ev.target.closest('[data-cat]');if(catBtn){cat=cat===catBtn.dataset.cat?null:catBtn.dataset.cat;render();return}
-  const nav=ev.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='settings')openSettings();else openSoon(nav.dataset.nav==='orchard'?'梨园':'梨罐');return}
+  const dayBtn=ev.target.closest('[data-day]');if(dayBtn){openDay=openDay===dayBtn.dataset.day?null:dayBtn.dataset.day;openOrchard();return}
+  const nav=ev.target.closest('[data-nav]');if(nav){if(nav.dataset.nav==='settings')openSettings();else if(nav.dataset.nav==='orchard')openOrchard();else openJar();return}
   if(ev.target.id==='ok'){commit();return}
   if(ev.target.id==='inc'){incMode=!incMode;render();return}
   if(ev.target.id==='plant'){plant();return}
@@ -564,10 +820,27 @@ document.body.addEventListener('click',ev=>{
   else if(act.dataset.act==='clear'){
     if(!clearArmed){clearArmed=true;act.textContent='再点一次，确认清空';setTimeout(()=>{if(clearArmed&&act.isConnected){clearArmed=false;act.textContent='清空数据'}},4000)}
     else{localStorage.removeItem(KEY);location.reload()}
+  }else if(act.dataset.act==='large'){
+    const v=largeV,mode=act.dataset.mode==='save'?'save':'spend';closeMask();doCommit(v,mode);
+  }else if(act.dataset.act==='noSpend'){
+    const k=keyOf(new Date(TODAY.getTime()-DAY));if(!D.days[k])D.days[k]={};D.days[k].zero=true;if(typeof D.days[k].allow!=='number'&&lastR)D.days[k].allow=lastR.allowance;store();render();
+  }else if(act.dataset.act==='fillYest'){backfill=true;render()}
+  else if(act.dataset.act==='skipRitual'||act.dataset.act==='finishRitual')finishRitual();
+  else if(act.dataset.act==='toJar'){if(D.ended){D.savedTotal=Math.round((D.savedTotal+D.ended.left)*100)/100;D.ended=null;store()}if(ritualOn){ritualStep='pay';paintRitual()}else{render();openJar()}}
+  else if(act.dataset.act==='toMonth'){if(D.ended){carryOver(D,D.ended.left);const added=D.entries[D.entries.length-1];if(added&&added.id==null)added.id=uid();D.ended=null;store()}if(ritualOn){ritualStep='pay';paintRitual()}else{render();openJar()}}
+  else if(act.dataset.act==='knew'){D.ended=null;store();if(ritualOn){ritualStep='pay';paintRitual()}else{render();closeMask()}}
+  else if(act.dataset.act==='toSave'){ritualStep='save';paintRitual()}
+  else if(act.dataset.act==='didSave'){applyRitualSave(true);ritualStep='split';paintRitual()}
+  else if(act.dataset.act==='later'){applyRitualSave(false);ritualStep='split';paintRitual()}
+  else if(act.dataset.act==='markSaved'){if(D.cycle&&!D.cycle.saved){D.savedTotal=Math.round((D.savedTotal+D.setup.save)*100)/100;D.cycle.saved=true}if(D.cycle)D.cycle.remind=false;store();render();openJar()}
+  else if(act.dataset.act==='drop'){
+    const id=+act.dataset.id;const e=D.entries.find(x=>x.id===id);
+    D.entries=D.entries.filter(x=>x.id!==id);if(e&&e.src==='save')D.savedTotal=Math.round((D.savedTotal+e.a)*100)/100;
+    store();render();openOrchard();
   }
 });
 document.addEventListener('keydown',ev=>{
-  if(ev.target.tagName==='TEXTAREA')return;
+  if(ev.target.tagName==='TEXTAREA'||ritualOn)return;
   if(/^\d$/.test(ev.key)||ev.key==='.')press(ev.key==='.'?'.':ev.key);
   else if(ev.key==='Backspace')press('bs');
   else if(ev.key==='Enter'&&!setupMode)commit();

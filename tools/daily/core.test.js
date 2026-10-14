@@ -1,5 +1,5 @@
 const fs=require('fs');const h=fs.readFileSync(require('path').join(__dirname,'index.html'),'utf8');
-const X=new Function(h.split('/*core*/')[1].split('/*end*/')[0]+';return{cycleOf,compute,rollover,keyOf,parse,preview,ensure};')();
+const X=new Function(h.split('/*core*/')[1].split('/*end*/')[0]+';return{cycleOf,compute,rollover,keyOf,parse,preview,ensure,dayStatus,streak,carryOver};')();
 let f=0;const eq=(n,a,b)=>{const ok=typeof b==='number'?Math.abs(a-b)<0.01:a===b;if(!ok)f++;console.log(ok?'ok  ':'FAIL',n,a,b)};
 const P=X.parse,K=X.keyOf;
 let c=X.cycleOf(P('2026-10-14'),10);eq('start',K(c.start),'2026-10-10');eq('end',K(c.end),'2026-11-10');
@@ -52,4 +52,28 @@ X.ensure(old);
 eq('v1 days',typeof old.days,'object');
 eq('v1 ui',typeof old.ui,'object');
 eq('v1 still',X.compute(old,P('2026-10-14')).allowance,4600/27);
+// carry 320 into a new cycle raises the daily allowance by 320 / cycle length
+D={setup,entries:[],cycle:{start:'2026-10-10',saved:false,avail:4600,planSave:800},since:'2026-10-10',history:[],savedTotal:0};
+R=X.compute(D,P('2026-10-10'));
+const baseAllow=R.allowance;
+X.carryOver(D,320);
+R=X.compute(D,P('2026-10-10'));
+eq('carry delta',R.allowance-baseAllow,320/R.cycleDays);
+// streak: kept, kept, zero, kept = 4; a blank breaks the run
+const today=P('2026-10-14');
+D={entries:[
+  {d:'2026-10-13',a:40},{d:'2026-10-12',a:40},{d:'2026-10-10',a:40}
+],days:{
+  '2026-10-13':{allow:100},'2026-10-12':{allow:100},'2026-10-11':{allow:100,zero:true},'2026-10-10':{allow:100}
+}};
+eq('streak 4',X.streak(D,today),4);
+D={entries:[{d:'2026-10-13',a:40},{d:'2026-10-11',a:40}],days:{
+  '2026-10-13':{allow:100},'2026-10-11':{allow:100}
+}};
+eq('streak stops at blank',X.streak(D,today),1);
+// equal to the allowance is kept; one fen over is over
+D={entries:[{d:'2026-10-13',a:100}],days:{'2026-10-13':{allow:100}}};
+eq('equal kept',X.dayStatus(D,'2026-10-13',today),'kept');
+D={entries:[{d:'2026-10-13',a:100.01}],days:{'2026-10-13':{allow:100}}};
+eq('fen over',X.dayStatus(D,'2026-10-13',today),'over');
 console.log(f?'FAILED '+f:'ALL PASS');
