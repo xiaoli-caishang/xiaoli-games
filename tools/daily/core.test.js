@@ -1,5 +1,5 @@
 const fs=require('fs');const h=fs.readFileSync(require('path').join(__dirname,'index.html'),'utf8');
-const X=new Function(h.split('/*core*/')[1].split('/*end*/')[0]+';return{cycleOf,compute,rollover,keyOf,parse};')();
+const X=new Function(h.split('/*core*/')[1].split('/*end*/')[0]+';return{cycleOf,compute,rollover,keyOf,parse,preview,ensure};')();
 let f=0;const eq=(n,a,b)=>{const ok=typeof b==='number'?Math.abs(a-b)<0.01:a===b;if(!ok)f++;console.log(ok?'ok  ':'FAIL',n,a,b)};
 const P=X.parse,K=X.keyOf;
 let c=X.cycleOf(P('2026-10-14'),10);eq('start',K(c.start),'2026-10-10');eq('end',K(c.end),'2026-11-10');
@@ -28,4 +28,28 @@ R=X.compute(D,P('2026-11-09'));eq('last day left',R.daysLeft,1);eq('tomorrow nul
 D={setup,entries:[{d:'2026-10-12',a:1000},{d:'2026-11-10',a:50}],cycle:{start:'2026-10-10',avail:4600,saved:true,planSave:800},history:[]};
 const e=X.rollover(D,P('2026-11-11'));eq('roll left',e.left,3600);eq('new start',D.cycle.start,'2026-11-10');eq('saved flag reset',D.cycle.saved,false);
 eq('no double roll',X.rollover(D,P('2026-11-12')),null);
+// preview does not mutate, and matches a real entry
+D={setup,entries:[{d:'2026-10-14',a:100}],cycle:{start:'2026-10-10'},since:'2026-10-10'};
+const before=JSON.stringify(D);
+const pv=X.preview(D,P('2026-10-14'),35,false);
+eq('preview no mutate',JSON.stringify(D),before);
+D.entries.push({d:'2026-10-14',a:35});
+R=X.compute(D,P('2026-10-14'));
+eq('preview today',pv.todayLeft,R.todayLeft);
+eq('preview tomorrow',pv.tomorrow,R.tomorrow);
+// src save is ignored by the daily allowance; caller owns savedTotal
+D={setup,entries:[{d:'2026-10-14',a:500,src:'save'}],cycle:{start:'2026-10-10'},since:'2026-10-10',savedTotal:800};
+R=X.compute(D,P('2026-10-14'));
+eq('save src allow',R.allowance,4600/27);
+eq('save src spent',R.spentToday,0);
+eq('save src remain',R.remain,4600);
+eq('savedTotal untouched',D.savedTotal,800);
+// v1 payload without days/ui still computes, and ensure fills the new fields
+let old={setup,entries:[{d:'2026-10-14',a:100}],savedTotal:0,history:[],cycle:{start:'2026-10-10'},ended:null,since:'2026-10-10'};
+R=X.compute(old,P('2026-10-14'));
+eq('v1 todayLeft',R.todayLeft,4600/27-100);
+X.ensure(old);
+eq('v1 days',typeof old.days,'object');
+eq('v1 ui',typeof old.ui,'object');
+eq('v1 still',X.compute(old,P('2026-10-14')).allowance,4600/27);
 console.log(f?'FAILED '+f:'ALL PASS');
