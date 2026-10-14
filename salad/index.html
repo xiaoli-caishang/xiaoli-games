@@ -92,6 +92,15 @@ select{font:inherit;font-size:13px;font-weight:600;color:var(--fg);background:va
 .row .meta{grid-column:2/4;font-size:11.5px;color:var(--mut);line-height:1.45;word-break:break-word}
 .row .meta b{color:var(--fg);font-weight:600}
 .row .meta .note{color:#B5822A}
+.row .meta details{display:inline}
+.row .meta details summary{display:inline;cursor:pointer;color:#8A5A10;font-weight:700;list-style:none}
+.row .meta details summary::-webkit-details-marker{display:none}
+.row .meta details summary::after{content:" ▾"}
+.row .meta details[open] summary::after{content:" ▴"}
+.row .meta details .note{display:block;margin-top:4px}
+.lown{display:inline-block;font-size:10px;font-weight:800;line-height:1.3;padding:0 5px;border:1.5px solid #D9B46A;background:#FFF0B8;color:#8A5A10;border-radius:3px;vertical-align:1px;margin-left:4px;white-space:nowrap}
+.role .ratios span.dim,td .dim{color:#B8AD9E;font-weight:400}
+.role .ratios span.dim b{color:#B8AD9E;font-weight:600}
 .empty-all{text-align:center;color:var(--mut);padding:30px 10px}
 
 /* 表 */
@@ -200,7 +209,7 @@ footer a{color:var(--mut);text-decoration:none}
 
     <section id="findSec">
       <h2>反直觉的三个发现</h2>
-      <p class="sub" style="margin-top:0">以下由当前数据自动计算，换一个月的数据结论可能就变。</p>
+      <p class="sub" style="margin-top:0">以下由当前数据自动计算，<b>只统计样本 ≥ <span id="minN">30</span> 的格子和城市</b>（样本少的格在卡片里标「样本少」）；换一个月的数据结论可能就变。</p>
       <div class="finds" id="finds"></div>
     </section>
 
@@ -244,6 +253,7 @@ $('#saladIcon1').innerHTML=SALAD_SVG;
 /* 状态 */
 const params=new URLSearchParams(location.search);
 const state={role:null,regions:new Set(),sort:'hk',firstPaint:true,tableOpen:false};
+const MIN_N=30; /* 样本少于此数的格/城市：照常展示但标「样本少」，且不进入「三个发现」 */
 let D=null,ROLES=[],REGS=[],MAXSALAD=1,SALAD_CNY=1000;
 
 /* CTA from 透传 */
@@ -258,6 +268,9 @@ function monthText(d){const m=/^(\d{4})-(\d{1,2})/.exec(d||'');return m?`${m[1]}
 /* 取格 */
 function cell(r,g){const c=D.stats&&D.stats[r]&&D.stats[r][g];return c&&typeof c==='object'?c:null}
 function ok(c){return !!(c&&c.median_cny!=null&&isFinite(c.median_cny)&&(c.n||0)>0)}
+function solid(c){return ok(c)&&(+c.n||0)>=MIN_N}
+function lowN(c){return ok(c)&&!solid(c)}
+const LOWN_BADGE=`<span class="lown" title="样本少于 ${MIN_N}，仅供参考">样本少</span>`;
 function salad(c){if(!ok(c))return null;return c.salad!=null?c.salad:Math.round(c.median_cny/SALAD_CNY)}
 function ratio(r,g){const a=cell(r,g),b=cell(r,'cn');if(!ok(a)||!ok(b)||!b.median_cny)return null;return a.median_cny/b.median_cny}
 function regOf(id){return REGS.find(x=>x.id===id)||{id,name:id,currency:'CNY'}}
@@ -308,6 +321,7 @@ function init(){
   $('#toggleTable').onclick=()=>{state.tableOpen=!state.tableOpen;$('#tableCard').classList.toggle('hide',!state.tableOpen);$('#copyTsv').classList.toggle('hide',!state.tableOpen);$('#toggleTable').textContent=state.tableOpen?'收起表格':'展开表格';if(state.tableOpen)renderTable()};
   $('#copyTsv').onclick=copyTsv;
 
+  $('#minN').textContent=MIN_N;
   renderSources();renderMethod();renderFindings();
   $('#loading').classList.add('hide');$('#app').classList.remove('hide');
   render(true);
@@ -360,10 +374,10 @@ function cardHtml(r,regs){
     }
     const w=Math.max(1.5,Math.min(100,s/MAXSALAD*100)).toFixed(1);
     const rg=range(g,c);
-    const note=c.note?` · <span class="note">${esc(c.note)}</span>`:'';
-    return `<div class="row ${esc(g.id)}"><span class="reg"><i></i>${esc(g.name)}</span><div class="bar" role="img" aria-label="${esc(g.name)} ${s} 份沙拉"><i data-w="${w}" style="width:0"></i></div><span class="big">${SALAD_SVG}×${fmt(s)}</span><div class="meta">中位 <b>${money(g,c.median_local)}</b>${g.currency!=='CNY'?` ≈ ¥${fmt(c.median_cny)}`:''}${rg?` · p25–p75 ${rg}`:''} · n=<b class="num">${fmt(c.n)}</b>${note}</div></div>`;
+    const note=c.note?` · <details><summary>口径</summary><span class="note">${esc(c.note)}</span></details>`:'';
+    return `<div class="row ${esc(g.id)}"><span class="reg"><i></i>${esc(g.name)}</span><div class="bar" role="img" aria-label="${esc(g.name)} ${s} 份沙拉"><i data-w="${w}" style="width:0"></i></div><span class="big">${SALAD_SVG}×${fmt(s)}</span><div class="meta">中位 <b>${money(g,c.median_local)}</b>${g.currency!=='CNY'?` ≈ ¥${fmt(c.median_cny)}`:''}${rg?` · p25–p75 ${rg}`:''} · n=<b class="num">${fmt(c.n)}</b>${lowN(c)?LOWN_BADGE:''}${note}</div></div>`;
   }).join('');
-  const rat=['hk','us'].filter(g=>state.regions.has(g)&&state.regions.has('cn')).map(g=>{const k=ratio(r.id,g);return `<span>${esc(regOf(g).name)} ÷ ${esc(regOf('cn').name)} <b>${k==null?'—':k.toFixed(1)+'×'}</b></span>`}).join('');
+  const rat=['hk','us'].filter(g=>state.regions.has(g)&&state.regions.has('cn')).map(g=>{const k=ratio(r.id,g),dim=k!=null&&(lowN(cell(r.id,g))||lowN(cell(r.id,'cn')));return `<span${dim?' class="dim" title="一侧样本少于 '+MIN_N+'，倍数仅供参考"':''}>${esc(regOf(g).name)} ÷ ${esc(regOf('cn').name)} <b>${k==null?'—':k.toFixed(1)+'×'}</b></span>`}).join('');
   return `<article class="card role${r.id===state.role?' hl':''}" data-role="${esc(r.id)}"><header><h3>${esc(r.name)}</h3><div class="ratios">${rat}</div></header><div class="rows">${rows}</div></article>`;
 }
 
@@ -373,8 +387,8 @@ function renderTable(){
   const list=sortedRoles();
   const th=`<tr><th>岗位</th>${regs.map(g=>`<th>${esc(g.name)}<br><span style="font-weight:400">沙拉 · 中位 · p25–p75 · n</span></th>`).join('')}${regs.length>1&&state.regions.has('cn')?'<th>倍数（÷内地）</th>':''}</tr>`;
   const tr=list.map(r=>{
-    const tds=regs.map(g=>{const c=cell(r.id,g.id);if(!ok(c))return `<td><span class="r">暂无数据${c&&c.note?'：'+esc(c.note):''}</span></td>`;const rg=range(g,c);return `<td><span class="m">${SALAD_SVG}×${fmt(salad(c))}</span><br><span class="r">${money(g,c.median_local)}${rg?' · '+rg:''} · n=${fmt(c.n)}</span></td>`}).join('');
-    const rt=regs.length>1&&state.regions.has('cn')?`<td class="r">${['hk','us'].filter(g=>state.regions.has(g)).map(g=>{const k=ratio(r.id,g);return `${esc(regOf(g).name)} ${k==null?'—':k.toFixed(1)+'×'}`}).join('<br>')}</td>`:'';
+    const tds=regs.map(g=>{const c=cell(r.id,g.id);if(!ok(c))return `<td><span class="r">暂无数据${c&&c.note?'：'+esc(c.note):''}</span></td>`;const rg=range(g,c);return `<td><span class="m">${SALAD_SVG}×${fmt(salad(c))}</span><br><span class="r">${money(g,c.median_local)}${rg?' · '+rg:''} · n=${fmt(c.n)}${lowN(c)?LOWN_BADGE:''}</span></td>`}).join('');
+    const rt=regs.length>1&&state.regions.has('cn')?`<td class="r">${['hk','us'].filter(g=>state.regions.has(g)).map(g=>{const k=ratio(r.id,g),dim=k!=null&&(lowN(cell(r.id,g))||lowN(cell(r.id,'cn')));return `<span${dim?' class="dim"':''}>${esc(regOf(g).name)} ${k==null?'—':k.toFixed(1)+'×'}</span>`}).join('<br>')}</td>`:'';
     return `<tr${r.id===state.role?' class="hl"':''}><td><b>${esc(r.name)}</b></td>${tds}${rt}</tr>`;
   }).join('');
   $('#tbl').innerHTML=th+tr;
@@ -406,25 +420,25 @@ function renderFindings(){
   const out=[];
   /* 1 倍数最大 / 最小 */
   const pairs=[];
-  ROLES.forEach(r=>['hk','us'].forEach(g=>{const k=ratio(r.id,g);if(k!=null)pairs.push({r,g,k})}));
+  ROLES.forEach(r=>['hk','us'].forEach(g=>{if(!solid(cell(r.id,g))||!solid(cell(r.id,'cn')))return;const k=ratio(r.id,g);if(k!=null)pairs.push({r,g,k})}));
   if(pairs.length>=2){
     const mx=pairs.reduce((a,b)=>b.k>a.k?b:a),mn=pairs.reduce((a,b)=>b.k<a.k?b:a);
     const s=(p,g)=>fmt(salad(cell(p.r.id,g)));
     out.push({t:'换个地方，差几倍',h:`<p>差得最狠的是 <span class="role-n">${esc(mx.r.name)}</span>：${esc(regOf(mx.g).name)} ${s(mx,mx.g)} 份，${esc(cn.name)} ${s(mx,'cn')} 份，<b>${mx.k.toFixed(1)}×</b>。</p><p>差得最少的是 <span class="role-n">${esc(mn.r.name)}</span>：${esc(regOf(mn.g).name)} ${s(mn,mn.g)} 份 vs ${esc(cn.name)} ${s(mn,'cn')} 份，只有 <b>${mn.k.toFixed(1)}×</b>。</p><p class="sub">同样是出海，最大倍数是最小倍数的 ${(mx.k/mn.k).toFixed(1)} 倍；岗位比地点更决定「海外溢价」。</p>`});
-  }else out.push({t:'换个地方，差几倍',na:'暂无数据：至少需要两个岗位同时有内地和海外的中位数，才能比倍数。'});
+  }else out.push({t:'换个地方，差几倍',na:'暂无数据：至少需要两个「内地与海外样本都 ≥ ${MIN_N}」的岗位，才能比倍数。'});
   /* 2 三地差距最小 */
-  const spreads=ROLES.map(r=>{const vs=REGS.map(g=>({g,c:cell(r.id,g.id)})).filter(x=>ok(x.c));if(vs.length<REGS.length||vs.length<2)return null;const hi=vs.reduce((a,b)=>b.c.median_cny>a.c.median_cny?b:a),lo=vs.reduce((a,b)=>b.c.median_cny<a.c.median_cny?b:a);return {r,hi,lo,k:hi.c.median_cny/lo.c.median_cny}}).filter(Boolean);
+  const spreads=ROLES.map(r=>{const vs=REGS.map(g=>({g,c:cell(r.id,g.id)})).filter(x=>solid(x.c));if(vs.length<REGS.length||vs.length<2)return null;const hi=vs.reduce((a,b)=>b.c.median_cny>a.c.median_cny?b:a),lo=vs.reduce((a,b)=>b.c.median_cny<a.c.median_cny?b:a);return {r,hi,lo,k:hi.c.median_cny/lo.c.median_cny}}).filter(Boolean);
   if(spreads.length){
     const m=spreads.reduce((a,b)=>b.k<a.k?b:a),big=spreads.reduce((a,b)=>b.k>a.k?b:a);
     out.push({t:'最不挑地方的岗位',h:`<p><span class="role-n">${esc(m.r.name)}</span> 在 ${REGS.length} 地最均匀：最高 ${esc(m.hi.g.name)} ${fmt(salad(m.hi.c))} 份，最低 ${esc(m.lo.g.name)} ${fmt(salad(m.lo.c))} 份，顶端只有底端的 <b>${m.k.toFixed(1)}×</b>。</p><p class="sub">对照：最挑地方的是 ${esc(big.r.name)}，${big.k.toFixed(1)}×。想换城市又不想重来的，看这类岗。</p>`});
-  }else out.push({t:'最不挑地方的岗位',na:`暂无数据：没有一个岗位 ${REGS.length} 地都齐，算不出三地差距。`});
+  }else out.push({t:'最不挑地方的岗位',na:`暂无数据：没有一个岗位 ${REGS.length} 地样本都 ≥ ${MIN_N}，算不出三地差距。`});
   /* 3 内地城市差距 */
-  const cityGaps=ROLES.map(r=>{const c=cell(r.id,'cn');if(!ok(c)||!c.cities||typeof c.cities!=='object')return null;const cs=Object.entries(c.cities).filter(([,v])=>v&&v.median_local!=null&&isFinite(v.median_local)&&(v.n||0)>0);if(cs.length<2)return null;const hi=cs.reduce((a,b)=>b[1].median_local>a[1].median_local?b:a),lo=cs.reduce((a,b)=>b[1].median_local<a[1].median_local?b:a);return {r,hi,lo,k:hi[1].median_local/lo[1].median_local,cnt:cs.length}}).filter(Boolean);
+  const cityGaps=ROLES.map(r=>{const c=cell(r.id,'cn');if(!solid(c)||!c.cities||typeof c.cities!=='object')return null;const cs=Object.entries(c.cities).filter(([,v])=>v&&v.median_local!=null&&isFinite(v.median_local)&&(+v.n||0)>=MIN_N);if(cs.length<2)return null;const hi=cs.reduce((a,b)=>b[1].median_local>a[1].median_local?b:a),lo=cs.reduce((a,b)=>b[1].median_local<a[1].median_local?b:a);return {r,hi,lo,k:hi[1].median_local/lo[1].median_local,cnt:cs.length}}).filter(Boolean);
   if(cityGaps.length){
     const m=cityGaps.reduce((a,b)=>b.k>a.k?b:a);
     const sal=v=>fmt(Math.round(v/SALAD_CNY));
-    out.push({t:`${esc(cn.name)}内部也不平`,h:`<p>同在${esc(cn.name)}，<span class="role-n">${esc(m.r.name)}</span> 城市间差距最大：${esc(m.hi[0])} 中位 ¥${fmt(m.hi[1].median_local)}（${sal(m.hi[1].median_local)} 份），${esc(m.lo[0])} ¥${fmt(m.lo[1].median_local)}（${sal(m.lo[1].median_local)} 份），<b>${m.k.toFixed(1)}×</b>。</p><p class="sub">样本 ${esc(m.hi[0])} n=${fmt(m.hi[1].n)}、${esc(m.lo[0])} n=${fmt(m.lo[1].n)}；共 ${cityGaps.length} 个岗位有城市拆分。</p>`});
-  }else out.push({t:`${esc(cn.name)}内部也不平`,na:'暂无数据：本月数据没有按城市拆分（cities 为空），算不出城市差距。'});
+    out.push({t:`${esc(cn.name)}内部也不平`,h:`<p>同在${esc(cn.name)}，<span class="role-n">${esc(m.r.name)}</span> 城市间差距最大：${esc(m.hi[0])} 中位 ¥${fmt(m.hi[1].median_local)}（${sal(m.hi[1].median_local)} 份），${esc(m.lo[0])} ¥${fmt(m.lo[1].median_local)}（${sal(m.lo[1].median_local)} 份），<b>${m.k.toFixed(1)}×</b>。</p><p class="sub">样本 ${esc(m.hi[0])} n=${fmt(m.hi[1].n)}、${esc(m.lo[0])} n=${fmt(m.lo[1].n)}；共 ${cityGaps.length} 个岗位有 ≥2 个样本达标的城市。</p>`});
+  }else out.push({t:`${esc(cn.name)}内部也不平`,na:'暂无数据：没有岗位同时有两个样本 ≥ ${MIN_N} 的城市，算不出城市差距。'});
   $('#finds').innerHTML=out.map(f=>`<div class="card find"><div class="k">${f.t}</div>${f.h||`<p class="na">${esc(f.na)}</p>`}</div>`).join('');
 }
 
@@ -453,6 +467,8 @@ function renderMethod(){
       <li>招聘网站给的是<b>在招岗位的开价</b>，不是在职人员实际到手；开价通常偏乐观，且区间上限常被当作中位数误读。</li>
       <li>美国数据来自 H-1B LCA 申报底薪，雇主只需报不低于当地现行工资，<b>整体偏保守</b>，也只覆盖需要工作签证的岗位。</li>
       <li>三地职称不一致，「量化研究员」「交易员」等靠关键词模糊匹配，会混进相邻岗位；n 越小越要打折看。</li>
+      <li>香港只统计到公开薪资的在招职位，大行与头部基金多数不挂价，因此<b>香港数值偏低、样本偏小</b>。</li>
+      <li>样本 n &lt; ${MIN_N} 的格子照常显示但标「样本少」，并且不进入「三个发现」的计算。</li>
       <li>任何一格样本不足就标「暂无数据」，不用估算数顶上；本页数据生成于 ${esc(genText)}，每月重跑，结论可能变。</li>
       <li>没有做购买力、税负、房租调整。沙拉是个换算单位，不是生活成本指数。</li>
     </ul>
