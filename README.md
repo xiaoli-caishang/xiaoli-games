@@ -22,6 +22,7 @@ functions/api/                 后端接口（EdgeOne Pages 边缘函数，数�
   admin/                       工作台读写：资产 / 任务 / 花期（需要口令）
 admin/index.html               小梨工作台（统一后台，需要口令）
 admin/quant/index.html         量化基金生存录详细看板
+tools/tax/index.html           小梨工具坊 · 个税计算器（单页，数据只存在用户本机）
 tools/analyze.py               下载数据并生成 Excel 分析报告
 .github/workflows/deploy.yml   自动部署
 ```
@@ -60,6 +61,20 @@ KV 里的数据按前缀区分：`r_` 量化基金每局，`e_fp_` 金融人格�
 3. 在根目录 `index.html` 里复制一张游戏卡片，把链接改成 `games/dca-replay/`
 4. 需要统计时，在 `functions/api/evt/index.js` 的 `GAMES` 里登记游戏代号和事件
 5. 开 PR 合并到 `main`，GitHub Actions 自动部署，几分钟后生效
+
+## 小梨工具坊（`tools/`）
+
+工具是给人反复用的（比如每月发工资时打开一次），和游戏厅玩一次的体验不同，视觉和交互都要分开：
+
+| | 游戏厅 `games/` | 工具坊 `tools/` |
+|---|---|---|
+| 底色 / 主色 | 暖米色 `#F6EFE4` / 梨金 `#E3A33B` | 冷白纸 `#F5F5F1` + 白卡片 / 鼠尾草绿 `#3F7A5C` |
+| 形状 | 大圆角、胶囊按钮、硬阴影 | 12px 小圆角、1px 细线、无硬阴影 |
+| 装饰 | 表情符号、像素小梨角色、口语化气泡 | 不用表情符号；像素小梨只做左上角品牌标；梨金只用作小圆点和「本月」标记 |
+| 数字 | 等宽字体 | DIN / Bahnschrift 类数字字体，等宽对齐 |
+| 交互 | 一题一页、剧情推进 | 单页，打开就是结果；设置在结果下面，改了实时算、自动存本机，下次打开不用再填 |
+
+新工具复制 `tools/tax/index.html` 的 `:root` 和基础组件（`.card` `.row` `.seg` `.sw` `.inp`）即可。
 
 ## 上线方式
 

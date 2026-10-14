@@ -3,159 +3,127 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="小梨工具坊 · 个税小算盘：一分钟看懂你的工资和个税。">
-<meta name="theme-color" content="#F6EFE4">
-<title>个税小算盘 · 小梨知识王国</title>
+<meta name="description" content="小梨工具坊 · 个税计算器：打开就能看到这个月到手多少、扣了多少税。">
+<meta name="theme-color" content="#F5F5F1">
+<title>个税计算器 · 小梨工具坊</title>
 <style>
-:root{--bg:#F6EFE4;--s1:#FFFBF4;--s2:#F3EADB;--paper:#FFF6E6;--fg:#3E3833;--inkm:#6B6157;--mut:#958A7C;--line:#E8DCC8;--gold:#E3A33B;--gold-d:#C98A2A;--gain:#4F9A70;--loss:#D9695A;--pear:#B8CC6E;
---f-body:"SF Pro Rounded","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;--f-num:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+/* 小梨工具坊视觉：和游戏厅区分。冷白纸底、鼠尾草绿主色、细线、小圆角、无表情符号、无硬阴影 */
+:root{--bg:#F5F5F1;--card:#FFFFFF;--sub:#F7F7F4;--ink:#2B2D2A;--ink2:#555852;--mut:#8C8F87;--line:#E4E5DF;--acc:#3F7A5C;--acc-d:#2F6048;--acc-l:#E6F0EA;--warn:#C2462E;--warn-l:#FBEDE9;--brand:#E3A33B;
+--f:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;--num:"DIN Alternate","Bahnschrift","SF Pro Display",-apple-system,"Segoe UI",Roboto,sans-serif}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.65 var(--f-body)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 var(--f)}
 button,input{font:inherit;color:inherit}
 button{cursor:pointer;touch-action:manipulation}
-button:focus-visible,input:focus-visible{outline:3px solid #728bab;outline-offset:3px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 a{color:inherit}
-.wrap{max-width:460px;margin:auto;padding:0 18px calc(40px + env(safe-area-inset-bottom))}
-header{display:flex;align-items:center;gap:10px;padding:16px 0 4px}
-.pear{width:30px;height:35px;image-rendering:pixelated}
-.brand{font-weight:800;font-size:15px;text-decoration:none}
-.brand small{display:block;font-size:11px;color:var(--mut);font-weight:500;letter-spacing:1px}
-.eyebrow{margin-top:18px;font-size:12px;letter-spacing:1.8px;color:#aa7932;font-weight:650}
-h1{font-size:30px;line-height:1.3;margin:6px 0;font-weight:800;letter-spacing:-.5px}
-h1 span{color:#b37e2d}
-.lead{color:var(--mut);margin:0 0 16px;font-size:14px}
+.n{font-family:var(--num);font-variant-numeric:tabular-nums}
+.wrap{max-width:480px;margin:auto;padding:0 14px calc(90px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:center;gap:9px;padding:14px 2px 10px}
+.pear{width:22px;height:26px;image-rendering:pixelated}
+.brand{font-weight:700;font-size:15px;text-decoration:none;line-height:1.25}
+.brand small{display:block;font-size:10.5px;letter-spacing:1.5px;color:var(--mut);font-weight:500}
+.local{margin-left:auto;font-size:11.5px;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--card)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:10px 0}
+.ttl{display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;color:var(--ink2);margin:0 0 10px}
+.ttl span{font-weight:400;color:var(--mut);font-size:12px}
 .hidden{display:none!important}
-.card{background:var(--s1);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 8px 22px rgba(160,125,80,.08)}
-.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;min-height:50px;border:1px solid var(--line);border-radius:30px;background:var(--paper);padding:12px 16px;font-weight:700;font-size:15px;text-decoration:none}
-.btn.gold{background:var(--gold);border-color:var(--gold);color:#fff;box-shadow:0 5px 0 #c68b30}
-.btn.gold:active{transform:translateY(3px);box-shadow:0 2px 0 #c68b30}
-.btn:disabled{opacity:.45}
-.link{border:0;background:none;color:#a2722d;font-weight:650;font-size:13px;padding:8px 0}
-.benefits{list-style:none;padding:0;margin:0 0 6px}
-.benefits li{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
-.benefits li:last-child{border:0}
-.benefits b{font-family:var(--f-num);color:var(--gold-d)}
-.privacy{font-size:12px;color:var(--mut);text-align:center;margin:12px 0 0}
 
-/* question flow */
-.prog{display:flex;align-items:center;gap:10px;margin:14px 0 4px}
-.prog .bar{flex:1;height:6px;border-radius:6px;background:var(--s2);overflow:hidden}
-.prog .bar i{display:block;height:100%;background:var(--gold);border-radius:6px;transition:width .3s}
-.prog span{font-family:var(--f-num);font-size:12px;color:var(--mut)}
-.back{border:0;background:var(--s2);border-radius:999px;width:34px;height:34px;font-size:16px}
-.qt{font-size:22px;font-weight:800;line-height:1.4;margin:14px 0 4px}
-.qs{color:var(--mut);font-size:13.5px;margin:0 0 16px}
-.opts{display:grid;gap:10px}
-.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;min-height:58px;border:1.5px solid var(--line);border-radius:16px;background:var(--s1);padding:12px 14px;transition:transform .1s}
-.opt:active{transform:scale(.98)}
-.opt .ic{font-size:22px;width:30px;text-align:center;flex:none}
-.opt b{display:block;font-size:15.5px}
-.opt small{display:block;font-size:12.5px;color:var(--mut);line-height:1.5}
-.opt.on{border-color:var(--gold);background:#FFF3DA}
-.opt .ck{margin-left:auto;width:22px;height:22px;border-radius:7px;border:2px solid var(--line);flex:none;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:800}
-.opt.on .ck{background:var(--gold);border-color:var(--gold)}
-.grid4{grid-template-columns:repeat(4,1fr)}
-.grid4 .opt{justify-content:center;text-align:center;font-family:var(--f-num);font-size:20px;font-weight:700;min-height:62px}
-.money{display:flex;align-items:center;gap:6px;background:var(--s1);border:1.5px solid var(--gold);border-radius:18px;padding:8px 10px 8px 16px}
-.money em{font-style:normal;font-family:var(--f-num);font-size:24px;color:var(--mut)}
-.money input{flex:1;min-width:0;border:0;background:transparent;font-family:var(--f-num);font-size:30px;font-weight:700;outline:none;padding:4px 0}
-.step{border:0;background:var(--s2);border-radius:12px;width:44px;height:44px;font-size:20px;font-weight:700;flex:none}
-.say-num{font-size:13px;color:var(--inkm);margin:8px 2px 0;min-height:21px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px}
-.chip{border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:13.5px;background:var(--paper);color:var(--inkm);min-height:38px}
-.chip.on{background:var(--fg);color:var(--paper);border-color:var(--fg)}
-.sub{margin-top:18px;padding-top:16px;border-top:1px dashed var(--line)}
-.sub .qt{font-size:17px;margin-top:0}
-.next{margin-top:20px}
-.skip{display:block;margin:12px auto 0}
+/* hero */
+.hero{border-top:3px solid var(--acc)}
+.mswitch{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2)}
+.mswitch button{border:1px solid var(--line);background:var(--sub);border-radius:8px;width:30px;height:30px;font-size:15px;line-height:1}
+.mswitch b{min-width:86px;text-align:center;font-weight:600}
+.big{font-size:40px;font-weight:700;line-height:1.15;margin:8px 0 2px;letter-spacing:-.5px}
+.kv{display:flex;gap:18px;font-size:13px;color:var(--mut);flex-wrap:wrap}
+.kv b{color:var(--ink);font-weight:600;margin-left:4px}
+.spark{display:flex;align-items:flex-end;gap:3px;height:46px;margin:14px 0 4px}
+.spark button{flex:1;height:100%;border:0;background:none;padding:0;display:flex;align-items:flex-end}
+.spark i{display:block;width:100%;border-radius:3px 3px 1px 1px;background:#CFE0D5}
+.spark button.sel i{background:var(--acc)}
+.spark button.now i{box-shadow:inset 0 -3px 0 var(--brand)}
+.mlabels{display:flex;gap:3px;font-size:9.5px;color:var(--mut);text-align:center}
+.mlabels span{flex:1}
+.why{font-size:12.5px;color:var(--ink2);background:var(--sub);border-radius:8px;padding:8px 10px;margin-top:10px}
+.year{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--line);margin-top:14px;padding-top:12px}
+.year div{font-size:11.5px;color:var(--mut)}
+.year b{display:block;font-size:17px;color:var(--ink);font-weight:600}
+.check{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);font-size:13px}
+.check label{color:var(--ink2);white-space:nowrap}
+.check .inp{flex:1}
+.cres{font-size:12.5px;margin-top:8px;line-height:1.6}
+.cres.ok{color:var(--acc-d)}
+.cres.bad{color:var(--warn)}
+.cres ul{margin:4px 0 0;padding-left:18px;color:var(--ink2)}
 
-/* result */
-.tags{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 2px}
-.tag{border:1px solid var(--line);background:var(--s1);border-radius:999px;padding:4px 11px;font-size:12.5px;color:var(--inkm)}
-.tag.edit{background:var(--fg);color:var(--paper);border-color:var(--fg)}
-.h2{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16.5px;margin:0 0 12px}
-.h2 i{font-style:normal;width:24px;height:24px;border-radius:50%;background:var(--gold);color:#fff;display:grid;place-items:center;font-size:13px;font-family:var(--f-num)}
-.h2 em{margin-left:auto;font-style:normal;font-size:12px;color:var(--mut);font-weight:500}
-.panel{background:var(--paper);border-radius:16px;padding:16px}
-.panel small{color:var(--mut);font-size:12px}
-.big{font-family:var(--f-num);font-size:34px;font-weight:700;line-height:1.2}
-.split{display:flex;height:14px;border-radius:12px;overflow:hidden;margin:14px 0 10px;background:var(--s2)}
-.split span{transition:width .5s}
-.legend{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-.legend button{border:0;background:none;text-align:left;padding:4px 2px;border-radius:10px;font-size:12px;color:var(--mut)}
-.legend button:active{background:var(--s2)}
-.legend b{display:block;font-family:var(--f-num);font-size:15px;color:var(--fg)}
-.legend u{text-decoration:none;color:#b8a98f;font-size:11px}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
-.conv{display:flex;align-items:center;gap:8px;width:100%;margin-top:12px;font-size:13.5px;background:var(--s2);border:0;border-radius:12px;padding:10px 12px;color:var(--inkm);text-align:left}
-.conv b{font-family:var(--f-num);color:var(--fg);font-size:16px}
-.conv span:last-child{margin-left:auto;color:#a2722d;font-size:12px;white-space:nowrap}
-.qa{font-weight:750;font-size:14.5px;margin:18px 0 2px}
-.qa+p{font-size:12px;color:var(--mut);margin:0 0 8px}
-.bars{display:flex;align-items:flex-end;gap:4px;height:110px;border-bottom:1px dashed var(--line)}
-.bars button{flex:1;height:100%;border:0;background:none;padding:0;display:flex;align-items:flex-end}
-.bars button i{display:block;width:100%;border-radius:6px 6px 2px 2px;background:var(--pear);transition:height .4s}
-.bars button.low i{background:var(--gold)}
-.bars button.sel i{outline:2.5px solid var(--fg);outline-offset:1px}
-.months{display:flex;gap:4px;font-size:10px;color:var(--mut);font-family:var(--f-num);text-align:center}
-.months span{flex:1}
-.mdetail{margin-top:10px;background:var(--paper);border-radius:12px;padding:10px 12px;font-size:13.5px}
-.mdetail b{font-family:var(--f-num)}
-.explain{font-size:13px;color:var(--inkm);margin:10px 0 0}
-.explain b{font-family:var(--f-num)}
-.row{cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px dashed var(--line)}
-.row:last-of-type{border-bottom:0}
-.tg{flex:none;width:46px;height:28px;border-radius:999px;border:0;background:#E2D6C2;position:relative;transition:background .2s}
-.tg:after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:left .2s}
-.row.on .tg{background:var(--gain)}
-.row.on .tg:after{left:21px}
-.row .t{flex:1;min-width:0;font-size:14px}
-.row .t small{display:block;font-size:12px;color:var(--mut);line-height:1.45}
-.q{border:0;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--s2);color:var(--mut);font-size:12px;margin-left:4px;padding:0;vertical-align:1px}
-.save{font-family:var(--f-num);font-size:14px;font-weight:700;white-space:nowrap;text-align:right}
-.row.on .save{color:var(--gain)}
-.row:not(.on) .save{color:var(--mut);font-weight:500}
-.row:not(.on) .save small{display:block;font-size:10.5px;font-family:var(--f-body)}
-.total{background:#E8F1E6;border-radius:14px;padding:12px 14px;margin-top:12px;font-size:13.5px}
-.total div{display:flex;justify-content:space-between;align-items:center}
-.total b{font-family:var(--f-num);font-size:22px;color:var(--gain)}
-.total p{margin:6px 0 0;font-size:12.5px;color:var(--inkm)}
-.howto{border:0;background:none;padding:10px 0 0;font-size:13px;color:#a2722d;font-weight:650}
-.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.way{border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--paper);position:relative}
-.way.best{border:2px solid var(--gain);background:#F1F7EE}
-.way.best:after{content:"更省";position:absolute;top:-10px;right:12px;background:var(--gain);color:#fff;font-size:11px;padding:1px 9px;border-radius:999px}
-.way small{font-size:12px;color:var(--mut)}
-.way b{display:block;font-family:var(--f-num);font-size:22px;margin-top:4px}
-.trap{margin-top:12px;border-radius:14px;background:#FBE9E4;padding:12px 14px;font-size:13px;color:#8a4a3e}
-.trap b{font-family:var(--f-num)}
-.ok{margin-top:12px;border-radius:14px;background:#EEF4E9;padding:12px 14px;font-size:13px;color:#3f6a4f}
-.try{margin-top:10px}
-.bubble{display:flex;gap:12px;align-items:flex-start;margin:22px 0 6px}
-.bubble>button{border:0;background:none;padding:0;flex:none}
-.bubble .pear{width:42px;height:49px;margin-top:4px;transition:transform .2s}
-.bubble .pear.hop{transform:translateY(-6px) rotate(-6deg)}
-.say{flex:1;background:#FFFDF6;border:1px solid #E0D2B7;border-radius:16px;padding:12px 14px;font-size:14px;box-shadow:0 4px 0 #E8DDC8}
-.say small{display:block;font-size:11px;color:var(--mut);letter-spacing:1px;margin-bottom:2px}
-.say .link{padding:6px 0 0}
-.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 10px}
-.fine{font-size:11.5px;color:var(--mut);line-height:1.7;margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
-.zero{margin-top:10px;font-size:13.5px;color:#3f6a4f;background:#EEF4E9;border-radius:12px;padding:10px 12px}
+/* controls */
+.row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row>.l{flex:1;min-width:0;font-size:14.5px}
+.row>.l small{display:block;font-size:12px;color:var(--mut);line-height:1.45}
+.inp{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--sub);padding:0 8px;height:38px}
+.inp em{font-style:normal;color:var(--mut);font-size:14px;margin-right:2px}
+.inp input{width:100%;min-width:0;border:0;background:transparent;outline:none;font-family:var(--num);font-size:18px;font-weight:600;text-align:right;padding:0}
+.inp.w{width:150px}
+.inp.s{width:110px}
+.seg{display:flex;background:var(--sub);border:1px solid var(--line);border-radius:8px;padding:2px;gap:2px}
+.seg button{flex:1;border:0;background:none;border-radius:6px;padding:6px 8px;font-size:12.5px;color:var(--ink2);white-space:nowrap}
+.seg button.on{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 2px #0000001a}
+.full{width:100%;margin-top:8px}
+.step{display:flex;align-items:center;border:1px solid var(--line);border-radius:8px;background:var(--sub);height:34px}
+.step button{border:0;background:none;width:32px;height:100%;font-size:16px}
+.step b{min-width:22px;text-align:center;font-family:var(--num)}
+.sw{flex:none;width:44px;height:26px;border-radius:999px;border:0;background:#D9DBD4;position:relative;transition:background .15s}
+.sw:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 2px #0003;transition:left .15s}
+.sw[aria-checked="true"]{background:var(--acc)}
+.sw[aria-checked="true"]:after{left:21px}
+.save{font-size:13px;font-weight:600;white-space:nowrap;text-align:right;min-width:64px}
+.save.on{color:var(--acc)}
+.save.off{color:var(--mut);font-weight:400}
+.extra{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 0 11px 54px;margin-top:-4px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink2)}
+.extra .seg{flex:1;min-width:180px}
+.q{border:1px solid var(--line);background:var(--card);border-radius:50%;width:18px;height:18px;font-size:11px;color:var(--mut);padding:0;margin-left:4px;vertical-align:1px;line-height:1}
+.dsum{display:flex;justify-content:space-between;align-items:center;background:var(--acc-l);border-radius:8px;padding:10px 12px;margin-top:10px;font-size:13px;color:var(--acc-d)}
+.dsum b{font-size:18px}
+.hint{font-size:12px;color:var(--mut);margin-top:8px}
+.textbtn{border:0;background:none;padding:0;color:var(--acc);font-size:12.5px;font-weight:600}
 
-/* sheet + toast */
-.mask{position:fixed;inset:0;background:#342f2655;backdrop-filter:blur(3px);z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
+/* bonus */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.way{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--sub)}
+.way.best{border-color:var(--acc);background:var(--acc-l)}
+.way small{display:block;font-size:11.5px;color:var(--mut)}
+.way b{display:block;font-size:20px;font-weight:600}
+.way.best small:first-child{color:var(--acc-d);font-weight:600}
+.note{font-size:12.5px;color:var(--ink2);margin:10px 0 0}
+.alert{margin-top:10px;border-radius:8px;padding:10px 12px;font-size:12.5px;background:var(--warn-l);color:#8C3A28}
+.fine-ok{margin-top:10px;border-radius:8px;padding:10px 12px;font-size:12.5px;background:var(--acc-l);color:var(--acc-d)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:14px;font-weight:600;text-decoration:none;margin-top:10px}
+.btn.acc{background:var(--acc);border-color:var(--acc);color:#fff}
+
+.tips{margin:0;padding:0;list-style:none}
+.tips li{position:relative;padding:8px 0 8px 14px;font-size:13px;color:var(--ink2);border-bottom:1px solid var(--line)}
+.tips li:last-child{border-bottom:0}
+.tips li:before{content:"";position:absolute;left:0;top:16px;width:5px;height:5px;border-radius:50%;background:var(--brand)}
+.foot{font-size:11px;color:var(--mut);line-height:1.7;margin:16px 2px 0}
+.foot a{color:var(--acc)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* sticky summary */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:10;background:#2B2D2Af2;color:#fff;backdrop-filter:blur(8px);padding:10px 16px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .2s}
+.bar.show{transform:none}
+.bar div{max-width:480px;margin:auto;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#C9CCC4}
+.bar b{color:#fff;font-size:16px;margin-left:4px}
+.mask{position:fixed;inset:0;background:#0006;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}
 .mask.show{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-width:460px;margin:auto;background:var(--s1);border-radius:22px 22px 0 0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .25s;max-height:80vh;overflow:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:21;max-width:480px;margin:auto;background:var(--card);border-radius:14px 14px 0 0;padding:18px 18px calc(20px + env(safe-area-inset-bottom));transform:translateY(105%);transition:transform .22s;max-height:80vh;overflow:auto}
 .sheet.show{transform:none}
-.sheet h3{margin:0 0 8px;font-size:18px}
-.sheet .body{font-size:14.5px;color:var(--inkm)}
-.sheet .body p{margin:0 0 10px}
-.sheet .body ol{padding-left:20px;margin:0 0 10px}
-.sheet .btn{margin-top:8px}
-.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translate(-50%,20px);background:var(--fg);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:13.5px;z-index:30;opacity:0;transition:.25s;pointer-events:none;max-width:88vw;text-align:center}
+.sheet h3{margin:0 0 6px;font-size:17px}
+.sheet .body{font-size:14px;color:var(--ink2)}
+.sheet .body p{margin:0 0 8px}
+.sheet .body ol{padding-left:20px;margin:0 0 8px}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;z-index:30;opacity:0;transition:.2s;pointer-events:none;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
@@ -164,80 +132,62 @@ h1 span{color:#b37e2d}
 <div class="wrap">
 <header>
   <svg class="pear"><use href="#pear"/></svg>
-  <a class="brand" href="https://xiaolipearl.com/?from=tax">小梨知识王国<small>工具坊 · 个税小算盘</small></a>
+  <a class="brand" href="https://xiaolipearl.com/?from=tax">小梨工具坊<small>个税计算器</small></a>
+  <span class="local">数据只存在本机</span>
 </header>
 
-<main id="start">
-  <div class="eyebrow">可直接上手 · 简化估算</div>
-  <h1>你的工资，<br><span>到底去哪了？</span></h1>
-  <p class="lead">回答几个生活小问题，点一点就行，不用懂术语，也不用填准确数字。</p>
-  <section class="card">
-    <ul class="benefits">
-      <li><b>01</b>一年下来，到手、社保、个税各是多少</li>
-      <li><b>02</b>为什么下半年工资好像变少了</li>
-      <li><b>03</b>还有哪些钱，其实可以少交</li>
-      <li><b>04</b>年终奖怎么报更划算，会不会踩坑</li>
-    </ul>
-  </section>
-  <button class="btn gold" id="go">开始算（大约 1 分钟）</button>
-  <button class="link skip hidden" id="resume">直接看上次的结果 →</button>
-  <p class="privacy">你填的数字只在这台手机上计算，不会上传。</p>
-</main>
-
-<main id="quiz" class="hidden">
-  <div class="prog"><button class="back" id="back" aria-label="上一题">‹</button><div class="bar"><i id="pbar"></i></div><span id="pnum"></span></div>
-  <div id="qbox"></div>
-  <button class="link skip" id="skip">剩下的先跳过，直接看结果 →</button>
-</main>
-
-<main id="result" class="hidden">
-  <div class="tags" id="tags"></div>
-
-  <section class="card">
-    <div class="h2"><i>1</i>一年下来，钱都去哪了</div>
-    <div class="panel">
-      <small id="netLabel">全年到手</small>
-      <div class="big" id="net">¥0</div>
-      <div class="split" id="split"></div>
-      <div class="legend" id="legend"></div>
-      <div id="zero"></div>
-      <button class="conv" id="conv"></button>
-    </div>
-    <div class="qa">每个月到手一样吗？</div>
-    <p>点一下柱子，看那个月的明细</p>
-    <div class="bars" id="bars"></div>
-    <div class="months"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
-    <div class="mdetail" id="mdetail"></div>
-    <p class="explain" id="mexplain"></p>
-  </section>
-
-  <section class="card">
-    <div class="h2"><i>2</i>这些情况，能少交税<em>点开关试试</em></div>
-    <div id="rows"></div>
-    <div class="total" id="total"></div>
-    <button class="howto" data-sheet="howto">在个人所得税 App 里怎么填？→</button>
-  </section>
-
-  <section class="card" id="bonusCard">
-    <div class="h2"><i>3</i>年终奖怎么报更划算</div>
-    <div id="bonusBody"></div>
-  </section>
-
-  <div class="bubble">
-    <button id="pearBtn" aria-label="换一条小贴士"><svg class="pear" id="pearIcon"><use href="#pear"/></svg></button>
-    <div class="say"><small>小梨，听一句居民废话</small><span id="tip"></span><br><button class="link" id="nextTip">再来一条 →</button></div>
+<section class="card hero" id="hero">
+  <div class="ttl"><div class="mswitch"><button id="mPrev" aria-label="上个月">‹</button><b id="mName"></b><button id="mNext" aria-label="下个月">›</button></div><span id="firstHint"></span></div>
+  <div class="big n" id="mNet"></div>
+  <div class="kv"><span>扣个税<b class="n" id="mTax"></b></span><span>社保公积金<b class="n" id="mSi"></b></span><span>税前<b class="n" id="mGross"></b></span></div>
+  <div class="spark" id="spark"></div>
+  <div class="mlabels"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
+  <div class="why" id="why"></div>
+  <div class="year">
+    <div>全年到手<b class="n" id="yNet"></b></div>
+    <div>全年个税<b class="n" id="yTax"></b></div>
+    <div>扣除帮你省<b class="n" id="ySave" style="color:var(--acc)"></b></div>
   </div>
-
-  <div class="btns">
-    <button class="btn" id="redo">重新回答</button>
-    <button class="btn gold" id="share">发给朋友算算</button>
+  <div class="check">
+    <label for="paid">核对工资条：实发</label>
+    <div class="inp"><em>¥</em><input id="paid" inputmode="numeric" placeholder="选填"></div>
   </div>
-  <a class="btn" href="https://xiaolipearl.com/?from=tax">情况复杂？去小梨知识王国找我们聊聊</a>
+  <div class="cres" id="cres"></div>
+</section>
 
-  <p class="fine">这是帮你看懂思路的简化估算，实际金额以个人所得税 App 和公司工资条为准。社保公积金按常见比例和各类城市大致的缴费上下限估算（养老 8%、医疗 2%、失业 0.5%、公积金 7%；选「按最低标准」时公积金按 5%）。没有计算大病医疗、劳务报酬等其他收入。税率和扣除标准依据 2023 年起执行的专项附加扣除标准、年终奖单独计税政策（执行至 2027 年底）。</p>
-</main>
+<section class="card">
+  <div class="ttl">我的情况<span>改了马上算，自动保存</span></div>
+  <div class="row"><div class="l">税前月薪<small>工资条上扣款之前的数</small></div><div class="inp w"><em>¥</em><input id="sal" inputmode="numeric"></div></div>
+  <div class="row" style="display:block"><div class="l">工作城市<button class="q" data-sheet="city">?</button></div><div class="seg full" id="citySeg"><button data-v="a">省会及以上</button><button data-v="b">百万人口城市</button><button data-v="c">其他城市</button></div></div>
+  <div class="row" style="display:block"><div class="l">社保公积金<button class="q" data-sheet="si">?</button></div><div class="seg full" id="siSeg"><button data-v="full">按工资交</button><button data-v="min">按最低交</button><button data-v="own">照工资条填</button></div>
+    <div class="row hidden" id="siOwnRow" style="border:0;padding-bottom:0"><div class="l"><small>工资条上社保 + 公积金个人扣款合计</small></div><div class="inp s"><em>¥</em><input id="siOwn" inputmode="numeric"></div></div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="ttl">能少交税的情况<span>打开符合你的</span></div>
+  <div id="ded"></div>
+  <div class="dsum"><span id="dsumL"></span><b class="n" id="dsumV"></b></div>
+  <div class="hint" id="dbest"></div>
+  <button class="textbtn" data-sheet="howto" style="margin-top:8px">在个税 App 里怎么报？</button>
+</section>
+
+<section class="card">
+  <div class="ttl">年终奖<span>没有就留空</span></div>
+  <div class="row" style="border:0;padding:0"><div class="l">今年的年终奖</div><div class="inp w"><em>¥</em><input id="bonus" inputmode="numeric" placeholder="0"></div></div>
+  <div id="bonusOut"></div>
+</section>
+
+<section class="card">
+  <div class="ttl">给你的提醒</div>
+  <ul class="tips" id="tips"></ul>
+</section>
+
+<div class="two"><button class="btn" id="share">分享给朋友</button><a class="btn acc" href="https://xiaolipearl.com/?from=tax">情况复杂？找小梨</a></div>
+<p class="foot">简化估算，帮你看懂思路，实际以个人所得税 App 和公司工资条为准。按全年在同一家公司、每月工资不变估算；社保公积金按各类城市大致的缴费上下限计算（养老 8%、医疗 2%、失业 0.5%、公积金 7%，按最低交时公积金 5%）。未计算大病医疗、劳务报酬等其他收入。扣除标准为 2023 年起执行的标准，年终奖单独计税政策执行至 2027 年底。<br><a href="https://xiaolipearl.com/?from=tax">← 回到小梨知识王国</a></p>
 </div>
 
+<div class="bar" id="bar"><div><span id="barM"></span><span>全年个税<b class="n" id="barT"></b></span></div></div>
 <div class="mask" id="mask"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"><h3 id="shT"></h3><div class="body" id="shB"></div><button class="btn" id="shClose">知道了</button></div>
 <div class="toast" id="toast"></div>
@@ -245,7 +195,7 @@ h1 span{color:#b37e2d}
 <script>
 /*calc*/
 const CITY={
-  a:{name:'直辖市 / 省会 / 计划单列市',short:'大城市',rent:1500,lo:6500,hi:35000},
+  a:{name:'直辖市 / 省会 / 计划单列市',short:'省会及以上',rent:1500,lo:6500,hi:35000},
   b:{name:'其他大城市',short:'百万人口城市',rent:1100,lo:4500,hi:25000},
   c:{name:'其他城市',short:'其他城市',rent:800,lo:4000,hi:20000}
 };
@@ -297,225 +247,185 @@ function trapOf(b){
 
 const $=s=>document.querySelector(s);
 const fmt=n=>Math.round(n).toLocaleString('zh-CN');
-const wan=n=>n>=10000?(n/10000).toFixed(n%10000?1:0).replace(/\.0$/,'')+' 万':fmt(n);
-const KEY='xl_tax_v1';
-const DEF={sal:10000,city:'a',si:'full',siOwn:0,house:'none',kids:0,kidShare:1,parent:'none',deg:false,cert:false,pension:0,hasBonus:false,bonus:0,_kids:1,_parent:'only',_pension:12000};
-let S=Object.assign({},DEF);
-let saved=null;
-try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
-const store=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const KEY='xl_tax_v2';
+const DEF={sal:10000,city:'a',si:'full',siOwn:0,house:'none',kids:0,kidShare:1,parent:'none',deg:false,cert:false,pension:0,bonus:0,paid:'',_kids:1,_parent:'only',_pension:12000};
+let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+const S=Object.assign({},DEF,saved||{});
+const NOW=new Date().getMonth();
+let selM=NOW,trapPrev=null,saveT;
+const store=()=>{clearTimeout(saveT);saveT=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}},300)};
+const st=s=>Object.assign({},s,{hasBonus:s.bonus>0});
+const R0=s=>calc(st(s));
+const taxOf=s=>R0(s).tax;
 
-function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),2200)}
-function sheet(title,html){$('#shT').textContent=title;$('#shB').innerHTML=html;$('#mask').classList.add('show');$('#sheet').classList.add('show')}
-function closeSheet(){$('#mask').classList.remove('show');$('#sheet').classList.remove('show')}
+function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toast.h);toast.h=setTimeout(()=>el.classList.remove('show'),2000)}
+function sheet(k){const[h,c]=HELP[k];$('#shT').textContent=h;$('#shB').innerHTML=c;$('#mask').classList.add('show');$('#sheet').classList.add('show')}
+const closeSheet=()=>{$('#mask').classList.remove('show');$('#sheet').classList.remove('show')};
 $('#mask').onclick=closeSheet;$('#shClose').onclick=closeSheet;
-function show(id){for(const x of['start','quiz','result'])$('#'+x).classList.toggle('hidden',x!==id);window.scrollTo(0,0)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-sheet]');if(b)sheet(b.dataset.sheet)});
 
-/* ---------- questions ---------- */
-const opt=(v,ic,b,sm,on)=>`<button class="opt${on?' on':''}" data-v="${v}"><span class="ic">${ic}</span><span><b>${b}</b>${sm?`<small>${sm}</small>`:''}</span></button>`;
-const moneyBox=(id,val,chips)=>`<div class="money"><em>¥</em><input id="${id}" inputmode="numeric" pattern="[0-9]*" value="${val||''}" placeholder="0" aria-label="金额"><button class="step" data-d="-500" aria-label="减少">−</button><button class="step" data-d="500" aria-label="增加">+</button></div><div class="say-num" id="${id}Say"></div><div class="chips">${chips.map(c=>`<button class="chip" data-c="${c}">${wan(c)}</button>`).join('')}</div>`;
-function bindMoney(id,onChange,max){
-  const el=$('#'+id),say=$('#'+id+'Say'),box=el.closest('.money'),chips=say.nextElementSibling.querySelectorAll('.chip');
-  const upd=()=>{const v=Math.min(max,+(el.value.replace(/\D/g,''))||0);el.value=v?String(v):'';say.textContent=v?`约 ${wan(v)} 元`:'';onChange(v);chips.forEach(c=>c.classList.toggle('on',+c.dataset.c===v))};
-  el.oninput=upd;
-  box.querySelectorAll('.step').forEach(b=>b.onclick=()=>{el.value=String(Math.max(0,(+el.value||0)+ +b.dataset.d));upd()});
-  chips.forEach(c=>c.onclick=()=>{el.value=c.dataset.c;upd()});
-  upd();
-}
-
-const Q=[
- {id:'sal',render:()=>`<div class="qt">你的税前月薪大概多少？</div><p class="qs">工资条最上面那个数，还没扣社保和税之前的。大概就行。</p>${moneyBox('salIn',S.sal,[5000,8000,10000,15000,20000,30000,50000])}<button class="btn gold next" id="n1">下一步</button>`,
-  bind:()=>{bindMoney('salIn',v=>{S.sal=v;$('#n1').disabled=v<1000},2000000);$('#n1').onclick=next}},
- {id:'city',render:()=>`<div class="qt">你在哪类城市上班？</div><p class="qs">会影响社保的缴费标准和租房能扣多少。</p><div class="opts">${opt('a','🏙️',CITY.a.name,'比如北京、上海、杭州、成都、深圳、青岛',S.city==='a')}${opt('b','🏢',CITY.b.name,'市区户籍人口超过 100 万，比如苏州、佛山、无锡',S.city==='b')}${opt('c','🏡','其他城市','县城、小一点的城市',S.city==='c')}</div>`,
-  bind:()=>pick(v=>S.city=v)},
- {id:'si',render:()=>`<div class="qt">公司怎么给你交社保公积金？</div><p class="qs">不清楚的话，选第一个就行。</p><div class="opts">${opt('full','🧾','按我的实际工资交','大部分正规公司是这样',S.si==='full')}${opt('min','📉','按最低标准交','工资条上社保扣得很少',S.si==='min')}${opt('own','✍️','我照着工资条填','最准，把社保和公积金个人扣款加起来',S.si==='own')}</div><div id="ownBox" class="sub${S.si==='own'?'':' hidden'}"><div class="qt">工资条上，社保 + 公积金一共扣了多少？</div>${moneyBox('siIn',S.siOwn,[500,1000,1500,2000,3000])}<button class="btn gold next" id="n3">下一步</button></div>`,
-  bind:()=>{
-    document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{S.si=b.dataset.v;mark(b);if(S.si==='own'){$('#ownBox').classList.remove('hidden');$('#siIn').focus()}else{$('#ownBox').classList.add('hidden');later(next)}});
-    bindMoney('siIn',v=>S.siOwn=v,1000000);$('#n3').onclick=next}},
- {id:'house',render:()=>`<div class="qt">你现在住在哪？</div><p class="qs">说的是你上班的城市。</p><div class="opts">${opt('rent','🔑','租房住',`这个城市我名下没有房子 · 每月可扣 ${fmt(rentOf(S))}`,S.house==='rent')}${opt('loan','🏠','在还首套房的房贷','每月可扣 1,000',S.house==='loan')}${opt('none','🛋️','都不是','住自己全款买的房、住家里、住宿舍',S.house==='none')}</div>`,
-  bind:()=>pick(v=>S.house=v)},
- {id:'kids',render:()=>`<div class="qt">你家有几个孩子？</div><p class="qs">刚出生到读博士都算。3 个以上先按 3 个算。</p><div class="opts grid4">${[0,1,2,3].map(n=>`<button class="opt${S.kids===n?' on':''}" data-v="${n}">${n}${n===3?'+':''}</button>`).join('')}</div><div id="shareBox" class="sub${S.kids>0?'':' hidden'}"><div class="qt">孩子这一项，谁来报？</div><p class="qs">每个孩子每月 2,000，爸妈可以一个人报全额，也可以一人一半。</p><div class="opts">${opt('1','🙋','我报全额','',S.kidShare===1)}${opt('0.5','🤝','我和另一半各报一半','',S.kidShare===.5)}${opt('0','💁','另一半报全额','我这边不报',S.kidShare===0)}</div></div>`,
-  bind:()=>{
-    document.querySelectorAll('#qbox .grid4 .opt').forEach(b=>b.onclick=()=>{S.kids=+b.dataset.v;if(S.kids)S._kids=S.kids;mark(b);if(S.kids){$('#shareBox').classList.remove('hidden');$('#shareBox').scrollIntoView({behavior:'smooth',block:'center'})}else{$('#shareBox').classList.add('hidden');later(next)}});
-    document.querySelectorAll('#shareBox .opt').forEach(b=>b.onclick=()=>{S.kidShare=+b.dataset.v;mark(b);later(next)})}},
- {id:'parent',render:()=>`<div class="qt">爸妈里有人满 60 岁了吗？</div><p class="qs">有一位满 60 岁就算。</p><div class="opts">${opt('only','👵','满了，我是独生子女','每月可扣 3,000',S.parent==='only')}${opt('shared','👨‍👩‍👧','满了，我有兄弟姐妹','大家分摊，每人最多 1,500',S.parent==='shared')}${opt('none','🌱','还没满 60','',S.parent==='none')}</div>`,
-  bind:()=>pick(v=>{S.parent=v;if(v!=='none')S._parent=v})},
- {id:'study',render:()=>`<div class="qt">今年你在学习、考证吗？</div><p class="qs">可以都选，也可以都不选。</p><div class="opts">${opt('deg','🎓','在读学历','成人本科、在职研究生这类，每月 400',S.deg).replace('</span></button>','</span><span class="ck">✓</span></button>')}${opt('cert','📜','今年考到了职业资格证','比如教师资格、会计、电工证，当年 3,600',S.cert).replace('</span></button>','</span><span class="ck">✓</span></button>')}</div><button class="btn gold next" id="n7">${S.deg||S.cert?'下一步':'都没有，下一步'}</button>`,
-  bind:()=>{document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{S[b.dataset.v]=!S[b.dataset.v];b.classList.toggle('on',S[b.dataset.v]);$('#n7').textContent=S.deg||S.cert?'下一步':'都没有，下一步'});$('#n7').onclick=next}},
- {id:'pension',render:()=>`<div class="qt">你开了「个人养老金」账户吗？</div><p class="qs">这是一个要存到退休才能取的账户，存进去的钱可以少交税。</p><div class="opts">${opt('0','🤷','没开 / 不知道是什么','',S.pension===0)}${opt('12000','💰','开了，今年存满了 12,000','',S.pension>=12000)}${opt('some','🐷','开了，存了一部分','',S.pension>0&&S.pension<12000)}</div><div id="penBox" class="sub${S.pension>0&&S.pension<12000?'':' hidden'}"><div class="qt">今年存了多少？</div>${moneyBox('penIn',S.pension&&S.pension<12000?S.pension:'',[2000,5000,8000])}<button class="btn gold next" id="n8">下一步</button></div>`,
-  bind:()=>{
-    document.querySelectorAll('#qbox .opts .opt').forEach(b=>b.onclick=()=>{mark(b);if(b.dataset.v==='some'){$('#penBox').classList.remove('hidden');$('#penIn').focus();S.pension=+$('#penIn').value||0}else{S.pension=+b.dataset.v;if(S.pension)S._pension=S.pension;$('#penBox').classList.add('hidden');later(next)}});
-    bindMoney('penIn',v=>{if(!$('#penBox').classList.contains('hidden')){S.pension=Math.min(v,12000);if(v)S._pension=S.pension}},12000);$('#n8').onclick=next}},
- {id:'bonus',render:()=>`<div class="qt">今年有年终奖吗？</div><p class="qs">一次性发的那笔奖金。</p><div class="opts">${opt('no','🙃','没有','',!S.hasBonus)}${opt('yes','🧧','有','',S.hasBonus)}</div><div id="bBox" class="sub${S.hasBonus?'':' hidden'}"><div class="qt">大概多少？</div>${moneyBox('bIn',S.bonus,[10000,20000,36000,50000,100000])}</div><button class="btn gold next" id="n9">看结果</button>`,
-  bind:()=>{
-    document.querySelectorAll('#qbox .opts .opt').forEach(b=>b.onclick=()=>{mark(b);S.hasBonus=b.dataset.v==='yes';$('#bBox').classList.toggle('hidden',!S.hasBonus);if(S.hasBonus)$('#bIn').focus();else later(finish)});
-    bindMoney('bIn',v=>S.bonus=v,5000000);$('#n9').onclick=finish}}
-];
-let qi=0,returnToResult=false;
-function mark(b){b.parentElement.querySelectorAll('.opt').forEach(x=>x.classList.toggle('on',x===b))}
-function later(f){setTimeout(f,220)}
-function pick(set){document.querySelectorAll('#qbox .opt').forEach(b=>b.onclick=()=>{set(b.dataset.v);mark(b);later(next)})}
-function renderQ(){
-  const q=Q[qi];$('#qbox').innerHTML=q.render();q.bind();
-  $('#pbar').style.width=((qi+1)/Q.length*100)+'%';$('#pnum').textContent=`${qi+1}/${Q.length}`;
-  $('#skip').classList.toggle('hidden',qi===Q.length-1);
-}
-function next(){store();if(returnToResult)return finish();if(qi<Q.length-1){qi++;renderQ();window.scrollTo(0,0)}else finish()}
-$('#back').onclick=()=>{if(returnToResult){finish();return}if(qi>0){qi--;renderQ()}else show('start')};
-$('#skip').onclick=finish;
-function ask(id){qi=Q.findIndex(q=>q.id===id);returnToResult=true;show('quiz');renderQ()}
-$('#go').onclick=()=>{S=Object.assign({},DEF,saved||{});qi=0;returnToResult=false;show('quiz');renderQ()};
-if(saved){$('#resume').classList.remove('hidden');$('#resume').onclick=()=>{S=Object.assign({},DEF,saved);finish()}}
-
-/* ---------- result ---------- */
-const CONV=[['杯奶茶',15],['顿火锅',120],['张电影票',45],['趟出租车',30],['个月话费',60]];
-let convI=0,selM=11,tipI=0,trapPrev=null;
-
-function animate(el,to){
-  const from=+(el.dataset.v||0);el.dataset.v=to;
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches||from===to){el.textContent='¥'+fmt(to);return}
-  const t0=performance.now(),d=600;
-  const step=t=>{const p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);el.textContent='¥'+fmt(from+(to-from)*e);if(p<1)requestAnimationFrame(step)};
-  requestAnimationFrame(step);
-}
-
-const ITEMS=[
-  {k:'rent',name:'我在租房',on:s=>s.house==='rent',set:(s,v)=>{s.house=v?'rent':(s.house==='rent'?'none':s.house)},sub:s=>`每月扣 ${fmt(rentOf(s))} · 和房贷二选一`},
-  {k:'loan',name:'我在还首套房贷',on:s=>s.house==='loan',set:(s,v)=>{s.house=v?'loan':(s.house==='loan'?'none':s.house)},sub:()=>'每月扣 1,000 · 和租房二选一'},
-  {k:'kids',name:'家里有孩子',on:s=>s.kids>0&&s.kidShare>0,set:(s,v)=>{if(v){s.kids=s.kids||s._kids||1;if(!s.kidShare)s.kidShare=1}else s.kids=0},sub:s=>`${s.kids||s._kids||1} 个孩子 · ${s.kidShare===.5?'我报一半':'我报全额'}`,ask:'kids'},
-  {k:'parent',name:'爸妈有人满 60 岁',on:s=>s.parent!=='none',set:(s,v)=>{s.parent=v?(s._parent||'only'):'none'},sub:s=>(s.parent==='shared'||(s.parent==='none'&&s._parent==='shared'))?'和兄弟姐妹分摊 · 每月 1,500':'独生子女 · 每月 3,000',ask:'parent'},
-  {k:'deg',name:'在读学历',on:s=>s.deg,set:(s,v)=>{s.deg=v},sub:()=>'每月 400'},
-  {k:'cert',name:'今年考到职业资格证',on:s=>s.cert,set:(s,v)=>{s.cert=v},sub:()=>'当年一次 3,600'},
-  {k:'pension',name:'存个人养老金',on:s=>s.pension>0,set:(s,v)=>{s.pension=v?(s._pension||12000):0},sub:s=>`今年存 ${fmt(s.pension||s._pension||12000)} · 最多 12,000`,ask:'pension'}
-];
 const HELP={
-  rent:['租房','你在工作的城市名下没有房子、正在租房住，就能报。<p>直辖市、省会、计划单列市每月 1,500；市区户籍人口超过 100 万的城市每月 1,100；其他城市每月 800。</p><p>和房贷只能二选一。夫妻在同一个城市，只能一方报。租房合同留好，不用上传，但税务局可能抽查。</p>'],
-  loan:['首套房贷','你或配偶买的第一套房、用的是商业贷款或公积金贷款，每月 1,000，最长 20 年。<p>夫妻可以商量由一方全额报。和租房只能二选一。</p>'],
-  kids:['孩子','每个孩子每月 2,000。<p>0 到 3 岁叫「婴幼儿照护」，3 岁到读博叫「子女教育」，金额一样。</p><p>爸妈可以一人报全额，也可以各报一半。一般让税率更高的一方报全额，全家省得更多。</p>'],
-  parent:['赡养老人','爸妈里有一位满 60 岁就能报（岳父母、公婆不算）。<p>独生子女每月 3,000；有兄弟姐妹的大家分摊，每人最多 1,500。</p>'],
-  deg:['在读学历','在国内读成人本科、在职研究生等学历教育，每月 400，同一个学历最多报 48 个月。'],
-  cert:['职业资格证','当年拿到技能人员或专业技术人员职业资格证书（要在国家职业资格目录里），当年一次报 3,600。'],
-  pension:['个人养老金','在银行开个人养老金账户，每年存进去的钱最多 12,000 能少交税。<p>要注意：钱要到退休才能取，领取时按 3% 交税。适合本来就打算长期存钱、税率在 10% 及以上的人。</p>'],
-  si:['社保公积金','这是从工资里扣下来，交进你的养老、医疗、失业保险和住房公积金的钱。<p>公积金和养老保险个人账户里的钱，以后还是你的：公积金买房租房能取，养老金退休后领。</p>'],
-  netp:['到手','一年真正打到你银行卡上的钱，已经扣掉了社保公积金和个税。年终奖按更省的方式算进去了。'],
-  taxp:['个税','这一年要交的个人所得税。工资的税公司每月先帮你扣，年终奖按更省的方式算。'],
-  howto:['在个税 App 里怎么填','<ol><li>打开「个人所得税」App，用身份证登录。</li><li>首页点「专项附加扣除填报」。</li><li>选年份，选要报的项目（比如住房租金），按提示填。</li><li>申报方式选「通过扣缴义务人申报」，公司每月发工资时就会少扣；选「综合所得年度自行申报」，就在第二年 3–6 月汇算时一次退给你。</li></ol><p>漏报了也别急，第二年 3 月 1 日到 6 月 30 日年度汇算时还能补报，多交的税会退回来。</p>']
+  city:['工作城市','只影响两件事：社保的缴费上下限，和租房每月能扣多少。<p><b>省会及以上</b>：直辖市、省会、计划单列市（如北京、杭州、成都、青岛、深圳），租房每月扣 1,500。</p><p><b>百万人口城市</b>：市区户籍人口超过 100 万（如苏州、佛山、无锡），租房每月扣 1,100。</p><p><b>其他城市</b>：租房每月扣 800。</p>'],
+  si:['社保公积金','从工资里扣下来，交进养老、医疗、失业保险和住房公积金的钱。<p>不清楚就选「按工资交」。工资条上社保扣得很少，选「按最低交」。想最准，选「照工资条填」，把社保和公积金个人扣款加起来填进去。</p><p>公积金和养老保险个人账户里的钱，以后还是你的。</p>'],
+  rent:['租房','在工作城市名下没有房子、正在租房住。<p>和房贷只能二选一；夫妻在同一城市只能一方报。合同不用上传，但要留好备查。</p>'],
+  loan:['首套房贷','你或配偶第一套房的贷款利息，每月 1,000，最长 20 年。夫妻可以商量由一方全额报。和租房只能二选一。'],
+  kids:['孩子','每个孩子每月 2,000，从出生到读博士都算。<p>爸妈可以一人报全额，也可以各报一半。一般让税率更高的一方报全额，全家更省。另一半已经报了全额，这里就关掉。</p>'],
+  parent:['赡养老人','爸妈有一位满 60 岁（岳父母、公婆不算）。独生子女每月 3,000；有兄弟姐妹的分摊，每人最多 1,500。'],
+  deg:['在读学历','在国内读成人本科、在职研究生等学历教育，每月 400，同一学历最多 48 个月。'],
+  cert:['职业资格证','当年拿到国家职业资格目录里的技能或专业技术证书，当年一次扣 3,600。'],
+  pension:['个人养老金','在银行开个人养老金账户，每年存进去最多 12,000 能少交税。<p>钱要到退休才能取，领取时按 3% 交税。适合本来就打算长期存钱、税率在 10% 及以上的人。</p>'],
+  howto:['在个税 App 里怎么报','<ol><li>打开「个人所得税」App 登录。</li><li>首页点「专项附加扣除填报」，选年份和项目，按提示填。</li><li>申报方式选「通过扣缴义务人申报」，公司每月发工资就少扣；选「年度自行申报」，第二年 3–6 月汇算时一次退。</li></ol><p>漏报了也没关系，第二年 3 月 1 日到 6 月 30 日汇算时还能补，多交的会退回来。</p>']
 };
 
-function totalTax(s){return calc(s).tax}
-function tags(){
-  const t=[[`月薪 ${wan(S.sal)}`,'sal'],[CITY[S.city].short,'city']];
-  if(S.house==='rent')t.push(['租房','house']);if(S.house==='loan')t.push(['房贷','house']);
-  if(S.kids&&S.kidShare)t.push([`${S.kids} 个孩子`,'kids']);
-  if(S.parent!=='none')t.push(['赡养老人','parent']);
-  if(S.hasBonus&&S.bonus)t.push([`年终奖 ${wan(S.bonus)}`,'bonus']);
-  $('#tags').innerHTML=t.map(([x,a])=>`<button class="tag" data-a="${a}">${x}</button>`).join('')+`<button class="tag edit" data-a="sal">改一下 ✎</button>`;
-  $('#tags').querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>ask(b.dataset.a));
+const ITEMS=[
+  {k:'rent',name:'租房住',on:s=>s.house==='rent',set:(s,v)=>{s.house=v?'rent':(s.house==='rent'?'none':s.house)},sub:s=>`每月扣 ${fmt(rentOf(s))} · 和房贷二选一`},
+  {k:'loan',name:'还首套房贷',on:s=>s.house==='loan',set:(s,v)=>{s.house=v?'loan':(s.house==='loan'?'none':s.house)},sub:()=>'每月扣 1,000 · 和租房二选一'},
+  {k:'kids',name:'有孩子',on:s=>s.kids>0,set:(s,v)=>{s.kids=v?(s._kids||1):0},sub:s=>`每个每月 2,000`,
+    extra:s=>`孩子 <span class="step"><button data-k="-1" aria-label="减少">−</button><b>${s.kids}</b><button data-k="1" aria-label="增加">+</button></span><div class="seg" data-seg="kidShare"><button data-v="1" class="${s.kidShare===1?'on':''}">我报全额</button><button data-v="0.5" class="${s.kidShare===.5?'on':''}">和另一半各一半</button></div>`},
+  {k:'parent',name:'爸妈有人满 60 岁',on:s=>s.parent!=='none',set:(s,v)=>{s.parent=v?(s._parent||'only'):'none'},sub:s=>s.parent==='shared'?'和兄弟姐妹分摊 · 每月 1,500':'独生子女每月 3,000',
+    extra:s=>`<div class="seg" data-seg="parent"><button data-v="only" class="${s.parent==='only'?'on':''}">我是独生子女</button><button data-v="shared" class="${s.parent==='shared'?'on':''}">有兄弟姐妹</button></div>`},
+  {k:'deg',name:'在读学历',on:s=>s.deg,set:(s,v)=>{s.deg=v},sub:()=>'成人本科、在职研究生等 · 每月 400'},
+  {k:'cert',name:'今年考到职业资格证',on:s=>s.cert,set:(s,v)=>{s.cert=v},sub:()=>'当年一次 3,600'},
+  {k:'pension',name:'存个人养老金',on:s=>s.pension>0,set:(s,v)=>{s.pension=v?(s._pension||12000):0},sub:()=>'每年最多 12,000',
+    extra:s=>`今年存了 <div class="inp s"><em>¥</em><input data-pen inputmode="numeric" value="${s.pension||''}"></div>`}
+];
+function clone(){return JSON.parse(JSON.stringify(S))}
+function itemSaving(it){
+  const on=it.on(S),t=clone();it.set(t,!on);
+  const cur=taxOf(S),other=taxOf(t);
+  return on?other-cur:cur-other;
 }
 
-function render(){
-  store();tags();
-  const R=calc(S);
-  $('#netLabel').textContent=R.b?'全年到手（工资 + 年终奖）':'全年到手';
-  animate($('#net'),R.net);
-  const g=R.gross||1;
-  $('#split').innerHTML=`<span style="width:${R.net/g*100}%;background:var(--pear)"></span><span style="width:${R.siY/g*100}%;background:var(--gold)"></span><span style="width:${R.tax/g*100}%;background:var(--loss)"></span>`;
-  $('#legend').innerHTML=`<button data-sheet="netp"><span class="dot" style="background:var(--pear)"></span>到手 <u>?</u><b>${fmt(R.net)}</b></button><button data-sheet="si"><span class="dot" style="background:var(--gold)"></span>社保公积金 <u>?</u><b>${fmt(R.siY)}</b></button><button data-sheet="taxp"><span class="dot" style="background:var(--loss)"></span>个税 <u>?</u><b>${fmt(R.tax)}</b></button>`;
-  $('#zero').innerHTML=R.tax===0?'<div class="zero">按你现在的情况，今年不用交个税。如果公司扣过，第二年汇算时可以申请退回来。</div>':'';
-  const[cn,cp]=CONV[convI%CONV.length];
-  const convBase=R.tax>0?R.tax:savedTotal(R);
-  $('#conv').classList.toggle('hidden',convBase<cp);
-  $('#conv').innerHTML=`<span>${R.tax>0?'一年交的个税':'扣除帮你省下的税'} ≈ <b>${fmt(convBase/cp)}</b> ${cn}</span><span>换个算法 ↻</span>`;
-
-  const nets=R.months.map(m=>m.net),mx=Math.max(...nets),mn=Math.min(...nets);
-  const lo=mn-(mx-mn||mx*.1)*1.2;
-  $('#bars').innerHTML=R.months.map((m,i)=>`<button class="${m.net<mx-0.5?'low':''}${i===selM?' sel':''}" data-m="${i}" aria-label="${i+1} 月"><i style="height:${Math.max(8,(m.net-lo)/(mx-lo)*100)}%"></i></button>`).join('');
-  $('#bars').querySelectorAll('button').forEach(b=>b.onclick=()=>{selM=+b.dataset.m;render()});
-  const M=R.months[selM];
-  $('#mdetail').innerHTML=`<b>${selM+1} 月</b>　到手 <b>¥${fmt(M.net)}</b>　·　扣个税 <b>¥${fmt(M.tax)}</b>　·　社保公积金 <b>¥${fmt(R.si)}</b>`;
-  const first=R.months.findIndex(m=>m.tax>R.months[0].tax+0.5);
-  $('#mexplain').innerHTML=first<0
-    ?'你每个月扣的税都一样，到手也一样。'
-    :`个税是按「今年累计赚了多少」来扣的，累计得越多，税率档越高。从 <b>${first+1}</b> 月起你跨进了下一档，每月到手从 <b>${fmt(R.months[0].net)}</b> 变成最低 <b>${fmt(mn)}</b>。不是公司少发了，全年总税额不变。`;
-
-  const cur=R.tax;
-  $('#rows').innerHTML=ITEMS.map(it=>{
-    const on=it.on(S),t=JSON.parse(JSON.stringify(S));it.set(t,!on);
-    const other=totalTax(t),d=on?other-cur:cur-other;
-    const save=on?`−¥${fmt(d)}`:(d>0.5?`可省 ¥${fmt(d)}<small>打开试试</small>`:'¥0');
-    return`<div class="row${on?' on':''}" data-k="${it.k}"><button class="tg" role="switch" aria-checked="${on}" aria-label="${it.name}"></button><span class="t">${it.name}<button class="q" data-sheet="${it.k}" aria-label="说明">?</button><small>${it.sub(S)}${it.ask?` · <button class="link" style="padding:0;font-size:12px" data-ask="${it.ask}">改</button>`:''}</small></span><span class="save">${save}</span></div>`;
+function renderDed(){
+  $('#ded').innerHTML=ITEMS.map(it=>{
+    const on=it.on(S);
+    return `<div class="row" data-k="${it.k}"><button class="sw" role="switch" aria-checked="${on}" aria-label="${it.name}"></button><div class="l">${it.name}<button class="q" data-sheet="${it.k}" aria-label="说明">?</button><small>${it.sub(S)}</small></div><span class="save"></span></div>${on&&it.extra?`<div class="extra" data-x="${it.k}">${it.extra(S)}</div>`:''}`;
   }).join('');
-  $('#rows').querySelectorAll('.row').forEach(row=>row.onclick=e=>{
-    if(e.target.closest('.q,[data-ask]'))return;
-    const it=ITEMS.find(x=>x.k===row.dataset.k),was=it.on(S),before=totalTax(S);
+  $('#ded').querySelectorAll('.row').forEach(row=>row.onclick=e=>{
+    if(e.target.closest('.q'))return;
+    const it=ITEMS.find(x=>x.k===row.dataset.k),was=it.on(S),before=taxOf(S);
     const clash=!was&&((it.k==='rent'&&S.house==='loan')||(it.k==='loan'&&S.house==='rent'));
-    it.set(S,!was);render();
-    const diff=before-totalTax(S);
-    toast(clash?'租房和房贷只能二选一，已帮你切换'
-      :Math.abs(diff)<0.5?'这项对你现在的税没有影响'
-      :!was?`一年少交 ¥${fmt(diff)}`:`关掉后一年多交 ¥${fmt(-diff)}`);
+    it.set(S,!was);renderDed();update();
+    const d=before-taxOf(S);
+    toast(clash?'租房和房贷只能二选一，已切换':Math.abs(d)<0.5?'这项对你现在的税没有影响':d>0?`一年少交 ¥${fmt(d)}`:`关掉后一年多交 ¥${fmt(-d)}`);
   });
-  $('#rows').querySelectorAll('[data-ask]').forEach(b=>b.onclick=()=>ask(b.dataset.ask));
+  $('#ded').querySelectorAll('.step button').forEach(b=>b.onclick=()=>{S.kids=Math.min(6,Math.max(1,S.kids+ +b.dataset.k));S._kids=S.kids;renderDed();update()});
+  $('#ded').querySelectorAll('[data-seg]').forEach(seg=>seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const k=seg.dataset.seg;S[k]=k==='kidShare'?+b.dataset.v:b.dataset.v;if(k==='parent')S._parent=S.parent;renderDed();update()}));
+  const pen=$('#ded [data-pen]');
+  if(pen)pen.oninput=()=>{const v=Math.min(12000,+pen.value.replace(/\D/g,'')||0);pen.value=v||'';if(v){S.pension=v;S._pension=v}update()};
+  if(pen)pen.onblur=()=>{pen.value=S.pension||''};
+}
 
-  const sv=savedTotal(R);
-  let best=null;
-  for(const it of ITEMS){if(it.on(S))continue;const t=JSON.parse(JSON.stringify(S));it.set(t,true);const d=cur-totalTax(t);if(d>0.5&&(!best||d>best.d))best={it,d}}
-  const n=ITEMS.filter(it=>it.on(S)).length;
-  $('#total').innerHTML=`<div><span>${n?`已打开 ${n} 项，一年少交`:'还没有可以少交的项目'}</span><b>¥${fmt(sv)}</b></div>${best?`<p>如果「${best.it.name}」符合你的情况，还能再省 ¥${fmt(best.d)}。</p>`:''}`;
+function update(init){
+  if(!init){store();$('#firstHint').textContent='已自动保存'}
+  const R=R0(S),M=R.months[selM];
+  $('#mName').textContent=`${selM+1} 月${selM===NOW?'（本月）':''}`;
+  $('#mNet').textContent='¥'+fmt(M.net);
+  $('#mTax').textContent='¥'+fmt(M.tax);
+  $('#mSi').textContent='¥'+fmt(R.si);
+  $('#mGross').textContent='¥'+fmt(S.sal);
+  const nets=R.months.map(m=>m.net),mx=Math.max(...nets),mn=Math.min(...nets),lo=mn-(mx-mn||mx*.1)*1.5;
+  $('#spark').innerHTML=R.months.map((m,i)=>`<button class="${i===selM?'sel':''}${i===NOW?' now':''}" data-m="${i}" aria-label="${i+1} 月"><i style="height:${Math.max(10,(m.net-lo)/(mx-lo)*100)}%"></i></button>`).join('');
+  $('#spark').querySelectorAll('button').forEach(b=>b.onclick=()=>{selM=+b.dataset.m;update()});
+  const first=R.months.findIndex(m=>m.tax>R.months[0].tax+0.5);
+  $('#why').innerHTML=R.tax===0?'按现在的情况，你今年不用交个税。如果公司扣过，第二年汇算时可以退回来。'
+    :first<0?'你每个月扣的税一样，到手也一样。'
+    :`个税按「今年累计收入」扣，累计越多税率越高。从 <b>${first+1} 月</b>起你进了下一档，每月到手从 <b class="n">¥${fmt(R.months[0].net)}</b> 变成 <b class="n">¥${fmt(mn)}</b>，公司没有少发，全年总税不变。`;
+  $('#yNet').textContent='¥'+fmt(R.net);
+  $('#yTax').textContent='¥'+fmt(R.tax);
+  const base=Object.assign(clone(),{house:'none',kids:0,parent:'none',deg:false,cert:false,pension:0});
+  const sv=Math.max(0,taxOf(base)-R.tax);
+  $('#ySave').textContent='¥'+fmt(sv);
+  $('#barM').innerHTML=`${selM+1} 月到手<b class="n">¥${fmt(M.net)}</b>`;
+  $('#barT').textContent='¥'+fmt(R.tax);
+
+  const paid=+String(S.paid).replace(/\D/g,'')||0,cr=$('#cres');
+  if(!paid){cr.className='cres';cr.innerHTML=`<span style="color:var(--mut)">填上 ${selM+1} 月工资条的实发金额，帮你核对有没有扣错。</span>`}
+  else{
+    const d=paid-M.net;
+    if(Math.abs(d)<=Math.max(30,M.net*.01)){cr.className='cres ok';cr.textContent=`和估算基本对得上（差 ¥${fmt(Math.abs(d))}）。`}
+    else{
+      const why=[];
+      if(S.si!=='own')why.push('社保公积金的实际扣款和估算不同：上面选「照工资条填」会更准');
+      why.push(d>0?'这个月有绩效、补贴、加班费或报销':'这个月有请假扣款、或扣了其他费用');
+      if(d<0&&dedMonthly(S)>0)why.push('打开的扣除项可能还没在 App 里报给公司，可以去补报');
+      if(d<0)why.push('上个月起有过加薪或奖金，累计收入变多，扣税档提高了');
+      cr.className='cres bad';cr.innerHTML=`实发比估算${d>0?'多':'少'} <b class="n">¥${fmt(Math.abs(d))}</b>，常见原因：<ul>${why.map(x=>`<li>${x}</li>`).join('')}</ul>`;
+    }
+  }
+
+  let best=null,n=0;
+  $('#ded').querySelectorAll('.row').forEach(row=>{
+    const it=ITEMS.find(x=>x.k===row.dataset.k),on=it.on(S),d=itemSaving(it),el=row.querySelector('.save');
+    if(on)n++;
+    el.className='save '+(on?'on':'off');
+    el.textContent=on?(d>0.5?`省 ¥${fmt(d)}/年`:'暂不省税'):(d>0.5?`可省 ¥${fmt(d)}`:'');
+    if(!on&&d>0.5&&(!best||d>best.d))best={it,d};
+  });
+  $('#dsumL').textContent=n?`已打开 ${n} 项，一年少交`:'还没有打开任何一项';
+  $('#dsumV').textContent='¥'+fmt(sv);
+  $('#dbest').textContent=best?`如果符合「${best.it.name}」，还能再省 ¥${fmt(best.d)}。`:'';
 
   renderBonus(R);
-  renderTip();
-}
-function savedTotal(R){
-  const z=Object.assign({},S,{house:'none',kids:0,parent:'none',deg:false,cert:false,pension:0});
-  return Math.max(0,totalTax(z)-R.tax);
+  renderTips(R);
 }
 
 function renderBonus(R){
-  const box=$('#bonusBody');
-  if(!R.b){box.innerHTML=`<p class="explain" style="margin-top:0">今年没有年终奖。如果有，加上算算，看看怎么报更省、会不会踩到「多发 1 块钱反而少拿」的坑。</p><button class="btn try" id="addB">加上年终奖算算</button>`;$('#addB').onclick=()=>ask('bonus');return}
-  const tr=trapOf(R.b),bestSep=R.mode==='sep',diff=Math.abs(R.sep-R.mer);
-  box.innerHTML=`<p class="explain" style="margin:0 0 12px">年终奖 <b>¥${fmt(R.b)}</b>，有两种算税方式：</p>
-  <div class="vs"><div class="way${bestSep?' best':''}"><small>单独算</small><b>¥${fmt(R.sep)}</b><small>年终奖自己算税</small></div><div class="way${bestSep?'':' best'}"><small>并进工资一起算</small><b>¥${fmt(R.mer)}</b><small>因此多交的税</small></div></div>
-  <p class="explain">${diff<0.5?'两种方式交的税一样，选哪个都行。':`选「${bestSep?'单独算':'并进工资一起算'}」能省 <b>¥${fmt(diff)}</b>。`}公司发年终奖时一般先按「单独算」扣税，第二年 3–6 月年度汇算时，你可以在 App 里自己改选，多退少补。</p>
-  ${!tr?`<div class="ok">你的年终奖没有踩到「多发反而少拿」的临界点。</div>`
-    :bestSep?`<div class="trap">⚠️ 你踩到临界点了：年终奖比 <b>${fmt(tr.T)}</b> 只多了 <b>${fmt(R.b-tr.T)}</b> 元，税却跳了一档，到手反而比拿 ${fmt(tr.T)} 少 <b>${fmt(tr.loss)}</b> 元。年终奖要到 <b>${fmt(tr.edge)}</b> 以上才不吃亏，可以和公司商量调整发放金额。</div>`
-    :`<div class="ok">单独算的话，你会踩到「多发反而少拿」的临界点（比拿 ${fmt(tr.T)} 少 <b>${fmt(tr.loss)}</b> 元）。好在对你来说「并进工资一起算」更省，汇算时选它就能避开。</div>`}
-  <button class="btn try" id="tryTrap">${trapPrev!==null?`还原成我的 ¥${fmt(trapPrev)}`:'试试看：多发 1 块钱会怎样？'}</button>`;
+  const box=$('#bonusOut');
+  if(!R.b){box.innerHTML=`<p class="note">填上金额，看看「单独算」和「并进工资」哪种更省，以及会不会踩到「多发反而少拿」的坑。</p>`;return}
+  const tr=trapOf(R.b),sepBest=R.mode==='sep',diff=Math.abs(R.sep-R.mer);
+  box.innerHTML=`<div class="vs"><div class="way${sepBest?' best':''}"><small>${sepBest?'更省 · ':''}单独算</small><b class="n">¥${fmt(R.sep)}</b><small>年终奖要交的税</small></div><div class="way${sepBest?'':' best'}"><small>${sepBest?'':'更省 · '}并进工资一起算</small><b class="n">¥${fmt(R.mer)}</b><small>因此多交的税</small></div></div>
+  <p class="note">${diff<0.5?'两种方式一样，选哪个都行。':`选「${sepBest?'单独算':'并进工资一起算'}」省 <b class="n">¥${fmt(diff)}</b>。`}公司一般先按「单独算」扣，第二年 3–6 月汇算时可以在 App 里改选。</p>
+  ${!tr?'<div class="fine-ok">没有踩到「多发反而少拿」的临界点。</div>'
+    :sepBest?`<div class="alert">踩到临界点了：比 <b class="n">${fmt(tr.T)}</b> 只多 <b class="n">${fmt(R.b-tr.T)}</b> 元，税却跳了一档，到手反而少 <b class="n">${fmt(tr.loss)}</b> 元。要到 <b class="n">${fmt(tr.edge)}</b> 以上才不吃亏，可以和公司商量发放金额。</div>`
+    :`<div class="fine-ok">单独算会踩到临界点（少拿 ¥${fmt(tr.loss)}），但你选「并进工资一起算」更省，汇算时选它就能避开。</div>`}
+  <button class="btn" id="tryTrap">${trapPrev!==null?`还原成 ¥${fmt(trapPrev)}`:'试试：多发 1 块钱会怎样'}</button>`;
   $('#tryTrap').onclick=()=>{
-    if(trapPrev!==null){S.bonus=trapPrev;trapPrev=null;render();return}
-    trapPrev=S.bonus;const T=TH.reduce((a,t)=>Math.abs(t-S.bonus)<Math.abs(a-S.bonus)?t:a,TH[0]);
-    S.bonus=T+1;render();toast(`年终奖改成 ${fmt(T+1)} 元，看看下面的红色提醒`);
-    $('#bonusCard').scrollIntoView({behavior:'smooth',block:'start'});
+    if(trapPrev!==null){S.bonus=trapPrev;trapPrev=null}
+    else{trapPrev=S.bonus;const T=TH.reduce((a,t)=>Math.abs(t-S.bonus)<Math.abs(a-S.bonus)?t:a,TH[0]);S.bonus=T+1;toast(`年终奖临时改成 ${fmt(T+1)}`)}
+    $('#bonus').value=S.bonus||'';update();
   };
 }
 
-function tips(){
-  const R=calc(S),t=[];
-  if(S.kids>0)t.push('休产假期间领的生育津贴，还有国家发的育儿补贴，都不用交个税。产假那几个月工资条看着变了，别慌。');
-  t.push('个税 App 里的「收入纳税明细」就是你自己的收入证明，办贷款、签证都用得上。每年看一眼，顺便核对公司报的收入对不对。');
-  if(S.house==='rent')t.push('租房扣除不用上传合同，但合同和转账记录要留 5 年，万一抽查拿得出来就行。');
-  if(S.kids>0&&S.kidShare!==1)t.push('孩子这一项，一般让收入更高、税率更高的一方报全额，全家一起算更省。');
-  if(S.pension>0)t.push('个人养老金存进去能少交税，但要到退休才能取，领取时按 3% 交税。闲钱再存。');
-  if(R.tax===0&&S.pension>0)t.push('你今年本来就不用交个税，个人养老金暂时省不了税，存不存可以再想想。');
-  t.push('今年换过工作、或者同时有两份工资？两家公司都会各按 5,000 起征点扣，年底汇算可能要补税，提前留一点钱。');
-  t.push('今年看病自付的医药费超过 1.5 万？超出的部分最多能扣 8 万，在第二年汇算时补报。');
-  t.push('不管结没结婚，都值得有一个自己名下的账户，存够 3 到 6 个月的生活费当应急金。');
-  t.push('每年 3 月 1 日到 6 月 30 日是年度汇算，漏报的扣除这时还能补，多交的税会退回来。');
-  return t;
+function renderTips(R){
+  const t=[];
+  if(S.kids>0)t.push('休产假期间的生育津贴和国家发的育儿补贴都不用交个税，那几个月工资条变了别慌。');
+  if(S.kids>0&&S.kidShare!==1)t.push('孩子这一项，一般让税率更高的一方报全额，全家更省。');
+  if(S.house==='rent')t.push('租房合同和转账记录留 5 年，不用上传，抽查时拿得出来就行。');
+  if(S.pension>0&&R.tax===0)t.push('你今年本来不用交个税，个人养老金暂时省不了税，存不存可以再想想。');
+  else if(S.pension>0)t.push('个人养老金要到退休才能取，领取时按 3% 交税，用闲钱存。');
+  t.push('个税 App 里的「收入纳税明细」是你自己的收入证明，办贷款、签证都用得上，每年核对一次。');
+  t.push('今年换过工作或有两份工资？两家公司都会各扣一次 5,000 起征点，年底汇算可能要补税。');
+  t.push('不管结没结婚，都值得有一个自己名下的账户，存够 3 到 6 个月的生活费。');
+  $('#tips').innerHTML=t.slice(0,4).map(x=>`<li>${x}</li>`).join('');
 }
-function renderTip(){const t=tips();$('#tip').textContent=t[tipI%t.length]}
-function nextTip(){tipI++;renderTip();const p=$('#pearIcon');p.classList.add('hop');setTimeout(()=>p.classList.remove('hop'),200)}
-$('#nextTip').onclick=nextTip;$('#pearBtn').onclick=nextTip;
-$('#conv').onclick=()=>{convI++;render()};
-document.addEventListener('click',e=>{const b=e.target.closest('[data-sheet]');if(b){const[h,c]=HELP[b.dataset.sheet];sheet(h,c)}});
-$('#redo').onclick=()=>{qi=0;returnToResult=false;show('quiz');renderQ()};
+
+function bindMoney(id,key,max){
+  const el=$('#'+id);el.value=S[key]||'';
+  el.oninput=()=>{const v=Math.min(max,+el.value.replace(/\D/g,'')||0);el.value=v||'';S[key]=v;if(key==='bonus')trapPrev=null;
+    update()};
+}
+bindMoney('sal','sal',2000000);bindMoney('siOwn','siOwn',1000000);bindMoney('bonus','bonus',5000000);
+const paidEl=$('#paid');paidEl.value=S.paid||'';paidEl.oninput=()=>{paidEl.value=paidEl.value.replace(/\D/g,'');S.paid=paidEl.value;update()};
+function bindSeg(id,key,after){
+  const seg=$('#'+id);
+  const paint=()=>seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.v===S[key]));
+  seg.querySelectorAll('button').forEach(b=>b.onclick=()=>{S[key]=b.dataset.v;paint();after&&after();update()});paint();
+}
+bindSeg('citySeg','city',renderDed);
+bindSeg('siSeg','si',()=>{$('#siOwnRow').classList.toggle('hidden',S.si!=='own');if(S.si==='own')$('#siOwn').focus()});
+$('#siOwnRow').classList.toggle('hidden',S.si!=='own');
+$('#mPrev').onclick=()=>{selM=(selM+11)%12;update()};
+$('#mNext').onclick=()=>{selM=(selM+1)%12;update()};
+$('#firstHint').textContent=saved?'已按上次的情况算好':'先改一下下面的月薪';
+new IntersectionObserver(([e])=>$('#bar').classList.toggle('show',!e.isIntersecting)).observe($('#hero'));
 $('#share').onclick=async()=>{
-  const url=location.href.split('#')[0],data={title:'个税小算盘',text:'一分钟看懂自己的工资和个税，还能看看哪些钱可以少交。',url};
-  try{if(navigator.share){await navigator.share(data);return}}catch(e){if(e.name==='AbortError')return}
-  try{await navigator.clipboard.writeText(url);toast('链接已复制，发给朋友吧')}catch(e){toast('长按地址栏复制链接发给朋友')}
+  const url=location.href.split('#')[0];
+  try{if(navigator.share){await navigator.share({title:'小梨工具坊 · 个税计算器',text:'打开就能看这个月到手多少、扣了多少税，还能看哪些钱可以少交。',url});return}}catch(e){if(e.name==='AbortError')return}
+  try{await navigator.clipboard.writeText(url);toast('链接已复制')}catch(e){toast('长按地址栏复制链接')}
 };
-function finish(){returnToResult=false;trapPrev=null;store();show('result');selM=11;render()}
+renderDed();update(true);
 </script>
 </body>
 </html>
