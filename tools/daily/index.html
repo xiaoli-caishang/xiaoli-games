@@ -7,6 +7,13 @@
 <meta name="theme-color" content="#F4F3EE" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121412" media="(prefers-color-scheme: dark)">
 <meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="今天还能花">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <title>今天还能花多少 · 小梨工具坊</title>
 <style>
 :root{--paper:#F4F3EE;--ink:#1E201D;--ink-2:#5A5D57;--mute:#9A9C95;--hair:#E3E2DB;--juice-top:#B5D38A;--juice-bot:#4E8A62;--gold:#E3A33B;--bite:#D9695A;color-scheme:light}
@@ -81,6 +88,9 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
 #yest button{border:1px solid var(--hair);border-radius:99px;padding:4px 10px;margin:0 4px}
 .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-left:4px;vertical-align:middle}
 .gold{color:var(--gold)}
+#a2hs{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:25;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:10px 12px;text-align:center}
+#a2hs button{border:1px solid var(--hair);border-radius:99px;padding:4px 12px;margin-top:6px}
+#sheet img{width:100%;height:auto;-webkit-touch-callout:default;user-select:auto}
 .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .cell{min-height:52px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mute);border-radius:8px}
 .cell svg{width:26px;height:34px}
@@ -146,6 +156,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
 </div>
 <div id="mask" hidden><div id="sheet" role="dialog" aria-modal="true"></div></div>
 <div id="ritual" hidden></div>
+<div id="a2hs" hidden><p>把小梨放到桌面，一秒打开</p><p class="sub">iPhone：点分享，再点「添加到主屏幕」。安卓：点浏览器菜单，再点「添加到主屏幕」。</p><button type="button" data-act="dismissA2hs">知道了</button></div>
 <div id="pearbox" class="pearbox" hidden>
   <button type="button" id="undo" class="undo" hidden>撤销</button>
   <svg id="pearSvg" viewBox="0 0 160 206" aria-hidden="true">
@@ -157,7 +168,7 @@ textarea{width:100%;min-height:120px;border:1px solid var(--hair);background:tra
       <mask id="biteMask"><rect width="160" height="206" fill="#fff"/><circle id="bite" cx="124" cy="86" r="0" fill="#000"/></mask>
     </defs>
     <g id="pearBody" mask="url(#biteMask)">
-      <g clip-path="url(#pearClip)"><path id="wave" fill="url(#jg)"/><line id="dash" x1="18" x2="142" y1="0" y2="0" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/></g>
+      <g id="juice" clip-path="url(#pearClip)"><path id="wave" fill="url(#jg)"/><line id="dash" x1="18" x2="142" y1="0" y2="0" stroke="var(--ink-2)" stroke-width="1" stroke-dasharray="3 3" visibility="hidden"/></g>
       <path fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85" d="M80 34C96 34 106 50 108 66C128 78 150 104 150 136C150 170 122 196 80 198C38 196 10 170 10 136C10 104 32 78 52 66C54 50 64 34 80 34Z"/>
     </g>
     <path fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.85" d="M80 34C82 24 90 16 98 8"/>
@@ -313,10 +324,20 @@ function waveD(y,a,ph){
   for(let i=1;i<=24;i++){const x=L+(R-L)*i/24;const yy=y+Math.sin(ph+i/24*Math.PI*2)*a;d+='L'+x.toFixed(2)+' '+yy.toFixed(2)}
   return d+'L'+R+' '+B+'L'+L+' '+B+'Z';
 }
+let tilt=0,tiltOn=false,pendingA2hs=false,picURL='';
 function draw(){
   wave.setAttribute('d',waveD(yOf(level),reduced?0:amp,phase));
+  const juice=$('#juice');
+  if(juice){if(!reduced&&tilt)juice.setAttribute('transform','rotate('+tilt.toFixed(2)+' 80 130)');else juice.removeAttribute('transform')}
   if(previewY==null)dash.setAttribute('visibility','hidden');
   else{dash.setAttribute('visibility','visible');dash.setAttribute('y1',previewY.toFixed(2));dash.setAttribute('y2',previewY.toFixed(2))}
+}
+function enableTilt(){
+  if(tiltOn||reduced)return;
+  const Doe=window.DeviceOrientationEvent;
+  const listen=()=>{if(tiltOn)return;tiltOn=true;window.addEventListener('deviceorientation',e=>{const g=+e.gamma||0;tilt=Math.max(-8,Math.min(8,g))})};
+  if(Doe&&typeof Doe.requestPermission==='function')Doe.requestPermission().then(s=>{if(s==='granted')listen()}).catch(()=>{});
+  else if(Doe)listen();
 }
 function setTarget(t,kick){
   const n=Math.max(0,Math.min(1,t));
@@ -581,16 +602,19 @@ function showSetup(){
 }
 function showHome(){
   setupMode=false;ensure(D);
+  D.entries.forEach(e=>{if(e.id==null)e.id=uid()});
   const ended=rollover(D,TODAY);if(ended)D.ended=ended;
   loadFieldsFromD();
   const first=D.ui.lastOpen!==keyOf(TODAY);
+  if(D.ui.lastOpen&&first&&!D.ui.a2hsDismissed)pendingA2hs=true;
   $('#setup').hidden=true;$('#home').hidden=false;placePear($('#stage'));
   $('#cats').innerHTML=CATS.map(c=>`<button type="button" data-cat="${c}">${c}</button>`).join('');
   render();startLoop();
   if(needRitual())openRitual();
-  else if(first)dropPear();
+  else{if(first)dropPear();showA2hs()}
   D.ui.lastOpen=keyOf(TODAY);store();
 }
+function showA2hs(){if(pendingA2hs&&!ritualOn&&!D.ui.a2hsDismissed)$('#a2hs').hidden=false}
 function needRitual(){
   if(!D||!D.cycle||D.cycle.ritualDone)return false;
   return !!D.ended;
@@ -619,7 +643,7 @@ function openRitual(){
   ritualStep='settle';paintRitual();
 }
 function finishRitual(){
-  ritualOn=false;D.cycle.ritualDone=true;$('#ritual').hidden=true;store();render();
+  ritualOn=false;D.cycle.ritualDone=true;$('#ritual').hidden=true;store();render();showA2hs();
 }
 function paintRitual(){
   const e=D.ended;let body='';
@@ -703,8 +727,11 @@ function openOrchard(){
     detail=`<p>${openDay}</p>`+(list.length?list.map(e=>`<div class="fx"><span>${esc(e.c||(e.a<0?'收入':'支出'))} ${e.a<0?'+':''}${ym(Math.abs(e.a))}</span><button type="button" data-act="drop" data-id="${e.id}">删除</button></div>`).join(''):'<p class="sub" style="text-align:left">这一天没有记录</p>');
   }
   $('#mask').hidden=false;
+  const hide=D.ui.hideAmounts!==false;
   $('#sheet').innerHTML=`<div class="shead"><span class="gold">本月</span><button type="button" data-close>完成</button></div>
   <div class="sbody"><p>守住 ${keptN} 天 · 最长 ${longest} 天 · 平均每天 ${ym(avg)}</p>
+  <button type="button" class="choice" data-act="share">生成梨园图</button>
+  <button type="button" class="choice" data-act="toggleHide">隐藏金额 · ${hide?'开':'关'}</button>
   <div class="grid">${cells}</div>${detail}</div>`;
 }
 function openJar(){
@@ -739,7 +766,7 @@ function plant(){
   if(already>0)D.entries.push({id:uid(),d:D.cycle.start,a:already,c:'之前'});
   store();buf='';incMode=false;cat=null;showHome();
 }
-function closeMask(){sheetName=null;sheetFrom=null;clearArmed=false;$('#mask').hidden=true;$('#sheet').innerHTML=''}
+function closeMask(){if(picURL){URL.revokeObjectURL(picURL);picURL=''}sheetName=null;sheetFrom=null;clearArmed=false;$('#mask').hidden=true;$('#sheet').innerHTML=''}
 function closeTop(){
   if((sheetName==='fixed'||sheetName==='import')&&sheetFrom){
     fixed=fixed.filter(f=>f.a>0);
@@ -759,7 +786,7 @@ function openSettings(){
   <button type="button" class="rowbtn" data-act="export">导出备份</button>
   <button type="button" class="rowbtn" data-act="import">导入备份</button>
   <button type="button" class="rowbtn" id="clearBtn" data-act="clear">清空数据</button>
-  <p class="sub" style="text-align:left">数据只在这台手机里。换手机前先导出一段备份文字。</p></div>
+  <p class="sub" style="text-align:left">数据只在这台手机里。换手机前先导出一段备份文字。点一下首页的梨，水面会跟着手机轻轻倾斜。</p></div>
   ${padHTML()}`;
   paintSentences();
 }
@@ -791,6 +818,50 @@ function doImport(){
   }
   const box=$('#impErr');if(box)box.textContent=err;if(err)return;
   D=ensure(o);store();closeMask();showHome();
+}
+function shareGarden(){
+  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
+  const g=canvas.getContext('2d');if(!g||!D)return;
+  const R=compute(D,TODAY),hide=D.ui.hideAmounts!==false;
+  const cs=getComputedStyle(document.body);
+  const paper=(cs.backgroundColor||'#F4F3EE');const ink=(cs.color||'#1E201D');
+  g.fillStyle=paper;g.fillRect(0,0,1080,1350);
+  const days=[];for(let t=R.c.start.getTime();t<R.c.end.getTime();t+=DAY)days.push(new Date(t));
+  let kept=0;days.forEach(d=>{const k=keyOf(d);if(k<=R.tk&&dayStatus(D,k,TODAY)==='kept')kept++});
+  const savedAmt=D.cycle&&D.cycle.saved?(+D.cycle.planSave||0):0;
+  const title=hide?`${R.c.start.getMonth()+1} 月 · 守住 ${kept} 天`:`${R.c.start.getMonth()+1} 月 · 守住 ${kept} 天 · 存下 ${ym(savedAmt)}`;
+  g.fillStyle=ink;g.font='56px -apple-system,PingFang SC,sans-serif';g.fillText(title,72,150);
+  const lead=(days[0].getDay()+6)%7,cols=7,cw=120,ch=132,ox=72,oy=230;
+  function drawPear(x,y,mode){
+    g.save();g.translate(x,y);
+    g.beginPath();g.moveTo(36,16);g.bezierCurveTo(52,16,62,32,64,48);g.bezierCurveTo(84,58,100,80,100,104);g.bezierCurveTo(100,128,78,146,36,148);g.bezierCurveTo(-6,146,-28,128,-28,104);g.bezierCurveTo(-28,80,-12,58,8,48);g.bezierCurveTo(10,32,20,16,36,16);g.closePath();
+    if(mode==='kept'||mode==='over'){g.fillStyle='#4E8A62';g.fill()}
+    g.strokeStyle=ink;g.lineWidth=3;g.setLineDash(mode==='blank'||mode==='future'?[6,6]:[]);g.stroke();
+    g.beginPath();g.moveTo(36,16);g.quadraticCurveTo(40,4,52,-6);g.stroke();
+    if(mode==='over'){g.fillStyle=paper;g.beginPath();g.arc(58,40,16,0,6.3);g.fill()}
+    g.restore();
+  }
+  days.forEach((d,i)=>{
+    const k=keyOf(d),st=k>R.tk?'future':dayStatus(D,k,TODAY);
+    const col=(lead+i)%cols,row=Math.floor((lead+i)/cols);
+    drawPear(ox+col*cw,oy+row*ch,st);
+    if(k===R.tk){g.strokeStyle=ink;g.lineWidth=2;g.setLineDash([]);g.strokeRect(ox+col*cw-36,oy+row*ch-12,108,168)}
+  });
+  g.fillStyle=ink;g.font='32px -apple-system,PingFang SC,sans-serif';
+  g.fillText('小梨',72,1288);g.fillText('xiaolipearl.com',180,1288);
+  canvas.toBlob(blob=>{
+    if(!blob)return;
+    const file=new File([blob],'pear-garden.png',{type:'image/png'});
+    const can=navigator.share&&(!navigator.canShare||navigator.canShare({files:[file]}));
+    if(can)navigator.share({files:[file],title:'今天还能花'}).catch(err=>{if(!err||err.name!=='AbortError')showPic(blob)});
+    else showPic(blob);
+  },'image/png');
+}
+function showPic(blob){
+  if(picURL)URL.revokeObjectURL(picURL);picURL=URL.createObjectURL(blob);sheetName='pic';
+  $('#mask').hidden=false;
+  $('#sheet').innerHTML='<div class="shead"><span>梨园</span><button type="button" data-close>完成</button></div><div class="sbody"><p>长按图片保存</p><img id="pic" alt="本期梨园"></div>';
+  $('#pic').src=picURL;
 }
 document.body.addEventListener('click',ev=>{
   const k=ev.target.closest('[data-k]');if(k){press(k.dataset.k);return}
@@ -833,6 +904,9 @@ document.body.addEventListener('click',ev=>{
   else if(act.dataset.act==='didSave'){applyRitualSave(true);ritualStep='split';paintRitual()}
   else if(act.dataset.act==='later'){applyRitualSave(false);ritualStep='split';paintRitual()}
   else if(act.dataset.act==='markSaved'){if(D.cycle&&!D.cycle.saved){D.savedTotal=Math.round((D.savedTotal+D.setup.save)*100)/100;D.cycle.saved=true}if(D.cycle)D.cycle.remind=false;store();render();openJar()}
+  else if(act.dataset.act==='dismissA2hs'){pendingA2hs=false;D.ui.a2hsDismissed=true;$('#a2hs').hidden=true;store()}
+  else if(act.dataset.act==='toggleHide'){D.ui.hideAmounts=D.ui.hideAmounts===false;store();openOrchard()}
+  else if(act.dataset.act==='share')shareGarden();
   else if(act.dataset.act==='drop'){
     const id=+act.dataset.id;const e=D.entries.find(x=>x.id===id);
     D.entries=D.entries.filter(x=>x.id!==id);if(e&&e.src==='save')D.savedTotal=Math.round((D.savedTotal+e.a)*100)/100;
@@ -845,6 +919,7 @@ document.addEventListener('keydown',ev=>{
   else if(ev.key==='Backspace')press('bs');
   else if(ev.key==='Enter'&&!setupMode)commit();
 });
+$('#pearbox').addEventListener('click',ev=>{if(!ev.target.closest('#undo'))enableTilt()});
 $('#setupPad').innerHTML=padHTML();
 $('#homePad').innerHTML=padHTML();
 try{D=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){D=null}
