@@ -147,8 +147,22 @@ details.rv summary::-webkit-details-marker{display:none}
 .modetip{align-self:center;font-size:12.5px;font-weight:900;color:var(--paper);background:#C8607A;border-radius:999px;padding:3px 12px}
 .pre{font-size:12.5px;color:var(--mut);font-weight:700}
 .lvl{display:inline-block;margin-top:6px;font-size:12.5px;font-weight:900;color:var(--paper);background:var(--fg);border-radius:999px;padding:2px 10px}
-.jobs{display:flex;align-items:baseline;gap:8px;margin:0 16px;padding:10px 12px;background:color-mix(in srgb,var(--gold) 14%,var(--s1));border-radius:12px;font-size:14px}
-.jobs span{font-size:12px;color:var(--gold-d);font-weight:900;flex:none}
+.jobs{width:calc(100% - 32px);display:grid;gap:5px;margin:0 16px;padding:8px 12px;background:color-mix(in srgb,var(--gold) 14%,var(--s1));border:0;border-radius:12px;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.jobs>span{font-size:12px;color:var(--gold-d);font-weight:900}
+.job-rows{display:grid;gap:3px}
+.job-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.job-copy{display:block;min-width:0}
+.job-copy b{display:block;font-size:13px;line-height:1.25}
+.job-copy small{display:block;overflow:hidden;color:var(--mut);font-size:10.5px;line-height:1.25;text-overflow:ellipsis;white-space:nowrap}
+.job-sal{display:flex;align-items:center;gap:2px;font-family:var(--f-num);font-size:12px;font-weight:900;white-space:nowrap}
+.job-sal img{width:16px;height:16px}
+.jobs:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+.qfit{margin:4px 16px 0;display:grid;gap:4px}
+.qfit-top{display:flex;align-items:baseline;gap:8px;color:var(--gold-d);font-size:13px;font-weight:800}
+.qfit-top strong{font-family:var(--f-num);font-size:22px;line-height:1;color:var(--fg)}
+.qfit-track{height:4px;border-radius:3px;background:var(--s2);overflow:hidden}
+.qfit-track i{display:block;height:100%;border-radius:inherit;background:var(--gold)}
+.qfit-path{margin:0;color:var(--inkm);font-size:13px;line-height:1.4}
 .viewbox{margin:10px 16px 0;display:grid;gap:2px}
 .viewbox small{font-size:12px;color:var(--mut);font-weight:700}
 .viewbox p{margin:0;font-size:15px;line-height:1.6}
@@ -190,6 +204,14 @@ details.rv summary::-webkit-details-marker{display:none}
 .lvls div.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--s1))}
 .lvls b{font-size:15px;color:var(--fg);flex:none}
 .tipline{margin:0;font-size:16px;font-weight:700;line-height:1.6}
+.qreview{display:grid;gap:8px}
+.qitem{display:grid;gap:5px;background:var(--s2);border-radius:12px;padding:10px}
+.qmeta{display:flex;align-items:center;gap:6px;color:var(--mut);font-size:11.5px;font-weight:700}
+.qmeta img{width:18px;height:18px}
+.q-question{font-size:13.5px;font-weight:800;line-height:1.5}
+.q-answer{font-size:12.5px;font-weight:700;line-height:1.5}
+.q-answer b{color:var(--gold-d)}
+.q-why{font-size:12.5px;line-height:1.55;color:var(--inkm)}
 .lg{display:grid;gap:8px}
 .lg-h{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:900}
 .lg-h img{width:18px;height:18px}
@@ -353,7 +375,7 @@ const ADVICE={
 // 16 种人格：look 是像素形象的配方
 // 金融人格图鉴：16 种人格。name 是外号；view 是别人眼中的对方；quote 是口头禅；tip 是“鉴定对方”模式下给姐妹的相处提示；roles 对应下面的岗位
 const TYPES={
- RDLC:{name:'Excel 狙击手',roles:['research','qr'],view:'黑框眼镜格子衫，模型跑完之前一句话都不说。',quote:'数据不会骗人，人会。',tip:'跟对方吵架，先准备好数据。',
+ RDLC:{name:'Excel 狙击手',roles:['research','ibd','qr'],view:'黑框眼镜格子衫，模型跑完之前一句话都不说。',quote:'数据不会骗人，人会。',tip:'跟对方吵架，先准备好数据。',
   look:{bg:'#E3EEF8',hair:['neat','#3A2E28'],eyes:'sharp',glasses:'square',mouth:'flat',top:['plaid','#6F98CF'],pants:'#3E4A5A',shoes:'#2B2B2B',prop:'magnifier'}},
  RDLM:{name:'凌晨三点炼金师',roles:['qdev','qr'],view:'卫衣、拖鞋、三块屏，全身最贵的是人体工学椅。',quote:'这个回测有点过拟合。',tip:'消息秒回的时候，多半是模型在跑。',
   look:{bg:'#ECE8F4',hair:['messy','#4A3A30'],eyes:'tired',mouth:'flat',top:['hoodie','#8C8C96'],pants:'#5A6470',shoes:'slipper',prop:'laptop',acc:'headphones'}},
@@ -363,25 +385,25 @@ const TYPES={
   look:{bg:'#FFF3C9',hair:['spiky','#6B4A2E'],eyes:'wide',mouth:'grin',top:['tee','#3FA9F5'],pants:'#3E4A5A',shoes:'#E8823A',prop:'can',extra:'bolt'}},
  RILC:{name:'冷门掘金者',roles:['pm','research'],view:'风衣围巾，聚会上一个人讲完了整个行业周期。',quote:'别人恐惧，我贪婪。',tip:'对方说“这个我研究过”，接下来是一小时。',
   look:{bg:'#F3E7D6',hair:['neat','#2B2B2B'],eyes:'sharp',mouth:'flat',top:['trench','#C9A77A'],scarf:'#C8483C',pants:'#4A4038',shoes:'#5A3A2A',prop:'book'}},
- RILM:{name:'赛道探险家',roles:['vc','research'],view:'抓绒马甲配冲锋衣，开口底层逻辑，闭口这个赛道很性感。',quote:'我们投的是人。',tip:'对方说“下次细聊”，就是真的下次。',
+ RILM:{name:'赛道探险家',roles:['vc','ibd','research'],view:'抓绒马甲配冲锋衣，开口底层逻辑，闭口这个赛道很性感。',quote:'我们投的是人。',tip:'对方说“下次细聊”，就是真的下次。',
   look:{bg:'#E2F0E6',hair:['slick','#2B2B2B'],eyes:'sparkle',mouth:'smile',top:['vest','#3C5A4A'],pants:'#C9B48A',shoes:'#6B4A2E',prop:'telescope'}},
  RITC:{name:'半山腰接盘侠',roles:['trader','sales'],view:'每次都说“跌够了”，然后发现下面还有地下室。',quote:'这里是黄金坑。',tip:'对方说“黄金坑”时，先别跟。',
   look:{bg:'#DDF0F4',hair:['messy','#7A5C48'],eyes:'wide',mouth:'open',top:['tee','#E8823A'],pants:'#3E6A8A',shoes:'#F2C14E',prop:'net',acc:'goggles'}},
- RITM:{name:'风口布道师',roles:['sales','wealth'],view:'墨镜潮牌，中英夹杂，每句话都离不开 narrative。',quote:'这波 alpha 很确定。',tip:'听对方讲完风口，记得问一句：然后呢？',
+ RITM:{name:'风口布道师',roles:['ibd','sales','wealth'],view:'墨镜潮牌，中英夹杂，每句话都离不开 narrative。',quote:'这波 alpha 很确定。',tip:'听对方讲完风口，记得问一句：然后呢？',
   look:{bg:'#F6E4F0',hair:['swept','#E79AC0'],eyes:'dot',shades:true,mouth:'grin',top:['street','#9C82CF'],pants:'#2B2B2B',shoes:'#FFFFFF',prop:'selfie',extra:'sparkle'}},
- SDLC:{name:'报表验算官',roles:['research','risk'],view:'毛衣圆眼镜，一张报表算三遍，才肯说一句“还行”。',quote:'安全边际够不够？',tip:'对方说“还行”，就是很满意了。',
+ SDLC:{name:'报表验算官',roles:['research','audit','fi'],view:'毛衣圆眼镜，一张报表算三遍，才肯说一句“还行”。',quote:'安全边际够不够？',tip:'对方说“还行”，就是很满意了。',
   look:{bg:'#E8F2E6',hair:['neat','#5A463B'],eyes:'dot',glasses:'round',mouth:'smile',top:['sweater','#9CC6A6'],pants:'#5A6470',shoes:'#6B4A2E',prop:'calculator'}},
- SDLM:{name:'长线外交官',roles:['wealth','product'],view:'头像是陆家嘴落地窗，英文名只用首字母，朋友圈只有商务舱和高尔夫。',quote:'我们看长期。',tip:'对方会提前一周订好餐厅，给你三个选项。',
+ SDLM:{name:'长线外交官',roles:['wealth','bank','product'],view:'头像是陆家嘴落地窗，英文名只用首字母，朋友圈只有商务舱和高尔夫。',quote:'我们看长期。',tip:'对方会提前一周订好餐厅，给你三个选项。',
   look:{bg:'#EAEAF6',hair:['slick','#3A2E28'],eyes:'dot',mouth:'smile',top:['suit','#2F3A56'],brooch:true,pants:'#2F3A56',shoes:'#2B2B2B',prop:'pie'}},
- SDTC:{name:'小数点守门员',roles:['actuary','risk'],view:'AA 精确到分，算盘比计算器打得还快。',quote:'这个数对不上。',tip:'吃饭让对方买单，对方会顺手把账算清楚。',
+ SDTC:{name:'小数点守门员',roles:['actuary','audit','risk'],view:'AA 精确到分，算盘比计算器打得还快。',quote:'这个数对不上。',tip:'吃饭让对方买单，对方会顺手把账算清楚。',
   look:{bg:'#F1EFE6',hair:['comb','#8A8A8A'],eyes:'dot',glasses:'square',mouth:'flat',top:['shirt','#FFFFFF'],sleeves:'#3E6A9A',pants:'#3E4A5A',shoes:'#2B2B2B',prop:'abacus'}},
- SDTM:{name:'流程结界师',roles:['risk','product'],view:'你的方案还没讲完，对方已经说了三次“这个不行”。',quote:'流程走一下。',tip:'想说服对方，先给对方一份书面材料。',
+ SDTM:{name:'流程结界师',roles:['risk','fi','product'],view:'你的方案还没讲完，对方已经说了三次“这个不行”。',quote:'流程走一下。',tip:'想说服对方，先给对方一份书面材料。',
   look:{bg:'#E1E9F5',hair:['short','#3A2E28'],eyes:'sharp',mouth:'flat',top:['guard','#2F4A7A'],pants:'#2F4A7A',shoes:'#2B2B2B',prop:'shield',acc:'cap'}},
- SILC:{name:'复利木鱼派',roles:['wealth','product'],view:'只信白酒和银行，跌了就敲木鱼。',quote:'拿住就是胜利。',tip:'对方最大的浪漫是：拿住。',
+ SILC:{name:'复利木鱼派',roles:['bank','wealth'],view:'只信白酒和银行，跌了就敲木鱼。',quote:'拿住就是胜利。',tip:'对方最大的浪漫是：拿住。',
   look:{bg:'#FBEFD9',hair:['bald','#F6D2B4'],eyes:'closed',mouth:'smile',top:['robe','#E3A33B'],pants:'#C98A2A',shoes:'#6B4A2E',prop:'muyu',extra:'merit'}},
- SILM:{name:'工位节能大师',roles:['product','risk'],view:'工位常备 U 型枕，大方向对了就不折腾。',quote:'问题不大，先放放。',tip:'对方说“先放放”，是真的会放很久。',
+ SILM:{name:'工位节能大师',roles:['bank','product'],view:'工位常备 U 型枕，大方向对了就不折腾。',quote:'问题不大，先放放。',tip:'对方说“先放放”，是真的会放很久。',
   look:{bg:'#E6EEF7',hair:['bun','#7A5C48'],eyes:'sleepy',mouth:'yawn',top:['pajama','#9CC6E6'],pants:'#9CC6E6',shoes:'slipper',prop:'pillow',acc:'eyemask',extra:'zzz'}},
- SITC:{name:'捡漏质检员',roles:['risk','product'],view:'团购必比三家价，风险提示一字不落全看完。',quote:'稳一点，稳一点。',tip:'带对方去新餐厅，先发给对方大众点评。',
+ SITC:{name:'捡漏质检员',roles:['audit','risk'],view:'团购必比三家价，风险提示一字不落全看完。',quote:'稳一点，稳一点。',tip:'带对方去新餐厅，先发给对方大众点评。',
   look:{bg:'#EEF3DC',hair:['short','#5A463B'],eyes:'wide',mouth:'small',top:['cardigan','#C9D98B'],pants:'#7A6A55',shoes:'#6B4A2E',prop:'basket',extra:'sweat'}},
  SITM:{name:'研报广播站',roles:['sales','wealth'],view:'五个微信号，每天早上七点准时群发“重磅首发”。',quote:'各位领导早，观点已发群里。',tip:'对方朋友圈每天三条，别以为是写给你的。',
   look:{bg:'#FBEBDD',hair:['neat','#7A5C48'],eyes:'dot',mouth:'small',top:['tee','#F2B880'],pants:'#3E4A5A',shoes:'#F2F2F2',prop:'phone',extra:'chat'}},
@@ -399,6 +421,10 @@ const ROLES={
  sales:{name:'机构销售',orgs:'券商研究所销售 · 基金渠道',skills:['产品理解','客户关系','表达与谈判'],step:'练习用 3 分钟讲清一份研报的核心观点。'},
  product:{name:'产品与运营',orgs:'基金公司 · 银行理财子',skills:['产品设计','数据分析','跨部门协作'],step:'拆解一款你常用的理财 App，写一份改进建议。'},
  actuary:{name:'精算师',orgs:'保险公司 · 再保险',skills:['概率与精算数学','精算考试','保险产品定价'],step:'先弄清精算师考试体系，从一门基础科目考起。'},
+ ibd:{name:'投行（IBD）',orgs:'券商投行部 · 外资投行',skills:['财务建模与估值','写材料和招股书','抗压和熬夜'],step:'找一份上市公司招股书，读完业务和财务部分，自己写一页摘要。'},
+ bank:{name:'银行管培生',orgs:'国有大行 · 股份制银行 · 外资银行',skills:['对公与信贷业务','沟通与执行','耐得住轮岗'],step:'投递前先弄清目标银行管培生的轮岗路线和留用去向。'},
+ audit:{name:'审计与财务咨询',orgs:'四大会计师事务所 · 内资所',skills:['会计准则','底稿与细节','忙季的体力'],step:'先把 CPA 会计科目学起来，争取去四大实习一个审计季。'},
+ fi:{name:'固收研究与交易',orgs:'券商固收部 · 银行金融市场部 · 公募债基',skills:['宏观与利率','债券定价','跟踪政策'],step:'每周读一次央行公开市场操作和利率数据，写下你对下周利率的判断。'},
 };
 // 薪资沙拉：月薪中位数，单位“份沙拉”，1 份 = ¥1k；三地统一折成人民币。
 // 当前为估算版（2026-10）。爬虫数据进来后替换 SALARY，并把 SALARY_META.src 改成“由小梨团队爬虫抓取整理”、填上样本数 n。
@@ -408,6 +434,7 @@ const SALARY={
  qr:{cn:40,hk:80,us:125},qdev:{cn:35,hk:65,us:110},trader:{cn:30,hk:65,us:95},research:{cn:25,hk:55,us:85},
  pm:{cn:50,hk:100,us:150},vc:{cn:30,hk:60,us:100},risk:{cn:20,hk:42,us:70},wealth:{cn:20,hk:55,us:70},
  sales:{cn:20,hk:65,us:75},product:{cn:18,hk:40,us:60},actuary:{cn:22,hk:50,us:75},
+ ibd:{cn:30,hk:85,us:150},bank:{cn:15,hk:45,us:70},audit:{cn:15,hk:40,us:75},fi:{cn:25,hk:60,us:100},
 };
 const REGIONS=[['cn','中国一线'],['hk','香港'],['us','美国']];
 // 登级：越冒险越短线越“小登”，越稳越长线越“老登”
@@ -417,6 +444,30 @@ const LEVELS={
  '老登':'只信周期和复利，最爱讲“我当年”。',
 };
 const levelOf=code=>code[0]==='R'&&code[2]==='T'?'小登':code[0]==='S'&&code[2]==='L'?'老登':'中登';
+// 量化适配度：数据驱动权重最高，其次短线（快速反馈、回测迭代）、冒险，市场观看立场是否鲜明
+const qfitOf=()=>{const r=k=>score[k]/CARDS.filter(c=>c.dim===k).length;
+  const v=Math.abs(r('view')-.5)*2;
+  const raw=45*r('basis')+20*(1-r('horizon'))+15*r('risk')+20*(.5+v/2);
+  return Math.round(35+63*raw/100)};
+let lastQfit=0;
+const QPATH={
+ RDLC:'量化研究员：多因子、基本面量化，离你最近。',
+ RDLM:'量化开发 / 量化研究：回测和数据管线是你的主场。',
+ RDTC:'量化交易：统计套利、高频，专抓价差。',
+ RDTM:'量化交易员：CTA、趋势跟踪，追得快也止损得快。',
+ RILC:'先做基本面研究，再把逻辑写成因子：主观转量化。',
+ RILM:'去看量化私募和金融科技赛道，做懂量化的投资人。',
+ RITC:'先从交易做起，把每次抄底写成规则回测一遍。',
+ RITM:'量化私募的渠道和机构销售：把策略讲明白。',
+ SDLC:'固收量化、量化风控：你的验算癖正好用上。',
+ SDLM:'量化产品的财富顾问，或者做 FOF 挑量化基金。',
+ SDTC:'量化风控和风险模型：精算底子直接迁移。',
+ SDTM:'量化私募的风控合规、交易运营。',
+ SILC:'从银行理财子、指数增强产品切入量化。',
+ SILM:'量化产品运营：不用写策略，也能进量化圈。',
+ SITC:'量化风控、交易核对：替策略把最后一道关。',
+ SITM:'量化私募的市场与投资者关系：把研报讲给客户。',
+};
 
 /* ===================== 像素画（32×32，运行时绘制） ===================== */
 const SKIN='#F6D2B4',SKIN_D='#E8B994',BLUSH='#F2A39A',EYE='#3E3833',MOUTH='#C9665A',W='#FFFFFF';
@@ -759,8 +810,9 @@ async function posterOne(code,him){
   x.textAlign='left';
   // jobs + salary
   rr(x,76,814,568,200,20,'#F3EADB');
-  x.fillStyle='#C98A2A';x.font=`900 21px ${FONT}`;x.fillText('最常出没',100,836);
-  x.fillStyle='#3E3833';x.font=`900 28px ${FONT}`;x.fillText(t.roles.map(r=>ROLES[r].name).join(' · '),100,868,520);
+  x.fillStyle='#C98A2A';x.font=`900 21px ${FONT}`;x.fillText('适合的岗位',100,836);
+  x.textAlign='right';x.fillText(`量化适配度 ${lastQfit}%`,620,836);x.textAlign='left';
+  x.fillStyle='#3E3833';x.font=`900 28px ${FONT}`;x.fillText(t.roles.slice(0,2).map(r=>ROLES[r].name).join(' · '),100,868,520);
   const r0=t.roles[0],sal=await loadImg(icon('salad'));
   x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(`${ROLES[r0].name}月薪 · 1 份沙拉 = ¥1k`,100,916);
   REGIONS.forEach(([g,lab],i)=>{const X=100+i*184;x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(lab,X,952);if(sal)x.drawImage(sal,X,978,26,26);x.fillStyle='#3E3833';x.font=`800 26px ui-monospace,Menlo,Consolas,monospace`;x.fillText('×'+SALARY[r0][g],X+30,978)});
@@ -789,8 +841,9 @@ async function openPoster(kind,code,him){
   $('posterImg').src=url;$('dl').href=url;$('dl').download=kind==='pair'?'金融人格合盘.png':`金融人格图鉴-${code}.png`;$('modal').hidden=false;
 }
 function showResult(){
-  const parts=DIMS.map(part),code=parts.map(p=>p.win.code).join(''),t=TYPES[code],him=mode==='him';
-  const who=him?'对方':'你',lv=levelOf(code);
+  const parts=DIMS.map(part),code=parts.map(p=>p.win.code).join(''),t=TYPES[code],him=mode==='him',quantFit=qfitOf();
+  lastQfit=quantFit;
+  const who=him?'对方':'你',lv=levelOf(code),qfitLabel=him?'对方的量化适配度':'量化适配度';
   STORE[mode]=code;saveStore();const hasPair=STORE.me&&STORE.him;
   xlT('end',{mode,code,dur:Math.round((Date.now()-XL.t0)/1000)});
   const bars=parts.map(p=>{const w=Math.abs(p.pa-50),st=p.aWin?`right:50%;width:${w}%`:`left:50%;width:${w}%`;
@@ -800,20 +853,21 @@ function showResult(){
   const legend=parts.map(p=>{const ex=CARDS.find(c=>c.dim===p.d.key);
     const side=(o,isA)=>`<div class="lg-c${(isA===p.aWin)?' me':''}" data-who="${who}"><div class="lg-l">${o.code}</div><div class="lg-en">${o.en}</div><div class="lg-zh">${o.label}</div><div class="lg-m">${cl(o.mean)}</div><div class="lg-ex">比如选<br>${lines(isA?ex.a:ex.b)}</div></div>`;
     return `<div class="lg"><div class="lg-h"><img class="px" src="${icon(p.d.key)}" alt=""><span>${p.d.name}</span></div><div class="lg-row">${side(p.d.a,true)}<span class="lg-vs">vs</span>${side(p.d.b,false)}</div></div>`}).join('');
+  const questionReview=answers.map(({c,p})=>`<div class="qitem"><div class="qmeta"><img class="px" src="${icon(c.dim)}" alt=""><span>${c.scene}</span></div><div class="q-question">${cl(c.q)}</div><div class="q-answer">${who}选了：<b>${cl(c[p])}</b></div><div class="q-why">${cl(c.why)}</div></div>`).join('');
   const gallery=CODES.map(k=>`<div data-k="${k}" class="${k===code?'me':''}"><img class="px" src="${persona(k)}" alt="${TYPES[k].name}"><b>${TYPES[k].name}</b><code>${k}</code></div>`).join('');
   $('result').innerHTML=`
     <div class="pcard">
       <div class="pc-head"><img class="px" src="${pearLogo()}" alt=""><span>金融人格图鉴 · ${him?'鉴定结果':'我是'}</span><div class="code">${code.split('').map(ch=>`<span>${ch}</span>`).join('')}</div></div>
       <div class="hero"><div class="portrait" style="background:${t.look.bg}"><img class="px" src="${persona(code)}" alt="${t.name}"></div>
         <div><div class="pre">${him?'对方是':'你是'}</div><h2 class="pname" style="font-size:${t.name.length<=5?30:t.name.length<=7?25:22}px">${t.name}</h2><span class="lvl">${lv}</span></div></div>
-      <div class="jobs"><span>最常出没</span><b>${t.roles.map(r=>ROLES[r].name).join(' · ')}</b></div>
+      <button class="jobs" id="jobsJump" type="button"><span>适合${who}的岗位</span><span class="job-rows">${t.roles.slice(0,3).map(r=>`<span class="job-row"><span class="job-copy"><b>${ROLES[r].name}</b><small>${ROLES[r].orgs}</small></span><span class="job-sal"><img class="px" src="${salad}" alt="沙拉">×${SALARY[r].cn}</span></span>`).join('')}</span></button>
+      <div class="qfit"><div class="qfit-top"><span>${qfitLabel}</span><strong>${quantFit}%</strong></div><div class="qfit-track" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${quantFit}" aria-label="${qfitLabel}"><i style="width:${quantFit}%"></i></div><p class="qfit-path">量化入口：${QPATH[code]}</p></div>
       <div class="viewbox"><small>别人眼中的${who}</small><p>${cl(t.view)}</p></div>
       <div class="quote">“${t.quote}”</div>
       <div class="bars">${bars}</div>
       <div class="pc-foot"><span>@小梨🍐 有价值的财商分享</span><span>纯属玩梗，非投资建议</span></div>
     </div>
     <div class="shotbtn"><button class="go" id="mkPoster" type="button">${him?'生成海报，甩给对方看':'晒出我的金融人格'}</button><p>${him?'海报写着“我鉴定了你”，发给对方或朋友群':'长按保存，发给朋友：这像不像我？'}</p></div>
-    ${hasPair?pairHTML():pairCTA(him)}
     <div class="sect" id="salSec"><h2>${who}这种人，在哪拿多少沙拉</h2>
       <p class="sub"><img class="px inl" src="${salad}" alt="">1 份沙拉 = 月薪 ¥1k<br>${SALARY_META.level} · 三地统一折成人民币</p>
       ${SALARY_DEMO?'<div class="demo">示例数字，仅供看效果 · 待替换为真实招聘数据</div>':''}
@@ -822,13 +876,16 @@ function showResult(){
       <p class="follow">想知道这些岗位怎么入行？关注 @小梨🍐 有价值的财商分享，职业路线一期一期讲。</p>
       <div class="src"><p><b>数据来源</b>${SALARY_META.src}${SALARY_META.n?`（${SALARY_META.date}，样本 ${SALARY_META.n} 条）`:`（${SALARY_META.date}）`}。取月薪中位数，不含年终奖；${SALARY_META.fx}。</p>
         <p><b>免责声明</b>纯科普娱乐，仅供参考。不代表任何具体机构或个人的真实薪酬，实际收入因机构、业绩和个人差异很大，也不构成求职或投资建议。</p></div></div>
+    ${hasPair?pairHTML():pairCTA(him)}
     <div class="sect"><h2>${who}的登级：${lv}</h2><div class="lvls">${Object.keys(LEVELS).map(k=>`<div class="${k===lv?'on':''}"><b>${k}</b><span>${LEVELS[k]}</span></div>`).join('')}</div></div>
     ${him?`<div class="sect advice"><h2>相处小提示</h2><p class="tipline">${cl(t.tip)}</p><p class="disc">纯属玩梗，请勿对号入座。</p></div>`
          :`<div class="sect advice"><h2>小梨的建议</h2><div class="adv"><h3>${A[0]}</h3><p>${A[1]}</p></div><div class="adv"><h3>想入行，先去接触，而不是去猜</h3><p>找一位做${ROLES[t.roles[0]].name}的人聊半小时，问问对方每天最花时间、最痛苦的事是什么。能接受那份痛苦，才是真的适合。</p></div><p class="disc">以上是对决策风格的分析，不构成任何投资建议。</p></div>`}
+    <div class="sect"><h2>逐题复盘：每道题在测什么</h2><div class="qreview">${questionReview}</div></div>
     <div class="sect"><h2>代码 ${code} 是什么意思</h2><p class="sub">四个字母各代表一个维度的一端，金色那一边是${who}。</p>${legend}</div>
     <div class="sect"><h2>金融人格图鉴 · 16 种</h2><p class="sub">发给朋友，测测身边那位。点任意一位，看不同人格拿多少沙拉。</p><div class="gallery" id="gal">${gallery}</div></div>
     <div class="next"><button class="go" id="again" type="button">${him?'再鉴定一个':'再测一次'}</button><button class="ghost" id="switch" type="button">${him?'测测我自己':'帮朋友测一测'}</button></div>`;
   $('mkPoster').addEventListener('click',()=>openPoster('one',code,him));
+  $('jobsJump').addEventListener('click',()=>$('salSec').scrollIntoView({behavior:'smooth',block:'start'}));
   if(hasPair){$('pairPoster').addEventListener('click',()=>openPoster('pair'));
     document.querySelectorAll('[data-redo]').forEach(b=>b.addEventListener('click',()=>start(b.dataset.redo)));}
   else $('ctaPair').addEventListener('click',()=>start(him?'me':'him'));
