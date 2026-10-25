@@ -157,6 +157,12 @@ details.rv summary::-webkit-details-marker{display:none}
 .job-sal{display:flex;align-items:center;gap:2px;font-family:var(--f-num);font-size:12px;font-weight:900;white-space:nowrap}
 .job-sal img{width:16px;height:16px}
 .jobs:focus-visible{outline:2px solid var(--gold-d);outline-offset:2px}
+.qfit{margin:4px 16px 0;display:grid;gap:4px}
+.qfit-top{display:flex;align-items:baseline;gap:8px;color:var(--gold-d);font-size:13px;font-weight:800}
+.qfit-top strong{font-family:var(--f-num);font-size:22px;line-height:1;color:var(--fg)}
+.qfit-track{height:4px;border-radius:3px;background:var(--s2);overflow:hidden}
+.qfit-track i{display:block;height:100%;border-radius:inherit;background:var(--gold)}
+.qfit-path{margin:0;color:var(--inkm);font-size:13px;line-height:1.4}
 .viewbox{margin:10px 16px 0;display:grid;gap:2px}
 .viewbox small{font-size:12px;color:var(--mut);font-weight:700}
 .viewbox p{margin:0;font-size:15px;line-height:1.6}
@@ -438,6 +444,30 @@ const LEVELS={
  '老登':'只信周期和复利，最爱讲“我当年”。',
 };
 const levelOf=code=>code[0]==='R'&&code[2]==='T'?'小登':code[0]==='S'&&code[2]==='L'?'老登':'中登';
+// 量化适配度：数据驱动权重最高，其次短线（快速反馈、回测迭代）、冒险，市场观看立场是否鲜明
+const qfitOf=()=>{const r=k=>score[k]/CARDS.filter(c=>c.dim===k).length;
+  const v=Math.abs(r('view')-.5)*2;
+  const raw=45*r('basis')+20*(1-r('horizon'))+15*r('risk')+20*(.5+v/2);
+  return Math.round(35+63*raw/100)};
+let lastQfit=0;
+const QPATH={
+ RDLC:'量化研究员：多因子、基本面量化，离你最近。',
+ RDLM:'量化开发 / 量化研究：回测和数据管线是你的主场。',
+ RDTC:'量化交易：统计套利、高频，专抓价差。',
+ RDTM:'量化交易员：CTA、趋势跟踪，追得快也止损得快。',
+ RILC:'先做基本面研究，再把逻辑写成因子：主观转量化。',
+ RILM:'去看量化私募和金融科技赛道，做懂量化的投资人。',
+ RITC:'先从交易做起，把每次抄底写成规则回测一遍。',
+ RITM:'量化私募的渠道和机构销售：把策略讲明白。',
+ SDLC:'固收量化、量化风控：你的验算癖正好用上。',
+ SDLM:'量化产品的财富顾问，或者做 FOF 挑量化基金。',
+ SDTC:'量化风控和风险模型：精算底子直接迁移。',
+ SDTM:'量化私募的风控合规、交易运营。',
+ SILC:'从银行理财子、指数增强产品切入量化。',
+ SILM:'量化产品运营：不用写策略，也能进量化圈。',
+ SITC:'量化风控、交易核对：替策略把最后一道关。',
+ SITM:'量化私募的市场与投资者关系：把研报讲给客户。',
+};
 
 /* ===================== 像素画（32×32，运行时绘制） ===================== */
 const SKIN='#F6D2B4',SKIN_D='#E8B994',BLUSH='#F2A39A',EYE='#3E3833',MOUTH='#C9665A',W='#FFFFFF';
@@ -781,6 +811,7 @@ async function posterOne(code,him){
   // jobs + salary
   rr(x,76,814,568,200,20,'#F3EADB');
   x.fillStyle='#C98A2A';x.font=`900 21px ${FONT}`;x.fillText('适合的岗位',100,836);
+  x.textAlign='right';x.fillText(`量化适配度 ${lastQfit}%`,620,836);x.textAlign='left';
   x.fillStyle='#3E3833';x.font=`900 28px ${FONT}`;x.fillText(t.roles.slice(0,2).map(r=>ROLES[r].name).join(' · '),100,868,520);
   const r0=t.roles[0],sal=await loadImg(icon('salad'));
   x.fillStyle='#6B6157';x.font=`700 20px ${FONT}`;x.fillText(`${ROLES[r0].name}月薪 · 1 份沙拉 = ¥1k`,100,916);
@@ -810,8 +841,9 @@ async function openPoster(kind,code,him){
   $('posterImg').src=url;$('dl').href=url;$('dl').download=kind==='pair'?'金融人格合盘.png':`金融人格图鉴-${code}.png`;$('modal').hidden=false;
 }
 function showResult(){
-  const parts=DIMS.map(part),code=parts.map(p=>p.win.code).join(''),t=TYPES[code],him=mode==='him';
-  const who=him?'对方':'你',lv=levelOf(code);
+  const parts=DIMS.map(part),code=parts.map(p=>p.win.code).join(''),t=TYPES[code],him=mode==='him',quantFit=qfitOf();
+  lastQfit=quantFit;
+  const who=him?'对方':'你',lv=levelOf(code),qfitLabel=him?'对方的量化适配度':'量化适配度';
   STORE[mode]=code;saveStore();const hasPair=STORE.me&&STORE.him;
   xlT('end',{mode,code,dur:Math.round((Date.now()-XL.t0)/1000)});
   const bars=parts.map(p=>{const w=Math.abs(p.pa-50),st=p.aWin?`right:50%;width:${w}%`:`left:50%;width:${w}%`;
@@ -829,6 +861,7 @@ function showResult(){
       <div class="hero"><div class="portrait" style="background:${t.look.bg}"><img class="px" src="${persona(code)}" alt="${t.name}"></div>
         <div><div class="pre">${him?'对方是':'你是'}</div><h2 class="pname" style="font-size:${t.name.length<=5?30:t.name.length<=7?25:22}px">${t.name}</h2><span class="lvl">${lv}</span></div></div>
       <button class="jobs" id="jobsJump" type="button"><span>适合${who}的岗位</span><span class="job-rows">${t.roles.slice(0,3).map(r=>`<span class="job-row"><span class="job-copy"><b>${ROLES[r].name}</b><small>${ROLES[r].orgs}</small></span><span class="job-sal"><img class="px" src="${salad}" alt="沙拉">×${SALARY[r].cn}</span></span>`).join('')}</span></button>
+      <div class="qfit"><div class="qfit-top"><span>${qfitLabel}</span><strong>${quantFit}%</strong></div><div class="qfit-track" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${quantFit}" aria-label="${qfitLabel}"><i style="width:${quantFit}%"></i></div><p class="qfit-path">量化入口：${QPATH[code]}</p></div>
       <div class="viewbox"><small>别人眼中的${who}</small><p>${cl(t.view)}</p></div>
       <div class="quote">“${t.quote}”</div>
       <div class="bars">${bars}</div>
