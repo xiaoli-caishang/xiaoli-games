@@ -444,11 +444,16 @@ const LEVELS={
  '老登':'只信周期和复利，最爱讲“我当年”。',
 };
 const levelOf=code=>code[0]==='R'&&code[2]==='T'?'小登':code[0]==='S'&&code[2]==='L'?'老登':'中登';
-// 量化适配度：数据驱动权重最高，其次短线（快速反馈、回测迭代）、冒险，市场观看立场是否鲜明
-const qfitOf=()=>{const r=k=>score[k]/CARDS.filter(c=>c.dim===k).length;
-  const v=Math.abs(r('view')-.5)*2;
-  const raw=45*r('basis')+20*(1-r('horizon'))+15*r('risk')+20*(.5+v/2);
-  return Math.round(35+63*raw/100)};
+// 量化适配度：数据驱动权重最高，其次短线、冒险、市场观鲜明度；按全部答法里的排名映射到 15–99，避免扎堆
+const qfitRaw=(R,B,H,V)=>45*B+20*(1-H)+15*R+20*(.5+Math.abs(V-.5));
+const QFIT_DIST=(()=>{const n=k=>CARDS.filter(c=>c.dim===k).length,C=(m,k)=>{let r=1;for(let i=1;i<=k;i++)r=r*(m-k+i)/i;return r};
+  const [nr,nb,nh,nv]=['risk','basis','horizon','view'].map(n),out=[];
+  for(let r=0;r<=nr;r++)for(let b=0;b<=nb;b++)for(let h=0;h<=nh;h++)for(let v=0;v<=nv;v++)
+    out.push([qfitRaw(r/nr,b/nb,h/nh,v/nv),C(nr,r)*C(nb,b)*C(nh,h)*C(nv,v)]);
+  return out})();
+const qfitOf=()=>{const r=k=>score[k]/CARDS.filter(c=>c.dim===k).length,x=qfitRaw(r('risk'),r('basis'),r('horizon'),r('view'));
+  let lo=0,eq=0,tot=0;for(const [y,w] of QFIT_DIST){tot+=w;if(y<x-1e-9)lo+=w;else if(Math.abs(y-x)<1e-9)eq+=w}
+  return Math.round(15+84*(lo+eq/2)/tot)};
 let lastQfit=0;
 const QPATH={
  RDLC:'量化研究员：多因子、基本面量化，离你最近。',
