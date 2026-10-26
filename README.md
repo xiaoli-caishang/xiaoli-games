@@ -12,6 +12,12 @@ games/
   finance-persona/index.html   金融里，你是什么登？（人格测试，含分享海报和合盘）
   jinrongnan/index.html        旧地址，跳转到 finance-persona
   quant-fund/index.html        量化基金生存录
+ai-tools/
+  index.html                  AI 工具库入口
+  annual-report/
+    index.html                个人支出年报（演示与导入）
+    kit.zip                   个人支出年报工具包
+    fonts/                    自托管字体子集
 functions/api/                 后端接口（EdgeOne Pages 边缘函数，数据都在 KV：xl_kv）
   health/                      部署自检：KV 和口令是否配好
   lead/                        官网「你想解决什么问题？」表单提交
