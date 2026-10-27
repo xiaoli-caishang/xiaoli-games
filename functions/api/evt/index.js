@@ -8,6 +8,8 @@ const num = (v, lo, hi) => { const x = Number(v); return Number.isFinite(x) ? Ma
 // 每个游戏允许的事件和结果字段；新增游戏在这里登记
 const GAMES = {
   fp: { evs: ['start', 'end', 'poster', 'pair'], code: /[^RSDILTCM]/g, codeLen: 4 },
+  // 你给未来的自己打几折：类型(P/E/N/S)+末题延迟档位(2位)+环境条数+是否反转+可靠感
+  fd: { evs: ['start', 'end'], code: /[^A-Z0-9]/g, codeLen: 6 },
 };
 
 export async function onRequest({ request, env }) {
