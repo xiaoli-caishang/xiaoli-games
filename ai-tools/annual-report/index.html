@@ -28,22 +28,33 @@ h2 mark{background:none;color:var(--acc)}
 .tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:#F7F5F0;font-size:12px;line-height:1.5;padding:8px 11px;border-radius:10px;opacity:0;transform:translate(-50%,-110%);transition:opacity .15s;white-space:nowrap}
 .tip b{font:800 14px 'Archivo'}
 /* 1 hero */
-.hero{background:#161514;color:#F7F5F0;padding-top:46px}
-.hero .cap{color:rgba(247,245,240,.5)}
-.hero .tn{font:900 54px/1.05 'Noto Sans SC';letter-spacing:-.02em;margin:16px 0 4px;color:#FEDE7B}
-.hero .te{font:italic 400 20px 'Instrument Serif';opacity:.6}
-.hero .tl{font:500 16px/1.65 'Noto Sans SC';margin-top:14px;color:rgba(247,245,240,.86)}
-.k3{display:grid;gap:8px;margin-top:26px}
-.k3 div{border-radius:18px;padding:14px 16px;background:rgba(247,245,240,.07);display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 10px}
-.k3 span{font-size:12.5px;color:rgba(247,245,240,.62)}.k3 b{font:800 28px 'Archivo';letter-spacing:-.03em}.k3 small{grid-column:1/-1;font-size:11.5px;color:rgba(247,245,240,.45)}
+.hero{background:#F7F5F0;padding-top:42px}
+.hero .tn{font:900 52px/1.08 'Noto Sans SC';letter-spacing:-.02em;margin:14px 0 4px}
+.hero .tn span{background:linear-gradient(transparent 58%,#FEDE7B 58%);padding:0 2px}
+.hero .te{font:italic 400 20px 'Instrument Serif';color:var(--mut)}
+.hero .tl{font:500 15.5px/1.7 'Noto Sans SC';margin-top:12px;color:rgba(22,21,20,.78)}
+.qp{display:grid;grid-template-columns:20px 1fr 20px;grid-template-rows:auto 1fr auto;gap:6px;margin-top:22px}
+.qp .ax{font:700 11.5px 'Noto Sans SC';color:var(--mut);display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.qp .ax.v{writing-mode:vertical-rl;letter-spacing:.1em}
+.qg{position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:4px;aspect-ratio:1/.92}
+.qg>i{font-style:normal;border-radius:16px;background:#ECE8DF;padding:12px;display:flex;flex-direction:column;justify-content:space-between;color:rgba(22,21,20,.42);transition:background .6s}
+.qg>i b{font:900 15px 'Noto Sans SC'}.qg>i small{font:600 10.5px 'Noto Sans SC'}
+.qg>i:nth-child(1),.qg>i:nth-child(2){justify-content:flex-start}.qg>i:nth-child(1) small,.qg>i:nth-child(2) small{margin-top:2px}
+.qg>i:nth-child(3),.qg>i:nth-child(4){justify-content:flex-start;flex-direction:column-reverse}
+.qg>i:nth-child(2),.qg>i:nth-child(4){align-items:flex-end;text-align:right}
+.qg>i.on{background:#FEDE7B;color:#161514}
+.qd{position:absolute;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#161514;box-shadow:0 0 0 4px #fff;z-index:2;transition:left 1.2s cubic-bezier(.2,.8,.2,1),top 1.2s cubic-bezier(.2,.8,.2,1)}
+.qd:after{content:'';position:absolute;inset:-10px;border-radius:50%;border:2px solid #161514;opacity:0;animation:pu 2s infinite}
+.qd span{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);background:#161514;color:#F7F5F0;font:700 11px 'Noto Sans SC';padding:3px 8px;border-radius:99px;white-space:nowrap}
+@keyframes pu{0%{opacity:.5;transform:scale(.5)}100%{opacity:0;transform:scale(1.4)}}
+.qr{display:flex;gap:6px;margin-top:10px;font-size:11.5px;color:var(--mut);justify-content:center;flex-wrap:wrap}
+.qr b{font:800 12px Archivo;color:var(--ink)}
+.k3{display:grid;gap:8px;margin-top:22px}
+.k3 div{border-radius:18px;padding:14px 16px;background:#fff;display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:2px 10px}
+.k3 span{font-size:12.5px;color:rgba(22,21,20,.62)}.k3 b{font:800 28px 'Archivo';letter-spacing:-.03em}.k3 small{grid-column:1/-1;font-size:11.5px;color:var(--mut)}
 .k3 b em{font-style:normal;font-size:15px;margin-right:2px}
-.mini{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin-top:22px}
-.mx{position:relative;width:118px;aspect-ratio:1;display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.mx i{border-radius:8px;background:rgba(247,245,240,.1);font:700 10px/1.25 'Noto Sans SC';font-style:normal;color:rgba(247,245,240,.42);padding:6px;display:flex;align-items:flex-end}
-.mx i.on{background:#FEDE7B;color:#161514}
-.mx .ax{position:absolute;font:600 9px 'Noto Sans SC';color:rgba(247,245,240,.4)}
-.tags{display:flex;flex-wrap:wrap;gap:6px}.tags span{border:1px solid rgba(247,245,240,.28);border-radius:99px;padding:6px 11px;font-size:12px}
-.hint{margin-top:30px;text-align:center;font-size:12px;color:rgba(247,245,240,.45)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}.tags span{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 11px;font-size:12px}
+.hint{margin-top:26px;text-align:center;font-size:12px;color:var(--mut)}
 /* 2 rhythm */
 .bars{position:relative;height:190px;display:flex;align-items:flex-end;gap:0;margin-top:8px;touch-action:pan-y}
 .bars i{flex:1;min-width:0;background:rgba(22,21,20,.2);border-radius:1px 1px 0 0;transition:background .5s,opacity .5s;margin-right:.5px}
@@ -317,7 +328,8 @@ window.addEventListener('error',e=>{const bn=document.getElementById('banner');b
 </script><script>
 const D=(()=>{if(!location.search.includes('demo')){try{const s=localStorage.getItem('bill5d_v2');if(s)return JSON.parse(s)}catch(e){}}return {"period": "2025.01.01 — 2025.12.31", "total": 26159, "n": 939, "days": 365, "span": 365, "per_month": 2180, "per_day": 72, "per_day_nh": 72, "median_day": 73, "top10": 0.245, "median": 23.0, "raw_out": 64177, "refund": 40, "moves": 37978, "xfer": {"fam": 2838, "fam_big": 1500, "social": 686, "social_big": 0, "pending": 88, "pending_big": 36078, "n_pending": 13, "labeled": false}, "payees": [{"name": "王先生", "n": 12, "v": 36078, "auto": "待确认", "label": "待确认"}, {"name": "老妈", "n": 13, "v": 2758, "auto": "家人", "label": "家人"}, {"name": "家庭联系人", "n": 2, "v": 1580, "auto": "家人", "label": "家人"}, {"name": "小林", "n": 7, "v": 590, "auto": "人情", "label": "人情"}, {"name": "阿杰", "n": 1, "v": 96, "auto": "人情", "label": "人情"}, {"name": "Momo", "n": 1, "v": 88, "auto": "待确认", "label": "待确认"}], "top_bills": [{"d": "05.11", "v": 520, "g": "家人", "t": "家人"}, {"d": "12.10", "v": 192, "g": "家人", "t": "家人"}, {"d": "11.10", "v": 191, "g": "家人", "t": "家人"}, {"d": "10.10", "v": 190, "g": "家人", "t": "家人"}, {"d": "09.10", "v": 189, "g": "家人", "t": "家人"}, {"d": "08.10", "v": 188, "g": "家人", "t": "家人"}, {"d": "07.10", "v": 187, "g": "家人", "t": "家人"}, {"d": "06.10", "v": 186, "g": "家人", "t": "家人"}, {"d": "05.10", "v": 185, "g": "家人", "t": "家人"}, {"d": "04.10", "v": 184, "g": "家人", "t": "家人"}], "big_n": 0, "big_v": 0, "nh_total": 26159, "cats": [{"k": "住房", "v": 0, "n": 0, "val": "", "sub": {}}, {"k": "学习", "v": 0, "n": 0, "val": "", "sub": {}}, {"k": "购物", "v": 6401, "n": 183, "val": "享受", "sub": {"买买买": 6401}}, {"k": "吃喝", "v": 16146, "n": 733, "val": "享受", "sub": {"咖啡茶饮": 8656, "外卖": 7390, "超市生鲜": 100}}, {"k": "出行", "v": 0, "n": 0, "val": "", "sub": {}}, {"k": "家人", "v": 2838, "n": 14, "val": "给别人", "sub": {"人情往来": 2838}}, {"k": "人情", "v": 686, "n": 8, "val": "给别人", "sub": {"朋友人情": 686}}, {"k": "健康", "v": 0, "n": 0, "val": "", "sub": {}}, {"k": "旅行", "v": 0, "n": 0, "val": "", "sub": {}}, {"k": "其他", "v": 88, "n": 1, "val": "给别人", "sub": {"待确认转账": 88}}], "val": [{"k": "必要", "v": 7490, "n": 367, "pd": 21, "sub": {"外卖": 7390, "超市生鲜": 100}}, {"k": "积累", "v": 0, "n": 0, "pd": 0, "sub": {}}, {"k": "享受", "v": 15057, "n": 549, "pd": 41, "sub": {"咖啡茶饮": 8656, "买买买": 6401}}, {"k": "给别人", "v": 3612, "n": 23, "pd": 10, "sub": {"人情往来": 2838, "朋友人情": 686, "待确认转账": 88}}], "nec_pd": 21, "nec_nh_pd": 21, "rent_pd": 0, "mon": [{"m": "2025-01", "v": 2431, "nh": 2431, "g": {"吃喝": 1615, "家人": 261, "购物": 555}, "val": {"享受": 1362, "必要": 808, "给别人": 261}}, {"m": "2025-02", "v": 1971, "nh": 1971, "g": {"人情": 82, "吃喝": 1218, "家人": 182, "购物": 489}, "val": {"享受": 1147, "必要": 560, "给别人": 264}}, {"m": "2025-03", "v": 2059, "nh": 2059, "g": {"吃喝": 1350, "家人": 183, "购物": 526}, "val": {"享受": 1254, "必要": 622, "给别人": 183}}, {"m": "2025-04", "v": 2100, "nh": 2100, "g": {"人情": 84, "吃喝": 1307, "家人": 184, "购物": 525}, "val": {"享受": 1232, "必要": 600, "给别人": 268}}, {"m": "2025-05", "v": 2611, "nh": 2611, "g": {"吃喝": 1345, "家人": 705, "购物": 561}, "val": {"享受": 1288, "必要": 618, "给别人": 705}}, {"m": "2025-06", "v": 2097, "nh": 2097, "g": {"人情": 86, "吃喝": 1305, "家人": 186, "购物": 520}, "val": {"享受": 1225, "必要": 600, "给别人": 272}}, {"m": "2025-07", "v": 2066, "nh": 2066, "g": {"吃喝": 1349, "家人": 187, "购物": 530}, "val": {"享受": 1260, "必要": 619, "给别人": 187}}, {"m": "2025-08", "v": 2366, "nh": 2366, "g": {"人情": 184, "其他": 88, "吃喝": 1347, "家人": 188, "购物": 559}, "val": {"享受": 1286, "必要": 620, "给别人": 460}}, {"m": "2025-09", "v": 2087, "nh": 2087, "g": {"人情": 68, "吃喝": 1305, "家人": 189, "购物": 525}, "val": {"享受": 1230, "必要": 600, "给别人": 257}}, {"m": "2025-10", "v": 2155, "nh": 2155, "g": {"人情": 90, "吃喝": 1351, "家人": 190, "购物": 524}, "val": {"享受": 1254, "必要": 621, "给别人": 280}}, {"m": "2025-11", "v": 2017, "nh": 2017, "g": {"吃喝": 1303, "家人": 191, "购物": 523}, "val": {"享受": 1226, "必要": 600, "给别人": 191}}, {"m": "2025-12", "v": 2199, "nh": 2199, "g": {"人情": 92, "吃喝": 1351, "家人": 192, "购物": 564}, "val": {"享受": 1293, "必要": 622, "给别人": 284}}], "heat_n": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 52, 0, 1, 3, 0, 0, 0, 26, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 52, 0, 0, 3, 0, 0, 0, 26, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 53, 0, 0, 53, 0, 0, 4, 0, 0, 0, 27, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 52, 0, 0, 3, 0, 0, 0, 27, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 52, 0, 0, 4, 0, 0, 0, 26, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 0, 0, 52, 1, 0, 2, 0, 0, 1, 26, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 52, 1, 0, 52, 0, 0, 1, 0, 0, 0, 26, 0, 0, 0, 0]], "heat_s": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 0, 0, 1038, 0, 80, 462, 0, 0, 0, 912, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 0, 0, 1040, 0, 0, 448, 0, 0, 0, 910, 88, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1244, 0, 0, 1060, 0, 0, 549, 0, 0, 0, 939, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 0, 0, 1040, 0, 0, 463, 0, 0, 0, 975, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 0, 0, 1042, 0, 0, 545, 0, 0, 0, 905, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 0, 0, 1039, 100, 0, 275, 0, 0, 96, 915, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1222, 520, 0, 1041, 0, 0, 188, 0, 0, 0, 913, 0, 0, 0, 0]], "daily": [[70, 3, "吃喝"], [42, 2, "吃喝"], [76, 3, "吃喝"], [46, 2, "吃喝"], [78, 3, "吃喝"], [41, 2, "吃喝"], [79, 3, "吃喝"], [45, 2, "吃喝"], [81, 3, "吃喝"], [226, 3, "家人"], [182, 4, "吃喝"], [44, 2, "吃喝"], [153, 4, "吃喝"], [44, 2, "吃喝"], [79, 3, "吃喝"], [43, 2, "吃喝"], [76, 3, "吃喝"], [43, 2, "吃喝"], [82, 3, "吃喝"], [47, 2, "吃喝"], [159, 4, "家人"], [42, 2, "吃喝"], [74, 3, "吃喝"], [136, 3, "吃喝"], [76, 3, "吃喝"], [41, 2, "吃喝"], [77, 3, "吃喝"], [45, 2, "吃喝"], [79, 3, "吃喝"], [45, 2, "吃喝"], [80, 3, "吃喝"], [44, 2, "吃喝"], [82, 3, "吃喝"], [44, 2, "吃喝"], [77, 3, "吃喝"], [43, 2, "吃喝"], [74, 3, "吃喝"], [43, 2, "吃喝"], [80, 3, "吃喝"], [47, 2, "吃喝"], [77, 3, "吃喝"], [42, 2, "吃喝"], [83, 3, "吃喝"], [46, 2, "吃喝"], [74, 3, "吃喝"], [41, 2, "吃喝"], [75, 3, "吃喝"], [45, 2, "吃喝"], [77, 3, "吃喝"], [45, 2, "吃喝"], [78, 3, "吃喝"], [44, 2, "吃喝"], [80, 3, "吃喝"], [44, 2, "吃喝"], [86, 3, "吃喝"], [225, 3, "家人"], [154, 4, "人情"], [43, 2, "吃喝"], [78, 3, "吃喝"], [47, 2, "吃喝"], [75, 3, "吃喝"], [42, 2, "吃喝"], [81, 3, "吃喝"], [46, 2, "吃喝"], [83, 3, "吃喝"], [41, 2, "吃喝"], [73, 3, "吃喝"], [45, 2, "吃喝"], [258, 4, "家人"], [45, 2, "吃喝"], [76, 3, "吃喝"], [44, 2, "吃喝"], [78, 3, "吃喝"], [44, 2, "吃喝"], [84, 3, "吃喝"], [43, 2, "吃喝"], [81, 3, "吃喝"], [43, 2, "吃喝"], [76, 3, "吃喝"], [47, 2, "吃喝"], [73, 3, "吃喝"], [42, 2, "吃喝"], [79, 3, "吃喝"], [46, 2, "吃喝"], [81, 3, "吃喝"], [41, 2, "吃喝"], [82, 3, "吃喝"], [45, 2, "吃喝"], [73, 3, "吃喝"], [45, 2, "吃喝"], [74, 3, "吃喝"], [44, 2, "吃喝"], [76, 3, "吃喝"], [44, 2, "吃喝"], [82, 3, "吃喝"], [43, 2, "吃喝"], [79, 3, "吃喝"], [43, 2, "吃喝"], [85, 3, "吃喝"], [231, 3, "家人"], [155, 4, "人情"], [42, 2, "吃喝"], [77, 3, "吃喝"], [46, 2, "吃喝"], [79, 3, "吃喝"], [41, 2, "吃喝"], [80, 3, "吃喝"], [45, 2, "吃喝"], [82, 3, "吃喝"], [45, 2, "吃喝"], [72, 3, "吃喝"], [44, 2, "吃喝"], [74, 3, "吃喝"], [44, 2, "吃喝"], [80, 3, "吃喝"], [43, 2, "吃喝"], [77, 3, "吃喝"], [43, 2, "吃喝"], [83, 3, "吃喝"], [47, 2, "吃喝"], [80, 3, "购物"], [42, 2, "吃喝"], [75, 3, "吃喝"], [46, 2, "吃喝"], [77, 3, "吃喝"], [41, 2, "吃喝"], [78, 3, "吃喝"], [45, 2, "吃喝"], [80, 3, "吃喝"], [230, 3, "家人"], [601, 4, "家人"], [44, 2, "吃喝"], [72, 3, "吃喝"], [44, 2, "吃喝"], [78, 3, "吃喝"], [43, 2, "吃喝"], [75, 3, "吃喝"], [43, 2, "吃喝"], [81, 3, "吃喝"], [47, 2, "吃喝"], [78, 3, "吃喝"], [42, 2, "吃喝"], [84, 3, "吃喝"], [46, 2, "吃喝"], [75, 3, "吃喝"], [41, 2, "吃喝"], [76, 3, "吃喝"], [45, 2, "吃喝"], [78, 3, "吃喝"], [45, 2, "吃喝"], [79, 3, "吃喝"], [44, 2, "吃喝"], [81, 3, "吃喝"], [44, 2, "吃喝"], [76, 3, "吃喝"], [43, 2, "吃喝"], [73, 3, "吃喝"], [43, 2, "吃喝"], [79, 3, "吃喝"], [47, 2, "吃喝"], [262, 4, "家人"], [128, 3, "人情"], [82, 3, "吃喝"], [46, 2, "吃喝"], [84, 3, "吃喝"], [41, 2, "吃喝"], [74, 3, "吃喝"], [45, 2, "吃喝"], [76, 3, "吃喝"], [45, 2, "吃喝"], [77, 3, "吃喝"], [44, 2, "吃喝"], [79, 3, "吃喝"], [44, 2, "吃喝"], [85, 3, "吃喝"], [43, 2, "吃喝"], [71, 3, "吃喝"], [43, 2, "吃喝"], [77, 3, "吃喝"], [47, 2, "吃喝"], [74, 3, "吃喝"], [42, 2, "吃喝"], [80, 3, "吃喝"], [46, 2, "吃喝"], [82, 3, "吃喝"], [41, 2, "吃喝"], [83, 3, "吃喝"], [45, 2, "吃喝"], [74, 3, "吃喝"], [45, 2, "吃喝"], [262, 4, "家人"], [44, 2, "吃喝"], [77, 3, "吃喝"], [44, 2, "吃喝"], [83, 3, "吃喝"], [43, 2, "吃喝"], [80, 3, "吃喝"], [43, 2, "吃喝"], [75, 3, "吃喝"], [47, 2, "吃喝"], [72, 3, "吃喝"], [42, 2, "吃喝"], [78, 3, "吃喝"], [46, 2, "吃喝"], [80, 3, "吃喝"], [41, 2, "吃喝"], [81, 3, "吃喝"], [45, 2, "吃喝"], [83, 3, "吃喝"], [45, 2, "吃喝"], [73, 3, "吃喝"], [44, 2, "吃喝"], [75, 3, "吃喝"], [44, 2, "吃喝"], [81, 3, "吃喝"], [43, 2, "吃喝"], [78, 3, "吃喝"], [43, 2, "吃喝"], [84, 3, "吃喝"], [47, 2, "吃喝"], [166, 4, "人情"], [230, 3, "家人"], [164, 4, "人情"], [46, 2, "吃喝"], [78, 3, "吃喝"], [41, 2, "吃喝"], [79, 3, "吃喝"], [45, 2, "吃喝"], [81, 3, "吃喝"], [45, 2, "吃喝"], [170, 4, "其他"], [44, 2, "吃喝"], [73, 3, "吃喝"], [44, 2, "吃喝"], [79, 3, "吃喝"], [43, 2, "吃喝"], [76, 3, "吃喝"], [43, 2, "吃喝"], [82, 3, "吃喝"], [47, 2, "吃喝"], [79, 3, "吃喝"], [42, 2, "吃喝"], [74, 3, "吃喝"], [46, 2, "吃喝"], [76, 3, "吃喝"], [41, 2, "吃喝"], [77, 3, "吃喝"], [45, 2, "吃喝"], [79, 3, "吃喝"], [45, 2, "吃喝"], [80, 3, "吃喝"], [44, 2, "吃喝"], [271, 4, "家人"], [44, 2, "吃喝"], [77, 3, "吃喝"], [43, 2, "吃喝"], [74, 3, "吃喝"], [43, 2, "吃喝"], [80, 3, "吃喝"], [47, 2, "吃喝"], [145, 4, "人情"], [42, 2, "吃喝"], [83, 3, "吃喝"], [46, 2, "吃喝"], [74, 3, "吃喝"], [41, 2, "吃喝"], [75, 3, "吃喝"], [45, 2, "吃喝"], [77, 3, "吃喝"], [45, 2, "吃喝"], [78, 3, "吃喝"], [44, 2, "吃喝"], [80, 3, "吃喝"], [44, 2, "吃喝"], [86, 3, "吃喝"], [43, 2, "吃喝"], [72, 3, "吃喝"], [43, 2, "吃喝"], [78, 3, "吃喝"], [47, 2, "吃喝"], [75, 3, "吃喝"], [42, 2, "吃喝"], [271, 4, "家人"], [136, 3, "人情"], [83, 3, "吃喝"], [41, 2, "吃喝"], [73, 3, "吃喝"], [45, 2, "吃喝"], [75, 3, "吃喝"], [45, 2, "吃喝"], [76, 3, "吃喝"], [44, 2, "吃喝"], [78, 3, "吃喝"], [44, 2, "吃喝"], [84, 3, "吃喝"], [43, 2, "吃喝"], [81, 3, "吃喝"], [43, 2, "吃喝"], [76, 3, "吃喝"], [47, 2, "吃喝"], [73, 3, "吃喝"], [42, 2, "吃喝"], [79, 3, "吃喝"], [46, 2, "吃喝"], [81, 3, "吃喝"], [41, 2, "吃喝"], [82, 3, "吃喝"], [45, 2, "吃喝"], [73, 3, "吃喝"], [45, 2, "吃喝"], [74, 3, "吃喝"], [44, 2, "吃喝"], [76, 3, "吃喝"], [235, 3, "家人"], [82, 3, "吃喝"], [43, 2, "吃喝"], [79, 3, "吃喝"], [43, 2, "吃喝"], [85, 3, "吃喝"], [47, 2, "吃喝"], [71, 3, "吃喝"], [42, 2, "吃喝"], [77, 3, "吃喝"], [46, 2, "吃喝"], [79, 3, "吃喝"], [41, 2, "吃喝"], [80, 3, "吃喝"], [45, 2, "吃喝"], [82, 3, "吃喝"], [45, 2, "吃喝"], [72, 3, "吃喝"], [44, 2, "吃喝"], [74, 3, "吃喝"], [44, 2, "吃喝"], [80, 3, "吃喝"], [43, 2, "吃喝"], [77, 3, "吃喝"], [43, 2, "吃喝"], [83, 3, "吃喝"], [47, 2, "吃喝"], [80, 3, "购物"], [42, 2, "吃喝"], [75, 3, "吃喝"], [238, 3, "家人"], [169, 4, "人情"], [41, 2, "吃喝"], [78, 3, "吃喝"], [45, 2, "吃喝"], [80, 3, "吃喝"], [45, 2, "吃喝"], [81, 3, "吃喝"], [44, 2, "吃喝"], [72, 3, "吃喝"], [44, 2, "吃喝"], [78, 3, "吃喝"], [43, 2, "吃喝"], [75, 3, "吃喝"], [43, 2, "吃喝"], [81, 3, "吃喝"], [47, 2, "吃喝"], [78, 3, "吃喝"], [42, 2, "吃喝"], [84, 3, "吃喝"], [46, 2, "吃喝"], [75, 3, "吃喝"]], "top": [{"d": "05.11", "v": 601, "g": "家人"}, {"d": "09.10", "v": 271, "g": "家人"}, {"d": "10.10", "v": 271, "g": "家人"}, {"d": "06.10", "v": 262, "g": "家人"}, {"d": "07.10", "v": 262, "g": "家人"}], "dd": [{"k": "0", "n": 0, "v": 0}, {"k": "<50", "n": 172, "v": 7562}, {"k": "50–200", "n": 180, "v": 15057}, {"k": "200–500", "n": 12, "v": 2939}, {"k": "500–2k", "n": 1, "v": 601}, {"k": "≥2k", "n": 0, "v": 0}], "band": [{"k": "<30", "n": 730, "v": 15876}, {"k": "30–100", "n": 195, "v": 7425}, {"k": "100–500", "n": 13, "v": 2338}, {"k": "500–1k", "n": 1, "v": 520}, {"k": "1k–5k", "n": 0, "v": 0}, {"k": "≥5k", "n": 0, "v": 0}], "pareto": [0.0775, 0.1233, 0.1515, 0.1652, 0.1789, 0.1938, 0.207, 0.2215, 0.2343, 0.247, 0.2607, 0.273, 0.2864, 0.2982, 0.3099, 0.3226, 0.3339, 0.3461, 0.357, 0.3677, 0.3793, 0.3897, 0.3988, 0.4084, 0.417, 0.4265, 0.4351, 0.4437, 0.4533, 0.4619, 0.4715, 0.4801, 0.4883, 0.4975, 0.5058, 0.5149, 0.5232, 0.5314, 0.5406, 0.5489, 0.5571, 0.5662, 0.5741, 0.5829, 0.5908, 0.5987, 0.6075, 0.6154, 0.6242, 0.6321, 0.64, 0.6486, 0.6562, 0.6646, 0.6722, 0.6797, 0.6881, 0.6957, 0.7041, 0.7117, 0.7193, 0.7277, 0.7352, 0.7428, 0.7512, 0.7588, 0.7672, 0.7748, 0.7823, 0.7904, 0.7976, 0.8056, 0.8128, 0.8201, 0.8281, 0.8353, 0.8432, 0.8501, 0.857, 0.8646, 0.8715, 0.8784, 0.886, 0.8929, 0.9004, 0.9069, 0.9135, 0.9207, 0.9273, 0.9345, 0.9411, 0.9476, 0.9546, 0.9608, 0.9677, 0.9739, 0.98, 0.9869, 0.9931, 1.0], "cumd": [70, 234, 432, 784, 1163, 1329, 1530, 1778, 2064, 2227, 2431, 2601, 2795, 2965, 3167, 3328, 3525, 3692, 3902, 4324, 4524, 4693, 4890, 5238, 5436, 5607, 5807, 5969, 6175, 6343, 6535, 6699, 6903, 7262, 7536, 7702, 7909, 8070, 8268, 8431, 8641, 8804, 9000, 9355, 10072, 10237, 10436, 10603, 10808, 10970, 11172, 11341, 11533, 11702, 12174, 12345, 12540, 12706, 12914, 13071, 13269, 13437, 13643, 13807, 14190, 14360, 14558, 14719, 14923, 15090, 15291, 15454, 15656, 15830, 16390, 16555, 16760, 17019, 17215, 17377, 17585, 17747, 17941, 18110, 18505, 18669, 18866, 19100, 19303, 19464, 19664, 19832, 20033, 20201, 20589, 20849, 21042, 21207, 21413, 21580, 21776, 21943, 22147, 22310, 22504, 22864, 23071, 23231, 23433, 23599, 23798, 23960, 24160, 24333, 24530, 24978, 25181, 25351, 25545, 25706, 25912, 26084], "bigs": [], "dom": [727, 736, 727, 732, 732, 730, 738, 727, 833, 2791, 1792, 738, 801, 729, 737, 732, 732, 792, 830, 737, 806, 724, 726, 843, 913, 800, 726, 737, 700, 648, 443], "wd_s": [3714, 3708, 3792, 3700, 3714, 3647, 3884], "hab": [{"k": "打车", "n": 0, "v": 0}, {"k": "外卖", "n": 366, "v": 7390}, {"k": "数字订阅", "n": 0, "v": 0}, {"k": "共享充电宝", "n": 0, "v": 0}, {"k": "咖啡茶饮", "n": 366, "v": 8656}, {"k": "健身", "n": 0, "v": 0}], "rel": {"self": 15057, "life": 7490, "fam_small": 2838, "fam_big": 1500, "fam_n": 15, "f520": 1, "fmon": {"2025-01": 1761, "2025-02": 182, "2025-03": 183, "2025-04": 184, "2025-05": 705, "2025-06": 186, "2025-07": 187, "2025-08": 188, "2025-09": 189, "2025-10": 190, "2025-11": 191, "2025-12": 192}, "events": [["01.21", "春节转账"], ["01.22", "春节转账"], ["05.11", "母亲节转账"]], "who": "家人"}, "night_n": 0, "night_s": 0, "night_buy": 0, "zero_days": 0, "weekday_avg": 71, "weekend_avg": 72, "records": 954}})();window.__IMPORTED=!!localStorage.getItem('bill5d_v2');
 const P={s1:{bg:'#F0EDDC',acc:'#845F4A'},s2:{bg:'#E1EDF4',acc:'#4F6F88'},s3:{bg:'#F3E6E1',acc:'#B07A70'},s4:{bg:'#FBF3E4',acc:'#8B7250'}};
-const VC={'必要':'#C9BFA8','积累':'#9DB7C9','享受':'#E7B4A6','给别人':'#B9C7A5'};
+const VC={'必要':'#845F4A','积累':'#7191AA','享受':'#DFA0AA','给别人':'#FEDE7B'},VT={'必要':'#fff','积累':'#fff','享受':'#161514','给别人':'#161514'};
+const CC={'住房':'#161514','吃喝':'#845F4A','出行':'#A68A6D','学习':'#7191AA','健康':'#9DB7C9','购物':'#DFA0AA','旅行':'#EBC0C6','家人':'#F2C94C','人情':'#F2C94C','其他':'#BDB6A8'};
 const f=n=>Math.round(n).toLocaleString('en-US'),wan=n=>(n/1e4).toFixed(1);
 const pct=(a,b)=>{if(!b)return'0';const x=a/b*100;return x==0?'0':x<10?x.toFixed(1).replace('.0',''):Math.round(x)};
 const tip=document.getElementById('tip');
@@ -332,10 +344,10 @@ const famOnly=X.labeled&&!X.social&&!X.pending&&!X.social_big&&!X.pending_big;
 const OTHN=famOnly?'家人':'给别人';
 const NH=D.nh_total||Math.round(D.per_day_nh*D.span),BN=D.big_n!=null?D.big_n:(D.bigs||[]).length,BV=D.big_v!=null?D.big_v:(D.bigs||[]).reduce((s,b)=>s+b.v,0);
 const conc=D.top10>=.5,grow=GRO.v>=FUN.v;
-const TYPES={'11':['攒大招型','The Saver-Upper','平时花得克制，钱集中砸在少数几件让自己变好的事上。'],
- '10':['犒劳自己型','The Treat-Yourself','平时不怎么花，隔一阵就大方地奖励自己一次。'],
- '01':['细水长流型','The Steady Grower','钱花得很均匀，一点一点稳定地投资自己。'],
- '00':['及时行乐型','The Joy Collector','钱花得很均匀，日常的小快乐一个都不落下。']};
+const TYPES={'11':['梭哈成长派','The All-in Grower','平时花得克制，钱集中砸在少数几件让自己变好的事上。','集中 · 投资自己'],
+ '10':['梭哈快乐派','The All-in Joy','平时不怎么花，隔一阵就大方地奖励自己一次。','集中 · 享受'],
+ '01':['细水成长派','The Steady Grower','钱花得很均匀，一点一点稳定地投资自己。','均匀 · 投资自己'],
+ '00':['细水快乐派','The Steady Joy','钱花得很均匀，日常的小快乐一个都不落下。','均匀 · 享受']};
 const TY=TYPES[(conc?'1':'0')+(grow?'1':'0')];
 const necS=NEC.v/T,nightS=D.night_n/D.n,othS=OTH.v/T;
 const tags=[];if(necS>=.5)tags.push('底线开支偏高');if(nightS>=.08)tags.push('夜猫子消费');if(famOnly&&othS>=.05)tags.push('顾家');if(D.zero_days>=30)tags.push('能忍住不花');if(!tags.length)tags.push(conc?'大额主导':'日常主导');
@@ -350,18 +362,25 @@ const HT0=med<avg*.8?`日均 ¥${f(avg)}，但一半的日子花不到 <mark>¥$
 let H='';
 H+=`<nav class="nav" id="nav"><a href="#s1" class="on">我是哪种</a><a href="#s2">花钱节奏</a><a href="#s3">那几笔</a><a href="#s4">每天怎么分</a><a href="#s5">怎么控</a></nav>`;
 /* S1 */
-const q=[['攒大招','11'],['犒劳自己','10'],['细水长流','01'],['及时行乐','00']];
-const mx=['01','11','00','10'].map(k=>`<i class="${k===(conc?'1':'0')+(grow?'1':'0')?'on':''}">${TYPES[k][0].replace('型','')}</i>`).join('');
+const TK=(conc?'1':'0')+(grow?'1':'0');
+const gShare=(GRO.v+FUN.v)?GRO.v/(GRO.v+FUN.v):.5;
+const clamp=v=>Math.max(7,Math.min(93,v));
+const st=r=>{r=Math.max(-1,Math.min(1,r));return 50+Math.sign(r)*Math.sqrt(Math.abs(r))*50};
+const qx=Math.max(10,Math.min(90,st((D.top10-.5)/.4))),qy=Math.max(30,Math.min(70,100-st((gShare-.5)*2)));
+const qcell=k=>`<i class="${k===TK?'on':''}"><b>${TYPES[k][0]}</b><small>${TYPES[k][3]}</small></i>`;
 H+=`<section id="s1" class="hero"><div class="cap">${D.period} · 你的消费类型</div>
-<div class="tn rv">${TY[0]}</div><div class="te">${TY[1]}</div>
+<div class="tn rv"><span>${TY[0]}</span></div><div class="te">${TY[1]}</div>
 <div class="tl rv">${TY[2]}</div>
+<div class="qp rv"><span></span><div class="ax">↑ 多出来的钱，投资自己</div><span></span>
+<div class="ax v">均匀</div><div class="qg" id="qg">${['01','11','00','10'].map(qcell).join('')}<div class="qd" id="qd" style="left:50%;top:50%"><span>你在这</span></div></div><div class="ax v">集中</div>
+<span></span><div class="ax">↓ 多出来的钱，用来享受</div><span></span></div>
+<div class="qr"><span>左右：最贵 10% 的日子花掉 <b>${Math.round(D.top10*100)}%</b></span><span>上下：投资自己占 <b>${Math.round(gShare*100)}%</b></span></div>
 <div class="k3 rv">
 <div><span>这一年一共花了</span><b><em>¥</em><span class="num" data-to="${T}" style="font:inherit;color:inherit">${f(T)}</span></b></div>
-<div><span>普通一天 vs 日均（不含房租）</span><b><em>¥</em>${f(med)} <span style="font:500 15px Archivo;color:rgba(247,245,240,.45)">vs ¥${f(avg)}</span></b><small>${med<avg*.8?'大多数日子，你其实没花到"日均"那么多':'你每天花得差不多，日均就是你的日常'}</small></div>
+<div><span>普通一天 vs 日均（不含房租）</span><b><em>¥</em>${f(med)} <span style="font:500 15px Archivo;color:var(--mut)">vs ¥${f(avg)}</span></b><small>${med<avg*.8?'大多数日子，你其实没花到"日均"那么多':'你每天花得差不多，日均就是你的日常'}</small></div>
 <div><span>最贵的 10% 的日子，花掉了</span><b>${Math.round(D.top10*100)}<em style="margin-left:2px">%</em></b><small>${D.top10>=.5?'钱是一阵一阵集中花出去的':'钱花得比较均匀'}</small></div>
 </div>
-<div class="mini rv"><div class="mx">${mx}</div><div><div class="tags">${tags.map(t=>`<span>${t}</span>`).join('')}</div>
-<div style="font-size:11.5px;line-height:1.6;color:rgba(247,245,240,.5);margin-top:10px">左右看钱花得集中还是均匀，上下看多出来的钱流向投资自己还是享受。</div></div></div>
+<div class="tags">${tags.slice(0,2).map(t=>`<span>${t}</span>`).join('')}</div>
 <div class="hint">往下滑，看看为什么 ↓</div></section>`;
 /* S2 */
 const cap=Math.max(...daily.map(x=>x.v).sort((a,b)=>a-b).slice(Math.floor(daily.length*.97),Math.floor(daily.length*.97)+1),avg*2,1);
@@ -381,7 +400,7 @@ const TB=D.top_bills||[];const tbMax=Math.max(1,...TB.map(b=>b.v));
 H+=`<section id="s3" style="background:${P.s3.bg};--acc:${P.s3.acc}"><div class="no"><b>02</b>决定全年的那几笔<span>The Few</span></div>
 <h2 class="rv">${BN?'全年花多少，其实是<mark>这几笔</mark>说了算':'你的钱，是<mark>一点点</mark>花出去的'}</h2>
 <div class="sub">房租之外，你最贵的 ${TB.length} 笔钱。</div>
-<div class="card tb rv">${TB.map(b=>`<div class="r"><span class="d">${b.d}</span><span class="k">${b.t}<i style="width:${b.v/tbMax*100}%"></i></span><span class="v">¥${f(b.v)}</span></div>`).join('')}</div>
+<div class="card tb rv">${TB.map(b=>`<div class="r"><span class="d">${b.d}</span><span class="k">${b.t}<i style="width:${b.v/tbMax*100}%;background:${CC[b.g]||'#BDB6A8'};opacity:1"></i></span><span class="v">¥${f(b.v)}</span></div>`).join('')}</div>
 <div class="cmp rv"><div class="h" id="cmH">房租之外，全年花了</div><div class="v">¥<span id="cmV">${f(NH)}</span></div>
 <div class="s" id="cmS">${BN?`其中千元以上的有 ${BN} 笔。`:'一笔千元以上的都没有，全年都是日常小钱堆起来的。'}</div>${BN?`<button class="btn" id="cmB">去掉这 ${BN} 笔千元以上的</button>`:''}</div>
 </section>`;
@@ -392,7 +411,7 @@ H+=`<section id="s4" style="background:${P.s4.bg};--acc:${P.s4.acc}"><div class=
 <h2 class="rv">每天的 ¥${f(D.per_day)}，<mark>哪些能动</mark>？</h2>
 <div class="sub">点开任意一段，看它由什么组成。</div>
 <div class="card rv"><div class="pd"><em>¥</em>${f(D.per_day)}<span style="font:500 13px 'Noto Sans SC';color:var(--mut);margin-left:8px">/ 天，含房租</span></div>
-<div class="strip" id="strip">${segs.map((s,i)=>`<div data-k="${i}" style="flex:${s[0].v} 1 0;min-width:46px;background:${VC[s[0].k]}">¥${f(pdv(s[0].v))}<span>${s[1]}</span></div>`).join('')}</div>
+<div class="strip" id="strip">${segs.map((s,i)=>`<div data-k="${i}" style="flex:${s[0].v} 1 0;min-width:46px;background:${VC[s[0].k]};color:${VT[s[0].k]}">¥${f(pdv(s[0].v))}<span>${s[1]}</span></div>`).join('')}</div>
 <div class="leg" id="leg">${segs.map((s,i)=>`<div data-k="${i}"><i style="background:${VC[s[0].k]}"></i>${s[1]}<small style="color:var(--mut);font-size:11.5px">${s[2]}</small><b>${pct(s[0].v,T)}%</b></div>`).join('')}</div>
 <div class="det" id="det"></div></div>
 <div class="big rv">真正能调整的是<mark>享受</mark>这块：每天 ¥${f(pdv(FUN.v))}，一年 ¥${wan(FUN.v)} 万。</div>
@@ -403,12 +422,13 @@ A.push(['守住底线',`每月 ¥${f(NEC.v/12)}`,`这是你每月雷打不动的
 if(conc)A.push(['千元以上，先等 3 天',`${BN} 笔 · ¥${wan(BV)} 万`,`这些钱占了房租之外的 ${pct(BV,NH)}%。下单前放进购物车等 3 天，还想要再买。`]);
 if(nightS>=.05)A.push(['0 点后只加购，不付款',`${D.night_n} 笔 · ¥${f(D.night_s)}`,`深夜下单占全部笔数的 ${pct(D.night_n,D.n)}%。第二天醒来再决定。`]);
 if(FUN.v>0)A.push(['给享受设个月预算',`每月 ¥${f(FUN.v/12*.8)}`,`按现在的 8 成来定，一年能多留下 ¥${f(FUN.v*.2)}，快乐基本不打折。`]);
-const AC=['#FEDE7B','#9DB7C9','#E7B4A6','#B9C7A5'];
+const AC=['#FEDE7B','#AABDCC','#DFA0AA','#F3E6E1'];
 H+=`<section id="s5" class="end"><div class="no"><b>04</b>你该怎么控<span>What Now</span></div>
 <h2 class="rv">按你的数据，只做这 ${Math.min(3,A.length)} 件事</h2>
 ${A.slice(0,3).map((a,i)=>`<div class="ac rv" style="background:${AC[i]}"><div class="t"><b>0${i+1}</b><span>${a[0]}</span></div><div class="n">${a[1]}</div><div class="w">${a[2]}</div></div>`).join('')}
 <div class="foot">数据来自微信、支付宝账单，在本机计算；已去掉退款、还款、理财和转给自己的钱。</div></section>`;
 $('app').innerHTML=H;
+setTimeout(()=>{const d=$('qd');d.style.left=qx+'%';d.style.top=qy+'%'},500);
 /* interactions */
 const bars=$('bars');
 const barTip=e=>{const p=e.touches?e.touches[0]:e;const el=document.elementFromPoint(p.clientX,p.clientY);if(!el||!el.dataset||el.dataset.i==null)return;const x=daily[+el.dataset.i];showTip(e,`${md(dayOf(x.i))} · <b>¥${f(x.v)}</b><br>${x.n} 笔${x.g?' · 主要花在'+x.g:''}`)};
