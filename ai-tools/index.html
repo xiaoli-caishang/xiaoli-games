@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="小梨 AI 工具库：把方法做成可以自己验证、重复使用的小工具。">
+  <title>AI 工具库 · 小梨知识实验室</title>
+  <style>
+    :root{--bg:#f4efe5;--paper:#fffcf5;--ink:#39362f;--muted:#817a6e;--line:#e5dccb;--gold:#e3a43c}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
+    a{color:inherit;text-decoration:none}
+    a:focus-visible{outline:3px solid #728bab;outline-offset:4px}
+    .wrap{max-width:960px;margin:auto;padding:0 28px}
+    header{border-bottom:1px solid var(--line)}
+    nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{font-size:18px;font-weight:750}
+    .back{font-size:14px;color:var(--muted)}
+    main{padding:66px 0 88px}
+    .eyebrow{font-size:12px;letter-spacing:2.5px;color:#aa7932;font-weight:650}
+    h1{font-size:clamp(36px,7vw,56px);line-height:1.2;letter-spacing:-1.5px;margin:16px 0}
+    .intro{max-width:560px;color:var(--muted);font-size:16px;margin:0 0 34px}
+    .cards{display:grid;grid-template-columns:minmax(0,1fr);max-width:620px}
+    .card{border:1px solid var(--line);border-radius:22px;background:var(--paper);padding:25px;display:flex;flex-direction:column;min-height:255px;transition:.2s}
+    .card:hover{box-shadow:0 12px 30px #8b744611;transform:translateY(-3px)}
+    .cardtop{display:flex;justify-content:space-between;align-items:center}
+    .icon{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;background:#eee3c9;font-size:23px}
+    .badge{border:1px solid var(--line);border-radius:20px;padding:3px 10px;font-size:12px;color:var(--muted)}
+    h2{font-size:23px;margin:19px 0 7px}
+    .card p{font-size:14px;color:var(--muted);margin:0 0 20px}
+    .cardfoot{margin-top:auto;border-top:1px dashed var(--line);padding-top:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .tiny{font-size:13px;color:var(--muted)}
+    .textbtn{color:#a2722d;font-weight:650;font-size:14px;white-space:nowrap}
+    footer{border-top:1px solid var(--line);padding:20px 0 30px;color:var(--muted);font-size:12px}
+    @media(max-width:520px){.wrap{padding:0 20px}nav{height:68px}.brand{font-size:16px}.back{font-size:13px}main{padding:48px 0 64px}.card{padding:21px;min-height:240px}}
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="wrap" aria-label="主导航">
+      <a class="brand" href="../">小梨 · AI 工具库</a>
+      <a class="back" href="../">返回知识实验室</a>
+    </nav>
+  </header>
+  <main class="wrap">
+    <div class="eyebrow">AI TOOLS</div>
+    <h1>把方法，做成工具。</h1>
+    <p class="intro">从可以亲手验证的小工具开始。每个工具都尽量保持简单、透明，也方便你带走和复用。</p>
+    <section class="cards" aria-label="工具列表">
+      <article class="card">
+        <div class="cardtop"><span class="icon" aria-hidden="true">▦</span><span class="badge">免费工具</span></div>
+        <h2>个人支出年报</h2>
+        <p>用演示数据先看一份年度报告，也可以导入自己的账单，在本地生成个人支出分析。</p>
+        <div class="cardfoot"><span class="tiny">个人财务 · 数据在本地处理</span><a class="textbtn" href="annual-report/">打开工具 →</a></div>
+      </article>
+    </section>
+  </main>
+  <footer><div class="wrap">小梨知识实验室 · 方法可验证，工具可复用。</div></footer>
+</body>
+</html>
